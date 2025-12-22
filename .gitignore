@@ -1,5 +1,4 @@
 # Dependencies
-node_modules/
 venv/
 __pycache__/
 *.pyc
@@ -35,3 +34,12 @@ firebase-debug.log
 
 # OS
 Thumbs.db
+
+# Backend data (generated/sample files)
+backend/data/
+
+# Python testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
