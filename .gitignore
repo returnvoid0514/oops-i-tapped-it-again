@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Lens Studio
+*.lsproj.lock
+
+# Firebase
+.firebase/
+firebase-debug.log
+
+# Assets source files (large binaries)
+*.psd
+*.ai
+*.sketch
+
+# OS
+Thumbs.db
