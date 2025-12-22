@@ -10,13 +10,12 @@
 1. [Overview](#overview)
 2. [What Dev 1 Builds vs What's Built-in](#what-dev-1-builds-vs-whats-built-in)
 3. [Core Features](#core-features)
-4. [API Specification](#api-specification)
-5. [Database Schema](#database-schema)
-6. [Storage Strategy](#storage-strategy)
-7. [Deployment Architecture](#deployment-architecture)
-8. [Song Sharing Flow](#song-sharing-flow)
-9. [Technology Choices](#technology-choices)
-10. [Timeline](#timeline)
+4. [Database Schema](#database-schema)
+5. [Storage Strategy](#storage-strategy)
+6. [Deployment Architecture](#deployment-architecture)
+7. [Song Sharing Flow](#song-sharing-flow)
+8. [Technology Choices](#technology-choices)
+9. [Timeline](#timeline)
 
 ---
 
@@ -27,6 +26,8 @@ Backend services for the AI Music Beat Game. Handles:
 - Beat detection
 - Song storage & retrieval
 - Song sharing between users
+
+**For API reference and usage, see [README.md](./README.md).**
 
 ### What Dev 1 Does NOT Build
 
@@ -71,8 +72,9 @@ Backend services for the AI Music Beat Game. Handles:
 │                    DEV 1 BACKEND                                 │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐  │
-│  │                      API Layer                            │  │
-│  │  POST /generate    GET /song/:id    GET /songs (optional) │  │
+│  │                      API Layer (FastAPI)                  │  │
+│  │  POST /generate    GET /song/:id    GET /songs            │  │
+│  │  POST /detect-beats    GET /song/:id/audio                │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                          │                                       │
 │         ┌────────────────┼────────────────┐                     │
@@ -101,14 +103,23 @@ Backend services for the AI Music Beat Game. Handles:
 ## Core Features
 
 ### 1. AI Music Generation
-- User provides: genre, mood, tempo preference
+- User provides: prompt (genre, mood, style)
 - Backend calls: Replicate (MusicGen)
 - Returns: audio file + beat map
+- Mock mode available for local testing
 
 ### 2. Beat Detection
-- Input: generated audio
-- Process: librosa analysis + difficulty filtering
-- Output: timestamped beat map with types
+- Input: audio bytes or file path
+- Process: librosa onset detection + beat tracking
+- Two beat types:
+  - Type 1: Main beats (aligned with tempo pulse)
+  - Type 2: Extra hits (syncopation, off-beats)
+- Difficulty filtering with min gap:
+  - Easy: 250ms
+  - Medium: 180ms
+  - Hard: 120ms
+  - Expert: 80ms
+- Output: JSON with tempo, beats array, duration
 
 ### 3. Song Storage
 - Store audio files in cloud storage
@@ -117,126 +128,13 @@ Backend services for the AI Music Beat Game. Handles:
 
 ### 4. Song Sharing
 - Each song has a unique ID
-- Shareable via URL/deep link: `https://yourapp.com/song/{songId}`
+- Shareable via URL/deep link
 - Friend opens link → Lens loads song → plays same beat map
 - Both compete on same leaderboard (per song)
 
 ### 5. Song Library (Optional/Future)
 - Browse all publicly generated songs
-- Filter by genre, popularity, date
-- Search functionality
-
----
-
-## API Specification
-
-### Required APIs
-
-#### POST /generate
-
-Create a new AI-generated song.
-
-**Request:**
-```json
-{
-  "prompt": "upbeat electronic dance music",
-  "duration": 15,
-  "difficulty": "medium",
-  "creatorId": "snap_user_123"
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "song": {
-    "id": "song_abc123",
-    "audioUrl": "https://storage.example.com/songs/song_abc123.mp3",
-    "beatMap": {
-      "tempo": 128.0,
-      "difficulty": "medium",
-      "min_gap_ms": 180,
-      "beats": [
-        {"time": 0.5, "type": 1},
-        {"time": 0.92, "type": 2}
-      ]
-    },
-    "duration": 15.0,
-    "shareUrl": "https://yourapp.com/song/song_abc123"
-  }
-}
-```
-
-**Notes:**
-- Long-running operation (10-30 seconds)
-- Consider async with polling, or client-side loading animation
-
----
-
-#### GET /song/:id
-
-Fetch a song by ID (for shared links).
-
-**Request:**
-```
-GET /song/song_abc123
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "song": {
-    "id": "song_abc123",
-    "audioUrl": "https://storage.example.com/songs/song_abc123.mp3",
-    "beatMap": {
-      "tempo": 128.0,
-      "difficulty": "medium",
-      "beats": [...]
-    },
-    "duration": 15.0,
-    "prompt": "upbeat electronic dance music",
-    "createdAt": "2025-01-15T10:30:00Z",
-    "playCount": 42
-  }
-}
-```
-
-**Notes:**
-- Increment `playCount` on each fetch (for popularity tracking)
-- Used when friend opens shared link
-
----
-
-### Optional APIs (Song Library)
-
-#### GET /songs
-
-Browse song library.
-
-**Request:**
-```
-GET /songs?genre=edm&sort=popular&limit=20&offset=0
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "songs": [
-    {
-      "id": "song_abc123",
-      "prompt": "upbeat electronic",
-      "duration": 15.0,
-      "playCount": 42,
-      "createdAt": "2025-01-15T10:30:00Z"
-    }
-  ],
-  "total": 150,
-  "hasMore": true
-}
-```
+- Filter by creator, popularity, date
 
 ---
 
@@ -252,7 +150,7 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
 
   // Content
   "prompt": "upbeat electronic dance music",
-  "audioUrl": "https://storage.example.com/songs/song_abc123.mp3",
+  "audioUrl": "/songs/song_abc123/audio.mp3",
   "beatMap": {
     "tempo": 128.0,
     "difficulty": "medium",
@@ -260,14 +158,15 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
     "beats": [
       {"time": 0.5, "type": 1},
       {"time": 0.92, "type": 2}
-    ]
+    ],
+    "beat_count": 45,
+    "duration": 15.0
   },
   "duration": 15.0,
 
   // Metadata
-  "creatorId": "snap_user_123",      // Optional: track who created
-  "genre": "edm",                     // Extracted from prompt
-  "playCount": 42,                    // Increment on play
+  "creatorId": "snap_user_123",
+  "playCount": 42,
 
   // Timestamps
   "createdAt": "2025-01-15T10:30:00Z",
@@ -281,7 +180,7 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
 |-------|---------|
 | `createdAt DESC` | Recent songs |
 | `playCount DESC` | Popular songs |
-| `genre + playCount` | Popular by genre |
+| `creatorId + createdAt` | User's songs |
 
 ---
 
@@ -294,7 +193,6 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
 | Firebase Storage | Easy, integrated | Snap might not like | Free tier: 5GB |
 | AWS S3 | Reliable, cheap | More setup | ~$0.023/GB |
 | Cloudflare R2 | No egress fees | Newer | ~$0.015/GB |
-| Lens Cloud | Native to Lens Studio | Limited docs | Free? |
 
 **Recommendation:** Firebase Storage for hackathon (easy setup)
 
@@ -302,9 +200,12 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
 
 ```
 /songs
-  /song_abc123.mp3
-  /song_def456.mp3
-  /...
+  /song_abc123
+    /audio.mp3
+    /metadata.json
+  /song_def456
+    /audio.mp3
+    /metadata.json
 ```
 
 ### Audio Format
@@ -320,7 +221,26 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
 
 ## Deployment Architecture
 
-### Recommended: Firebase (Serverless)
+### Local Development (Current)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     LOCAL DEVELOPMENT                            │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
+│  │   FastAPI    │  │    Local     │  │    Local     │          │
+│  │   Server     │  │   Storage    │  │    /data     │          │
+│  │   (run.py)   │  │   (/songs)   │  │  (test mp3s) │          │
+│  └──────────────┘  └──────────────┘  └──────────────┘          │
+│         │                                                        │
+│         ▼                                                        │
+│  ┌──────────────┐                                               │
+│  │  Mock Mode   │ (uses sample.mp3 instead of Replicate)        │
+│  └──────────────┘                                               │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Production (Firebase)
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -345,17 +265,6 @@ GET /songs?genre=edm&sort=popular&limit=20&offset=0
 - Easy deployment
 - Good for hackathon timeline
 
-### Alternative: Railway/Render + Supabase
-
-If Firebase Functions timeout is an issue (60s limit for free tier):
-
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   Railway    │     │   Supabase   │     │   S3 / R2    │
-│  (Node.js)   │────▶│  (Postgres)  │     │  (Storage)   │
-└──────────────┘     └──────────────┘     └──────────────┘
-```
-
 ---
 
 ## Song Sharing Flow
@@ -367,7 +276,7 @@ If Firebase Functions timeout is an issue (60s limit for free tier):
    ┌─────────────────────────────────────────┐
    │ User A selects genre/mood              │
    │         ↓                               │
-   │ POST /generate                          │
+   │ POST /api/generate                      │
    │         ↓                               │
    │ Backend generates song                  │
    │         ↓                               │
@@ -395,7 +304,7 @@ If Firebase Functions timeout is an issue (60s limit for free tier):
    │         ↓                               │
    │ Opens Lens with songId param            │
    │         ↓                               │
-   │ GET /song/song_abc123                   │
+   │ GET /api/song/song_abc123               │
    │         ↓                               │
    │ Load audio + beatMap                    │
    │         ↓                               │
@@ -424,24 +333,12 @@ Lens Studio's Leaderboard is **per-Lens**, but you can scope it per-song by:
 | Component | Choice | Reason |
 |-----------|--------|--------|
 | Language | Python | Best for audio processing (librosa) |
-| Framework | Flask or FastAPI | Simple, quick to build |
+| Framework | FastAPI | Async support, auto docs (Swagger) |
 | Database | Firebase Firestore | Free, easy, NoSQL fits our data |
 | Storage | Firebase Storage | Integrated, free tier |
-| AI Music | Replicate (MusicGen) | No GPU needed, pay-per-use |
+| AI Music | Replicate (MusicGen) | No GPU needed, pay-per-use (~$0.05/song) |
 | Beat Detection | Librosa | Free, reliable, well-documented |
 | Hosting | Firebase Functions | Free, serverless, auto-scale |
-
-### Dependencies
-
-```txt
-# requirements.txt
-flask>=2.0.0
-firebase-admin>=6.0.0
-librosa>=0.10.0
-replicate>=0.15.0
-numpy
-requests
-```
 
 ---
 
@@ -451,14 +348,15 @@ requests
 |---------|-------|
 | **1** | Research & Experiment |
 |       | ✅ Test beat detection locally |
-|       | ✅ Test MusicGen on Replicate |
+|       | ✅ Test MusicGen integration (mock mode) |
+|       | ✅ Build local FastAPI server |
+|       | ✅ Implement all core endpoints |
 |       | ☐ Set up Firebase project |
-|       | ☐ Test storage upload |
 | **2** | Core API Development |
-|       | ☐ Implement POST /generate |
-|       | ☐ Implement GET /song/:id |
-|       | ☐ Integrate beat detection |
 |       | ☐ Deploy to Firebase Functions |
+|       | ☐ Test with real Replicate API |
+|       | ☐ Set up Firestore database |
+|       | ☐ Set up Firebase Storage |
 | **3** | Integration & Testing |
 |       | ☐ Test with Lens Studio (Dev 2) |
 |       | ☐ Fix API contract issues |
@@ -466,8 +364,7 @@ requests
 |       | ☐ Add error handling |
 | **4** | Polish & Optional Features |
 |       | ☐ Generate preset songs (5-10) |
-|       | ☐ Add playCount tracking |
-|       | ☐ 🟢 OPTIONAL: GET /songs (library) |
+|       | ☐ 🟢 OPTIONAL: Song library browse |
 |       | ☐ Performance optimization |
 | **5** | Stability & Launch |
 |       | ☐ Monitor for issues |
@@ -485,24 +382,26 @@ requests
 
 ---
 
-## Appendix: Folder Structure
+## Project Structure
 
 ```
 backend/
-├── DESIGN.md              # This file
-├── API_SPEC.md            # API details (deprecated, merged here)
-├── README.md              # Quick start
-├── requirements.txt       # Python dependencies
-├── experiments/           # Local testing
-│   ├── beat_detection.py
-│   └── requirements.txt
-├── functions/             # Firebase Functions
-│   ├── main.py
-│   ├── services/
-│   │   ├── music_gen.py
-│   │   ├── beat_detection.py
-│   │   └── storage.py
-│   └── requirements.txt
-└── scripts/
-    └── generate_presets.py
+├── app/
+│   ├── main.py              # FastAPI app
+│   ├── config.py            # Configuration
+│   ├── routes/
+│   │   └── songs.py         # API endpoints
+│   └── services/
+│       ├── beat_detection.py
+│       ├── music_generation.py
+│       └── storage.py
+├── data/                    # Test audio files (gitignored)
+├── songs/                   # Generated songs storage (gitignored)
+├── experiments/             # Standalone experiments
+│   └── beat_detection.py
+├── requirements.txt
+├── run.py                   # Development server
+├── .env.example
+├── DESIGN.md                # This file (architecture)
+└── README.md                # Quick start & API reference
 ```
