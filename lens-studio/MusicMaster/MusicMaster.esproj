@@ -1,0 +1,44 @@
+studioVersion:
+  major: 5
+  minor: 17
+  patch: 0
+  build: 25121001
+  type: Public
+coreVersion: 340
+clientVersion: 13.70
+updateCheckpoint: 83
+sceneId: 0a1ccb1a-fe88-4fbb-9883-e3af3c75fd99
+metaInfo:
+  hints:
+    []
+  tags:
+    []
+  lensName: TestGameMaster
+  lensDescriptors:
+    []
+  lensApplicability:
+    - Front
+    - Back
+  lensClientCompatibilities:
+    - Mobile
+    - Web
+  platformBundlesEnabled: false
+  iconHash: 7d653d94fb841628c43dbf26674bbb8a
+  videoPreviewHash: ""
+  fromTemplateName: Building Your First Lens
+  fromTemplateUrl: Lens Studio 5.17.0.25121001
+  activationCamera: Front
+  sourceMapEnabled: false
+  usingMinClientVersions: false
+  androidMinClientVersion:
+    major: 0
+    minor: 0
+    patch: 0
+    build: 0
+  iOSMinClientVersion:
+    major: 0
+    minor: 0
+    patch: 0
+    build: 0
+  documentId: 9c971159-9957-411d-af37-4bcecb073851
+  originalDocumentId: a653df02-42db-43d2-baf1-f905b548d454

@@ -1,0 +1,56 @@
+- !<AssetImportMetadata/b4fb50fd-dd76-4835-8539-0de83c3c3ce0>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 269ba04d-334a-4585-b48f-172864909a8e
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 269ba04d-334a-4585-b48f-172864909a8e
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> cfee6344-34ee-4709-ae24-9aaf52e9a895
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/cfee6344-34ee-4709-ae24-9aaf52e9a895>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: bf549e9c-fd27-4266-b10f-e431024e229f
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    conductor: false
+    infiniteMode: false
+    notePrefab: false
+    songDataAsset: false
+    spawnInterval: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - conductor: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      notePrefab: !<reference.Asset> 00000000-0000-0000-0000-000000000000
+      infiniteMode: false
+      songDataAsset: !<reference.Asset> 00000000-0000-0000-0000-000000000000
+      spawnInterval: !<float> 1.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input AssignableType conductor
+    - // @input Asset.Asset notePrefab
+    - // @input bool infiniteMode
+    - // @input Asset.Asset songDataAsset
+    - // @input float spawnInterval = 1

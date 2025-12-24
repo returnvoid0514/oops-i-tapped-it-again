@@ -1,0 +1,4 @@
+{
+    "main": "main.js",
+    "permissions": ["secure_local_storage", "filesystem","clipboard"]
+  }

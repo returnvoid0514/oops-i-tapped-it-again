@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/b087d154-3f82-4d37-a0ea-240793886ce7>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 097110b9-852f-4106-b459-f8c46204a77c
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 097110b9-852f-4106-b459-f8c46204a77c
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> b7bdab45-85c8-4616-894a-d7ad8071981a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/b7bdab45-85c8-4616-894a-d7ad8071981a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 993b3fdf-98a9-49ef-9864-a0ac5bca8741
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    audioTrack: false
+    bpm: false
+    offset: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - audioTrack: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      bpm: !<float> 120.000000
+      offset: !<float> 0.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input Component.AudioComponent audioTrack
+    - // @input float bpm = 120
+    - // @input float offset
