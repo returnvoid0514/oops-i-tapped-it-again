@@ -1,4 +1,3 @@
-// For debugging
 export const SongData = {
     "bpm": 120,
     "offset": 0.0,
