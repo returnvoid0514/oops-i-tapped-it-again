@@ -15,7 +15,7 @@ export class NoteSpawner extends BaseScriptComponent {
     songDataAsset: Asset;
     @input
     spawnInterval: number = 1.0;
-    private pool: SceneObject[] = [];
+    public pool: SceneObject[] = [];
     private poolSize: number = 30;
     
     private notesQueue: any[] = [];
