@@ -9,24 +9,28 @@ This is the recommended scene structure for your rhythm game.
 │   └── 🎵 AudioComponent (attached)
 │       └── Script: Conductor.ts
 │
-├── 🎮 GameManager
-│   ├── Script: HitZoneManager.ts
+├── 🎮 GameLogic (or GameManager)
+│   ├── Script: NoteSpawner.ts
 │   │   ├── References:
 │   │   │   ├── conductor → Conductor
-│   │   │   ├── noteSpawnerObject → NoteSpawner
-│   │   │   ├── hitLineLeft → HitLine_Left
-│   │   │   ├── hitLineCenter → HitLine_Center
-│   │   │   ├── hitLineRight → HitLine_Right
-│   │   │   └── camera → Camera
+│   │   │   ├── notePrefab → NotePrefab (from Resources)
+│   │   │   └── songDataAsset → (optional)
+│   │   └── Settings:
+│   │       ├── infiniteMode: false
+│   │       ├── spawnInterval: 1.0
+│   │       └── pool: SceneObject[] (public, auto-managed)
 │   │
-│   └── Script: NoteSpawner.ts
+│   └── Script: HitZoneManager.ts
 │       ├── References:
 │       │   ├── conductor → Conductor
-│       │   ├── notePrefab → NotePrefab (from Resources)
-│       │   └── songDataAsset → (optional)
+│       │   ├── noteSpawnerObject → GameLogic (SAME object, NOT prefab!)
+│       │   ├── hitLineLeft → HitLine_Left
+│       │   ├── hitLineCenter → HitLine_Center
+│       │   ├── hitLineRight → HitLine_Right
+│       │   └── camera → Camera
 │       └── Settings:
-│           ├── infiniteMode: false
-│           └── spawnInterval: 1.0
+│           ├── hitWindow: 0.8
+│           └── lanePositions: [-8.0, 0.0, 8.0]
 │
 ├── 🖼️ Canvas [Screen Image]
 │   │
@@ -90,7 +94,10 @@ This is the recommended scene structure for your rhythm game.
 ### NoteSpawner.ts
 - **Imports**: `Conductor`, `Note`, `SongData`
 - **Needs**: Conductor reference, NotePrefab asset
-- **Provides**: Public `pool` array of notes
+- **Provides**: Public `pool` array of notes (accessible by HitZoneManager)
+- **Modes**:
+  - Infinite Mode: Randomly spawns notes at spawnInterval
+  - Chart Mode: Spawns notes from TestSongData.ts
 
 ### Note.ts
 - **Imports**: None
@@ -106,10 +113,14 @@ This is the recommended scene structure for your rhythm game.
 - **Imports**: `Conductor`
 - **Needs**:
   - Conductor reference
-  - NoteSpawner object reference
+  - NoteSpawner object reference (MUST be scene object with NoteSpawner script, NOT prefab)
   - 3 HitLine object references
   - Camera reference
-- **Behavior**: Handles touch input and hit detection
+- **Behavior**:
+  - Handles TouchStartEvent for touch input
+  - Uses time-based hit detection (beat error, not visual position)
+  - Accesses NoteSpawner's public pool to check notes
+  - Determines hit quality: Perfect/Great/Good/OK/Miss
 
 ### HitLineFeedback.ts
 - **Imports**: None
@@ -152,12 +163,12 @@ This is the recommended scene structure for your rhythm game.
 
 #### HitZoneManager:
 - [ ] conductor → Conductor object
-- [ ] noteSpawnerObject → GameManager (with NoteSpawner)
+- [ ] noteSpawnerObject → GameLogic object (SAME object with NoteSpawner script, NOT prefab!)
 - [ ] hitLineLeft → HitLine_Left
 - [ ] hitLineCenter → HitLine_Center
 - [ ] hitLineRight → HitLine_Right
-- [ ] camera → Camera
-- [ ] hitWindow → 0.25
+- [ ] camera → Camera (must be Orthographic)
+- [ ] hitWindow → 0.8 (adjust for difficulty)
 
 #### Each HitLine:
 - [ ] Image component with material
@@ -228,11 +239,13 @@ Note.onUpdate() (for each active note)
 ### 3. On Touch:
 ```
 HitZoneManager.onTouch()
-  → Determines which lane was touched
-  → Finds active notes in that lane
-  → Checks timing (beat error)
-  → If hit: disables note, shows feedback
-  → If miss: shows miss feedback
+  → Determines which lane was touched (screen divided into thirds)
+  → Accesses NoteSpawner.pool to find active notes
+  → Filters notes by lane position (X coordinate)
+  → Filters by time window (beat error < 2.0)
+  → Finds closest note and checks if within hitWindow
+  → If hit: disables note, flashes hit line, prints quality
+  → If miss: prints "❌ Miss"
 ```
 
 ---
@@ -240,11 +253,12 @@ HitZoneManager.onTouch()
 ## Quick Reference Values
 
 ### Timing:
-- **Hit Window**: 0.25 beats (adjustable)
-- **Perfect**: < 0.05 beats error
-- **Great**: < 0.1 beats error
-- **Good**: < 0.15 beats error
-- **OK**: < 0.25 beats error
+- **Hit Window**: 0.8 beats (adjustable - lower = harder)
+- **Perfect**: < 0.15 beats error
+- **Great**: < 0.3 beats error
+- **Good**: < 0.5 beats error
+- **OK**: < hitWindow
+- **Note**: System uses time-based detection, not visual position
 
 ### Positions:
 - **Note Spawn Y**: 100

@@ -48,12 +48,12 @@ I've added the missing pieces to make your rhythm game fully functional:
 3. Choose `HitZoneManager.ts`
 4. In the Inspector, drag and drop:
    - **Conductor** → Your Conductor object
-   - **Note Spawner Object** → Your GameManager (same object with NoteSpawner script)
+   - **Note Spawner Object** → Your GameLogic object (the object with NoteSpawner script - NOT the prefab asset!)
    - **Hit Line Left** → HitLine_Left
    - **Hit Line Center** → HitLine_Center
    - **Hit Line Right** → HitLine_Right
    - **Camera** → Your Camera object
-   - **Hit Window** → 0.25
+   - **Hit Window** → 0.8
 
 ### Step 3: Verify Existing Setup (1 minute)
 
@@ -77,8 +77,8 @@ Make sure these are already set up:
 1. Press **Play** in Lens Studio
 2. Music should play and notes should drop
 3. **Tap the screen** when a note crosses a hit line
-4. Open **Logger Panel** to see hit feedback:
-   - "Perfect!", "Great!", "Good", "OK", or "Miss"
+4. Open **Logger Panel** (Window → Logger) to see hit feedback:
+   - "Score => Perfect!", "Score => Great!", "Score => Good", "Score => OK", or "❌ Miss"
 
 ---
 
@@ -115,11 +115,13 @@ When you tap:
 4. Gives feedback based on accuracy
 
 ### Hit Quality System:
-- **Perfect**: < 0.05 beats error (within 50ms at 120 BPM)
-- **Great**: < 0.1 beats error
-- **Good**: < 0.15 beats error
-- **OK**: < 0.25 beats error
-- **Miss**: > 0.25 beats or wrong lane
+- **Perfect**: < 0.15 beats error (~125ms at 120 BPM)
+- **Great**: < 0.3 beats error
+- **Good**: < 0.5 beats error
+- **OK**: < hitWindow (default 0.8 beats)
+- **Miss**: > hitWindow or wrong lane
+
+The system uses time-based detection (beat error) rather than visual position for accuracy.
 
 ---
 
@@ -132,15 +134,15 @@ When you tap:
 - [ ] 3 white lines visible at Y=0
 
 ### ✅ Interaction Test:
-- [ ] Tap left side → "Lane 0 tapped" in Logger
-- [ ] Tap middle → "Lane 1 tapped" in Logger
-- [ ] Tap right → "Lane 2 tapped" in Logger
+- [ ] Tap anywhere → Hit detection system activates
+- [ ] Logger shows hit results when tapping
 
 ### ✅ Hit Detection Test:
-- [ ] Tap when note crosses line → "Perfect!/Great!/Good" in Logger
-- [ ] Note disappears after hit
-- [ ] Tap when no note → "Miss - no note in lane"
-- [ ] Tap too early/late → "Miss - timing off"
+- [ ] Tap when note crosses line → "Score => Perfect!/Great!/Good" in Logger
+- [ ] Note disappears after successful hit
+- [ ] Hit line flashes green when note is hit
+- [ ] Tap when no note → "❌ Miss" in Logger
+- [ ] Tap too early/late → "❌ Miss" in Logger
 
 ---
 
@@ -153,8 +155,10 @@ When you tap:
 
 ### "Touch detected but no hits"
 **Fix**: Check note spawner reference
-- noteSpawnerObject should point to the object with NoteSpawner script
-- Make sure NoteSpawner.pool is public (I already fixed this)
+- noteSpawnerObject MUST point to the scene object with NoteSpawner script (NOT the prefab asset)
+- The object should have multiple components - check logger for "Found X script components"
+- Make sure NoteSpawner.pool is public (line 18 in NoteSpawner.ts)
+- Try increasing hitWindow to 1.0 for testing
 
 ### "Hit lines not visible"
 **Fix**: Adjust position and styling
@@ -169,10 +173,11 @@ When you tap:
 - Negative value = notes come later
 
 ### "Wrong lane detected"
-**Fix**: Touch position debugging
-- Check Logger for "Lane X tapped" messages
-- Verify camera reference is correct
-- Test on device (mobile touch may differ)
+**Fix**: Camera and position verification
+- Verify camera reference is correct in HitZoneManager
+- Make sure camera is Orthographic (not Perspective)
+- Check lane positions in code match hit line positions (-8, 0, 8)
+- Test on device (mobile touch may differ from desktop preview)
 
 ---
 

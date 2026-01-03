@@ -11,7 +11,10 @@ export class Note extends BaseScriptComponent {
     }
 
     onUpdate() {
-        if (!this.conductor) return;
+        if (!this.conductor) {
+            print("⚠️ Note has no conductor reference!");
+            return;
+        }
 
         const currentBeat = this.conductor.currentBeat;
         const beatDiff = this.targetBeat - currentBeat;
@@ -20,6 +23,7 @@ export class Note extends BaseScriptComponent {
 
         const transform = this.getTransform();
         const currentX = transform.getLocalPosition().x;
+        const currentY = transform.getLocalPosition().y;
 
         transform.setLocalPosition(new vec3(currentX, yPos, 0));
 

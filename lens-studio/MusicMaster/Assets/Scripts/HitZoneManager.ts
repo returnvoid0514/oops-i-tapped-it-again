@@ -31,7 +31,7 @@ export class HitZoneManager extends BaseScriptComponent {
         print("✅ HitZoneManager initialized");
     }
 
-    private onTouch(eventData: TapEvent) {
+    private onTouch(eventData: TouchStartEvent) {
         if (!this.camera) {
             print("❌ Camera not assigned!");
             return;
@@ -49,9 +49,7 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private getLaneFromTouch(touchPos: vec2): number {
-        // Convert screen touch to world position
         // For a simple 3-lane system, divide screen into thirds
-        const screenWidth = 1.0; // Normalized screen width
         const x = touchPos.x;
 
         if (x < 0.33) {
@@ -64,16 +62,13 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private checkNoteHit(lane: number) {
-        const laneIndex = lane - 1; // Convert to -1, 0, 1 for positioning
         const laneXPos = this.lanePositions[lane];
-
-        print(`🎯 Lane ${lane} tapped (x: ${laneXPos})`);
 
         // Find all active notes in this lane
         const activeNotes = this.getActiveNotesInLane(laneXPos);
 
         if (activeNotes.length === 0) {
-            print("❌ Miss - no note in lane");
+            print("❌ Miss");
             return;
         }
 
@@ -86,17 +81,17 @@ export class HitZoneManager extends BaseScriptComponent {
             if (noteScript && noteScript.targetBeat !== undefined) {
                 const error = this.conductor.getBeatError(noteScript.targetBeat);
 
-                if (error < closestError && error < this.hitWindow) {
+                if (error < closestError) {
                     closestError = error;
                     closestNote = noteObj;
                 }
             }
         }
 
-        if (closestNote) {
-            this.hitNote(closestNote, closestError);
+        if (closestNote && closestError < this.hitWindow) {
+            this.hitNote(closestNote, closestError, lane);
         } else {
-            print("❌ Miss - timing off");
+            print("❌ Miss");
         }
     }
 
@@ -104,12 +99,20 @@ export class HitZoneManager extends BaseScriptComponent {
         const activeNotes: SceneObject[] = [];
 
         if (!this.noteSpawnerObject) {
-            print("❌ NoteSpawner object not assigned");
             return activeNotes;
         }
 
-        // Get the NoteSpawner component
-        const spawnerScript = this.noteSpawnerObject.getComponent("Component.ScriptComponent") as any;
+        // Get all script components and find the one with pool
+        const allComponents = this.noteSpawnerObject.getComponents("Component.ScriptComponent");
+        let spawnerScript: any = null;
+
+        for (let i = 0; i < allComponents.length; i++) {
+            const script = allComponents[i] as any;
+            if (script.pool !== undefined) {
+                spawnerScript = script;
+                break;
+            }
+        }
 
         if (!spawnerScript || !spawnerScript.pool) {
             return activeNotes;
@@ -123,9 +126,15 @@ export class HitZoneManager extends BaseScriptComponent {
 
                 // Check if note is in the correct lane (with small tolerance)
                 if (Math.abs(pos.x - laneXPos) < 1.0) {
-                    // Check if note is near the hit line (Y close to 0)
-                    if (Math.abs(pos.y) < 30.0) {
-                        activeNotes.push(noteObj);
+                    // Check timing instead of visual position!
+                    const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
+                    if (noteScript && noteScript.targetBeat !== undefined) {
+                        const beatError = Math.abs(this.conductor.currentBeat - noteScript.targetBeat);
+
+                        // Only consider notes within a reasonable time window (e.g., 2 beats)
+                        if (beatError < 2.0) {
+                            activeNotes.push(noteObj);
+                        }
                     }
                 }
             }
@@ -134,25 +143,39 @@ export class HitZoneManager extends BaseScriptComponent {
         return activeNotes;
     }
 
-    private hitNote(noteObj: SceneObject, error: number) {
-        // Determine hit quality
+    private hitNote(noteObj: SceneObject, error: number, lane: number) {
+        // Determine hit quality (more forgiving standards)
         let quality = "Miss";
-        if (error < 0.05) {
+        if (error < 0.15) {
             quality = "Perfect!";
-        } else if (error < 0.1) {
+        } else if (error < 0.3) {
             quality = "Great!";
-        } else if (error < 0.15) {
+        } else if (error < 0.5) {
             quality = "Good";
         } else if (error < this.hitWindow) {
             quality = "OK";
         }
 
-        print(`✨ ${quality} - Error: ${error.toFixed(3)} beats`);
+        print(`Score => ${quality}`);
 
         // Disable the note
         noteObj.enabled = false;
 
-        // TODO: Add visual feedback (particle effect, hit line flash, etc.)
-        // TODO: Add score tracking
+        // Flash the corresponding hit line
+        let targetHitLine: SceneObject | null = null;
+        if (lane === 0) {
+            targetHitLine = this.hitLineLeft;
+        } else if (lane === 1) {
+            targetHitLine = this.hitLineCenter;
+        } else if (lane === 2) {
+            targetHitLine = this.hitLineRight;
+        }
+
+        if (targetHitLine) {
+            const feedbackScript = targetHitLine.getComponent("Component.ScriptComponent") as any;
+            if (feedbackScript && feedbackScript.flash) {
+                feedbackScript.flash();
+            }
+        }
     }
 }

@@ -22,11 +22,17 @@
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: 00000000-0000-0000-0000-000000000000
+  ComponentUid: 93109c71-a317-4233-9d12-ec4ac3ba3f25
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    {}
+    camera: false
+    conductor: false
+    hitLineCenter: false
+    hitLineLeft: false
+    hitLineRight: false
+    hitWindow: false
+    noteSpawnerObject: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -36,10 +42,21 @@
   Attachments:
     []
   DefaultScriptInputs:
-    -
-      {}
+    - conductor: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      noteSpawnerObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hitLineLeft: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hitLineCenter: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hitLineRight: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hitWindow: 0.250000
+      camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
-    []
+    - // @input AssignableType conductor
+    - // @input SceneObject noteSpawnerObject
+    - // @input SceneObject hitLineLeft
+    - // @input SceneObject hitLineCenter
+    - // @input SceneObject hitLineRight
+    - // @input float hitWindow = 0.25
+    - // @input Component.Camera camera

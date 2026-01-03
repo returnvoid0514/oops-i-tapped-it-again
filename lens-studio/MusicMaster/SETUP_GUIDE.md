@@ -66,13 +66,13 @@ This guide will walk you through setting up a complete rhythm game in Lens Studi
    - Assign `HitZoneManager.ts`
 
 3. **Configure Inspector References**:
-   - **Conductor**: Drag your Conductor object
-   - **Note Spawner Object**: Drag your NoteSpawner object
+   - **Conductor**: Drag your Conductor object (the object with Conductor.ts script)
+   - **Note Spawner Object**: Drag your GameLogic/GameManager object (the object with NoteSpawner.ts script, NOT the prefab asset)
    - **Hit Line Left**: Drag HitLine_Left
    - **Hit Line Center**: Drag HitLine_Center
    - **Hit Line Right**: Drag HitLine_Right
    - **Camera**: Drag your Camera object
-   - **Hit Window**: 0.25 (adjust for difficulty)
+   - **Hit Window**: 0.8 (adjust for difficulty - lower is harder)
 
 ### Step 4: Configure Existing Components
 
@@ -100,7 +100,7 @@ This guide will walk you through setting up a complete rhythm game in Lens Studi
 2. **Test Touch Detection**:
    - Tap the screen when a note crosses a hit line
    - Check the Logger panel for feedback:
-     - "Perfect!", "Great!", "Good", "OK", or "Miss"
+     - "Score => Perfect!", "Score => Great!", "Score => Good", "Score => OK", or "❌ Miss"
 
 3. **Verify Lane Detection**:
    - Tap left side of screen → should detect left lane
@@ -117,7 +117,8 @@ This guide will walk you through setting up a complete rhythm game in Lens Studi
 **Touch not working?**
 - Verify HitZoneManager has all references assigned
 - Check Camera reference is correct
-- Make sure noteSpawnerObject is assigned
+- Make sure noteSpawnerObject points to the object with NoteSpawner script (not the prefab asset)
+- Verify the NoteSpawner object has the pool property (check logger for "has pool = true")
 
 **Notes not in correct lanes?**
 - Verify lane positions match between:
@@ -218,9 +219,10 @@ export class ScoreManager extends BaseScriptComponent {
 ### Add Difficulty Levels:
 
 - Adjust `hitWindow` in HitZoneManager:
-  - Easy: 0.3
-  - Medium: 0.2
-  - Hard: 0.15
+  - Easy: 1.0 (very forgiving)
+  - Medium: 0.8 (default)
+  - Hard: 0.5 (strict timing)
+  - Expert: 0.3 (very strict)
 
 ---
 
@@ -303,9 +305,11 @@ You can create a simple tool to tap along to music and generate note data.
 - Verify audio is playing
 
 ### Touch doesn't detect notes:
-- Check HitZoneManager has noteSpawnerObject assigned
-- Verify pool is public in NoteSpawner.ts
-- Check lane positions match
+- Check HitZoneManager's noteSpawnerObject points to the scene object with NoteSpawner script (NOT the prefab)
+- Verify the object has multiple script components - look for "Found 2 script components" in logger
+- Verify pool is public in NoteSpawner.ts (line 18)
+- Check lane positions match (-8, 0, 8)
+- Make sure hitWindow is reasonable (0.8 or higher for testing)
 
 ### Timing is off:
 - Adjust `offset` in Conductor

@@ -43,14 +43,14 @@ export class NoteSpawner extends BaseScriptComponent {
 
     private onUpdate() {
         if (!this.conductor) return;
-        
+
         const currentBeat = this.conductor.currentBeat;
         const spawnWindow = 8.0;
         if (this.infiniteMode) {
             if (currentBeat + spawnWindow > this.nextSpawnBeat) {
                 const randomLane = Math.floor(Math.random() * 3) - 1;
                 this.spawnNote(this.nextSpawnBeat, randomLane);
-                
+
                 this.nextSpawnBeat += this.spawnInterval;
             }
         } else {
@@ -68,17 +68,16 @@ export class NoteSpawner extends BaseScriptComponent {
 
     private spawnNote(beat: number, lane: number) {
         const noteObj = this.pool.find(obj => !obj.enabled);
-        
+
         if (noteObj) {
             noteObj.enabled = true;
-            
+
             const noteScript = noteObj.getComponent("Component.ScriptComponent");
             if (noteScript) {
                 noteScript["targetBeat"] = beat;
                 noteScript["conductor"] = this.conductor;
-                
+
                 const xPos = lane * 8.0;
-                
                 noteObj.getTransform().setLocalPosition(new vec3(xPos, 100, 0));
             }
         }
