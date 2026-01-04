@@ -48,9 +48,15 @@ export class HitZoneManager extends BaseScriptComponent {
     @input
     comboText: Text; // Reference to UI Text component to display combo
 
+    // Track which notes have been judged to avoid duplicate miss judgments
+    private judgedNotes = new Set<SceneObject>();
+
     onAwake() {
         // Listen for touch events
         this.createEvent("TouchStartEvent").bind(this.onTouch.bind(this));
+
+        // Listen for update events to check for missed notes
+        this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
 
         // Initialize combo display
         this.updateComboDisplay();
@@ -65,6 +71,11 @@ export class HitZoneManager extends BaseScriptComponent {
         } else {
             print("⚠️ WARNING: comboText not assigned! Please assign Text component in Inspector.");
         }
+    }
+
+    private onUpdate() {
+        // Check for notes that have passed the hit zone without being hit
+        this.checkMissedNotes();
     }
 
     private updateComboDisplay(): void {
@@ -266,7 +277,62 @@ export class HitZoneManager extends BaseScriptComponent {
         return 0.0; // Default if no hit line found
     }
 
+    private checkMissedNotes(): void {
+        if (!this.noteSpawnerObject) {
+            return;
+        }
+
+        // Get the NoteSpawner script to access the pool
+        const allComponents = this.noteSpawnerObject.getComponents("Component.ScriptComponent");
+        let spawnerScript: any = null;
+
+        for (let i = 0; i < allComponents.length; i++) {
+            const script = allComponents[i] as any;
+            if (script.pool !== undefined) {
+                spawnerScript = script;
+                break;
+            }
+        }
+
+        if (!spawnerScript || !spawnerScript.pool) {
+            return;
+        }
+
+        // Define the miss threshold - notes below this Y position are considered missed
+        const missThreshold = -12.0; // Below the hitline (hitline is at -10)
+
+        // Check all pooled notes
+        for (let noteObj of spawnerScript.pool) {
+            if (noteObj.enabled && !this.judgedNotes.has(noteObj)) {
+                const transform = noteObj.getTransform();
+                const pos = transform.getLocalPosition();
+
+                // If note has passed below the miss threshold, count it as a miss
+                if (pos.y < missThreshold) {
+                    // Mark this note as judged
+                    this.judgedNotes.add(noteObj);
+
+                    // Count as miss and break combo
+                    this.scoreStats.miss++;
+                    this.resetCombo();
+
+                    print(`💀 Auto-Miss! Note passed hitzone (Y: ${pos.y.toFixed(2)}) | Total: ${this.scoreStats.totalScore}pts`);
+
+                    // Disable the note
+                    noteObj.enabled = false;
+
+                    // Clean up the judged note from our tracking set when it's disabled
+                    // (Note will be re-enabled when spawned again, so we remove it from set)
+                    this.judgedNotes.delete(noteObj);
+                }
+            }
+        }
+    }
+
     private hitNote(noteObj: SceneObject, beatError: number, yDistance: number, lane: number): void {
+        // Mark this note as judged to prevent auto-miss
+        this.judgedNotes.add(noteObj);
+
         // Determine hit quality ONLY based on Y distance (visual accuracy)
         // Miss if Y distance is too far (beyond Good range)
         let quality = "Miss";
@@ -314,6 +380,8 @@ export class HitZoneManager extends BaseScriptComponent {
         // Only disable the note if it was a successful hit (not Miss)
         if (shouldDisableNote) {
             noteObj.enabled = false;
+            // Clean up from judged notes set when disabled
+            this.judgedNotes.delete(noteObj);
         }
 
         // Flash the corresponding hit line only on successful hits
