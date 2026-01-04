@@ -11,8 +11,14 @@ export class Note extends BaseScriptComponent {
     }
 
     onUpdate() {
+        // Only update if note is enabled
+        if (!this.getSceneObject().enabled) {
+            return;
+        }
+
         if (!this.conductor) {
-            print("⚠️ Note has no conductor reference!");
+            // Conductor will be set before note is enabled, so this should rarely happen
+            print(`⚠️ Note at ${this.getTransform().getLocalPosition().y.toFixed(1)} has no conductor!`);
             return;
         }
 
@@ -23,7 +29,6 @@ export class Note extends BaseScriptComponent {
 
         const transform = this.getTransform();
         const currentX = transform.getLocalPosition().x;
-        const currentY = transform.getLocalPosition().y;
 
         transform.setLocalPosition(new vec3(currentX, yPos, 0));
 

@@ -54,6 +54,9 @@ export class HitZoneManager extends BaseScriptComponent {
     // Cache the NoteSpawner script reference to avoid repeated lookups
     private spawnerScript: any = null;
 
+    // Debug: Track time for periodic diagnostics
+    private debugTimer: number = 0;
+
     onAwake() {
         // Listen for touch events
         this.createEvent("TouchStartEvent").bind(this.onTouch.bind(this));
@@ -101,6 +104,56 @@ export class HitZoneManager extends BaseScriptComponent {
     private onUpdate() {
         // Check for notes that have passed the hit zone without being hit
         this.checkMissedNotes();
+
+        // Debug: Periodic diagnostic every 5 seconds
+        this.debugTimer += getDeltaTime();
+        if (this.debugTimer >= 5.0) {
+            this.debugTimer = 0;
+            this.diagnosticCheck();
+        }
+    }
+
+    private diagnosticCheck(): void {
+        if (!this.spawnerScript || !this.spawnerScript.pool) {
+            return;
+        }
+
+        let enabledCount = 0;
+        const enabledNotes: string[] = [];
+        let stuckNotes: string[] = [];
+
+        for (let noteObj of this.spawnerScript.pool) {
+            if (noteObj.enabled) {
+                enabledCount++;
+                const pos = noteObj.getTransform().getLocalPosition();
+                enabledNotes.push(`(${pos.x.toFixed(0)}, ${pos.y.toFixed(0)})`);
+
+                // Check if note has conductor reference
+                const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
+                if (!noteScript || !noteScript.conductor) {
+                    stuckNotes.push(`(${pos.x.toFixed(0)}, ${pos.y.toFixed(0)}) NO CONDUCTOR`);
+                }
+            }
+        }
+
+        if (enabledCount > 0) {
+            print(`🔍 DIAGNOSTIC: ${enabledCount} enabled notes: ${enabledNotes.join(", ")}`);
+        }
+
+        if (stuckNotes.length > 0) {
+            print(`⚠️ STUCK NOTES DETECTED: ${stuckNotes.join(", ")}`);
+
+            // Force disable stuck notes to prevent them from blocking gameplay
+            for (let noteObj of this.spawnerScript.pool) {
+                if (noteObj.enabled) {
+                    const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
+                    if (!noteScript || !noteScript.conductor) {
+                        print(`🔧 Force disabling stuck note at ${noteObj.getTransform().getLocalPosition().y.toFixed(1)}`);
+                        noteObj.enabled = false;
+                    }
+                }
+            }
+        }
     }
 
     private updateComboDisplay(): void {
@@ -238,7 +291,15 @@ export class HitZoneManager extends BaseScriptComponent {
         const activeNotes: SceneObject[] = [];
 
         // Use cached spawner script reference
-        if (!this.spawnerScript || !this.spawnerScript.pool) {
+        if (!this.spawnerScript) {
+            // Try to cache again if not available
+            this.cacheSpawnerScript();
+            if (!this.spawnerScript) {
+                return activeNotes;
+            }
+        }
+
+        if (!this.spawnerScript.pool) {
             return activeNotes;
         }
 
@@ -289,7 +350,15 @@ export class HitZoneManager extends BaseScriptComponent {
 
     private checkMissedNotes(): void {
         // Use cached spawner script reference
-        if (!this.spawnerScript || !this.spawnerScript.pool) {
+        if (!this.spawnerScript) {
+            // Try to cache again if not available
+            this.cacheSpawnerScript();
+            if (!this.spawnerScript) {
+                return;
+            }
+        }
+
+        if (!this.spawnerScript.pool) {
             return;
         }
 
@@ -311,7 +380,7 @@ export class HitZoneManager extends BaseScriptComponent {
                     this.scoreStats.miss++;
                     this.resetCombo();
 
-                    print(`💀 Auto-Miss! Note passed hitzone (Y: ${pos.y.toFixed(2)}) | Total: ${this.scoreStats.totalScore}pts`);
+                    print(`💀 Auto-Miss! Note at (${pos.x.toFixed(1)}, ${pos.y.toFixed(2)}) | Total: ${this.scoreStats.totalScore}pts`);
 
                     // Disable the note
                     noteObj.enabled = false;

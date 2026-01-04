@@ -70,17 +70,22 @@ export class NoteSpawner extends BaseScriptComponent {
         const noteObj = this.pool.find(obj => !obj.enabled);
 
         if (noteObj) {
-            noteObj.enabled = true;
-
             const noteScript = noteObj.getComponent("Component.ScriptComponent");
-            if (noteScript) {
-                noteScript["targetBeat"] = beat;
-                noteScript["conductor"] = this.conductor;
-
-                // Lane positions: -1 = left (-15), 0 = center (0), 1 = right (15)
-                const xPos = lane * 15.0; // Spread notes across wider screen area
-                noteObj.getTransform().setLocalPosition(new vec3(xPos, 100, 0));
+            if (!noteScript) {
+                print("⚠️ WARNING: Note has no script component! Cannot spawn.");
+                return;
             }
+
+            // Set properties BEFORE enabling to avoid conductor reference warning
+            noteScript["targetBeat"] = beat;
+            noteScript["conductor"] = this.conductor;
+
+            // Lane positions: -1 = left (-15), 0 = center (0), 1 = right (15)
+            const xPos = lane * 15.0; // Spread notes across wider screen area
+            noteObj.getTransform().setLocalPosition(new vec3(xPos, 100, 0));
+
+            // Enable note AFTER all properties are set
+            noteObj.enabled = true;
         }
     }
 
