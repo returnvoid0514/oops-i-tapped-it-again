@@ -9,35 +9,54 @@
 │                                                                  │
 │  ┌──────────────┐         ┌──────────────┐                     │
 │  │   Camera     │         │ AudioComponent│                     │
-│  │              │◄────────┤              │                     │
-│  └──────────────┘         │  🎵 Music    │                     │
-│                           └───────┬──────┘                      │
-│                                   │                             │
-│                           ┌───────▼──────┐                      │
-│                           │  Conductor   │                      │
-│                           │              │                      │
-│                           │ • currentBeat│                      │
-│                           │ • BPM        │                      │
-│                           │ • offset     │                      │
-│                           └───┬──────┬───┘                      │
-│                               │      │                          │
-│                ┌──────────────┘      └────────────┐             │
-│                │                                  │             │
-│        ┌───────▼────────┐                ┌───────▼──────┐      │
-│        │  NoteSpawner   │                │HitZoneManager│      │
-│        │                │                │              │      │
-│        │ • pool[]       │◄───Reference───┤ • onTouch()  │      │
-│        │ • spawnNote()  │                │ • checkHit() │      │
-│        └────────┬───────┘                └──────┬───────┘      │
-│                 │                               │              │
-│                 │                               │              │
-│        ┌────────▼─────────┐            ┌────────▼────────┐    │
-│        │   Note Pool      │            │   Hit Lines     │    │
-│        │  (30 instances)  │            │                 │    │
-│        │                  │            │ • Left          │    │
-│        │  🔴 🔴 🔴 🔴    │            │ • Center        │    │
-│        │  🔴 🔴 🔴 🔴    │            │ • Right         │    │
-│        └──────────────────┘            └─────────────────┘    │
+│  │  Layer 1     │◄────────┤              │                     │
+│  │ renderLayer: │         │  🎵 Music    │                     │
+│  │  1835007     │         └───────┬──────┘                      │
+│  └──────────────┘                 │                             │
+│         │                 ┌───────▼──────┐                      │
+│         │                 │  Conductor   │                      │
+│         │                 │              │                      │
+│         │                 │ • currentBeat│                      │
+│         │                 │ • BPM        │                      │
+│         │                 │ • offset     │                      │
+│         │                 └───┬──────┬───┘                      │
+│         │                     │      │                          │
+│         │      ┌──────────────┘      └────────────┐             │
+│         │      │                                  │             │
+│         │ ┌────▼──────────┐             ┌────────▼──────┐      │
+│         │ │  NoteSpawner  │             │HitZoneManager │      │
+│         │ │               │             │               │      │
+│         │ │ • pool[30]    │◄─Reference──┤ • scoreStats  │      │
+│         │ │ • spawnNote() │             │ • onTouch()   │      │
+│         │ └───────┬───────┘             │ • hitNote()   │      │
+│         │         │                     └───────┬───────┘      │
+│         │         │                             │              │
+│         │ ┌───────▼────────┐         ┌──────────▼───────┐     │
+│         │ │   Note Pool    │         │   Hit Lines      │     │
+│         │ │ (30 instances) │         │  (with feedback) │     │
+│         │ │                │         │                  │     │
+│         │ │  🔴 🔴 🔴     │         │ • HitLine_Left   │     │
+│         │ │  🔴 🔴 🔴     │         │ • HitLine_Center │     │
+│         │ │  🔴 🔴 🔴     │         │ • HitLine_Right  │     │
+│         │ └────────────────┘         └──────────────────┘     │
+│         │                                                      │
+│         │ ┌────────────────────────────────────────┐           │
+│         └►│          UI Layer (Layer 1)            │           │
+│           │                                        │           │
+│           │  ┌──────────────────────────────┐     │           │
+│           │  │      ComboText               │     │           │
+│           │  │  "🔥 50 COMBO! 🔥"           │     │           │
+│           │  │  (ScreenTransform)           │     │           │
+│           │  │  Top of screen               │     │           │
+│           │  └──────────────────────────────┘     │           │
+│           │                                        │           │
+│           └────────────────────────────────────────┘           │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │            SongEndDetector                              │   │
+│  │  • Monitors audio completion                           │   │
+│  │  • Triggers final score display                        │   │
+│  └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -62,9 +81,15 @@ START
   │      ├─► Load song data (TestSongData.ts)
   │      └─► Queue notes for spawning
   │
-  └──► HitZoneManager.onAwake()
+  ├──► HitZoneManager.onAwake()
+  │      │
+  │      ├─► Set up touch event listener
+  │      ├─► Initialize score tracking
+  │      └─► Initialize combo display
+  │
+  └──► SongEndDetector.onAwake()
          │
-         └─► Set up touch event listener
+         └─► Set up update event for end detection
 ```
 
 ### 2. Game Loop (Every Frame)
@@ -88,13 +113,19 @@ UPDATE EVENT
   │            • lane position (x)
   │            • initial position (y = 100)
   │
-  └──► Note.onUpdate() × N active notes
+  ├──► Note.onUpdate() × N active notes
+  │      │
+  │      └─► Calculate position based on beat:
+  │            beatDiff = targetBeat - currentBeat
+  │            yPos = beatDiff × speed
+  │
+  │            IF (yPos < -20) THEN disable note
+  │
+  └──► SongEndDetector.onUpdate()
          │
-         └─► Calculate position based on beat:
-               beatDiff = targetBeat - currentBeat
-               yPos = beatDiff × speed
-
-               IF (yPos < -20) THEN disable note
+         └─► Check if song has ended:
+               IF (audio.isPlaying() == false)
+                 THEN trigger final score display
 ```
 
 ### 3. Touch Input Flow
@@ -104,34 +135,48 @@ TOUCH EVENT
   │
   └──► HitZoneManager.onTouch(eventData)
          │
-         ├─► Get touch position (x, y)
+         ├─► Convert touch to world position via camera
          │
          ├─► Determine lane from X position:
-         │     IF (x < 0.33) → Lane 0 (Left)
-         │     ELSE IF (x < 0.66) → Lane 1 (Center)
-         │     ELSE → Lane 2 (Right)
+         │     Find closest lane to touch X coordinate
+         │     Lanes at: -15.0 (Left), 0.0 (Center), 15.0 (Right)
          │
          ├─► Find active notes in lane:
          │     FOR each note in pool:
          │       IF note.enabled AND
          │          note.x ≈ laneX AND
-         │          |note.y| < 30
+         │          note is near hitline
          │       THEN add to candidates
          │
-         ├─► Check timing for each candidate:
-         │     error = |currentBeat - note.targetBeat|
+         ├─► Calculate Y-distance from hitline:
+         │     Get hitline Y position for the lane
+         │     Calculate yDistance = |note.y - hitline.y|
          │
-         │     Find note with smallest error < hitWindow
+         │     Find note with smallest yDistance
          │
-         └─► Grade the hit:
-               IF error < 0.05 → "Perfect!"
-               ELSE IF error < 0.1 → "Great!"
-               ELSE IF error < 0.15 → "Good"
-               ELSE IF error < 0.25 → "OK"
-               ELSE → "Miss"
+         └─► Grade the hit (Y-DISTANCE BASED):
+               IF yDistance < 0.6 → "Perfect!" (+100pts)
+                 - Increment combo
+                 - Update combo display
+                 - Flash hitline
+                 - Disable note
 
-               Disable hit note
-               Flash hit line
+               ELSE IF yDistance < 1.0 → "Great!" (+70pts)
+                 - Increment combo
+                 - Update combo display
+                 - Flash hitline
+                 - Disable note
+
+               ELSE IF yDistance < 1.5 → "Good" (+40pts)
+                 - Increment combo
+                 - Update combo display
+                 - Flash hitline
+                 - Disable note
+
+               ELSE → "Miss" (+0pts)
+                 - Reset combo to 0
+                 - Update combo display
+                 - Don't disable note (let it pass)
 ```
 
 ---
@@ -188,9 +233,11 @@ IF (currentBeat + spawnWindow > nextNote.beat) THEN
 ```
 
 **Lane Mapping**:
-- Lane 0 → X = -8 (Left)
-- Lane 1 → X = 0 (Center)
-- Lane 2 → X = 8 (Right)
+- Lane -1 → X = -15.0 (Left)
+- Lane 0 → X = 0.0 (Center)
+- Lane 1 → X = 15.0 (Right)
+
+**Note**: Lane index is mapped to position via: `xPos = lane × 15.0`
 
 ---
 
@@ -227,42 +274,79 @@ yPos = beatDiff × speed
 
 ---
 
-### HitZoneManager (Input Handler)
+### HitZoneManager (Input Handler & Scoring System)
 **File**: [HitZoneManager.ts](Assets/Scripts/HitZoneManager.ts)
 
 **Responsibilities**:
 - Listen for touch input
 - Determine touched lane
 - Find notes near hit line
-- Check timing accuracy
-- Provide feedback
+- Check visual accuracy (Y-distance based)
+- Track score and combo
+- Update combo UI display
+- Provide hit feedback
 
 **Key Properties**:
-- `hitWindow` (number) - Maximum error for valid hit (0.25 beats)
-- `lanePositions` (number[]) - X coordinates of lanes
+- `lanePositions` (number[]) - X coordinates of lanes [-15.0, 0.0, 15.0]
 - `camera` (Camera) - For touch position conversion
+- `comboText` (Text) - UI text component for combo display
+- `scoreStats` (object) - Tracks perfect, great, good, miss, totalScore, currentCombo, maxCombo
+
+**Score Values**:
+```typescript
+Perfect: 100 points (Y-distance < 0.6)
+Great:   70 points  (Y-distance < 1.0)
+Good:    40 points  (Y-distance < 1.5)
+Miss:    0 points   (Y-distance >= 1.5)
+```
 
 **Lane Detection Algorithm**:
 ```typescript
-screenX = touchPosition.x // Normalized 0-1
+// Convert touch to world position via camera
+worldPos = camera.screenSpaceToWorldSpace(touchPos)
 
-IF (screenX < 0.33) → Lane 0
-ELSE IF (screenX < 0.66) → Lane 1
-ELSE → Lane 2
+// Find closest lane by X distance
+closestLane = lanePositions.reduce((closest, laneX) => {
+  return Math.abs(worldPos.x - laneX) < Math.abs(worldPos.x - closest)
+    ? laneX : closest
+})
 ```
 
-**Hit Detection Algorithm**:
+**Hit Detection Algorithm** (Y-Distance Based):
 ```
 1. Get all active notes in touched lane
-2. For each note, calculate timing error:
-   error = |currentBeat - note.targetBeat|
-3. Find note with minimum error
-4. If error < hitWindow:
-   - Grade the hit (Perfect/Great/Good/OK)
-   - Disable the note
-   - Flash hit line
-5. Else:
-   - Show miss message
+2. For each note, calculate Y-distance from hitline:
+   yDistance = |note.y - hitline.y|
+3. Find note with minimum yDistance
+4. Grade based on Y-distance:
+   - If yDistance < 0.6: Perfect (+100pts, increment combo)
+   - Else if yDistance < 1.0: Great (+70pts, increment combo)
+   - Else if yDistance < 1.5: Good (+40pts, increment combo)
+   - Else: Miss (+0pts, reset combo)
+5. Update combo display on screen
+6. Flash hit line on successful hits
+7. Disable note only on successful hits (not on Miss)
+```
+
+**Combo Display System**:
+```typescript
+- 0 combo: "" (empty)
+- 1-9 combo: "X COMBO"
+- 10-49 combo: "X COMBO!"
+- 50-99 combo: "🔥 X COMBO! 🔥"
+- 100+ combo: "⭐ X COMBO!! ⭐"
+
+Milestone celebrations at: 10, 50, 100
+```
+
+**Final Score Display** (triggered by SongEndDetector):
+```
+Shows:
+- Total Score (with percentage of max possible)
+- Accuracy percentage
+- Max Combo achieved
+- Count of Perfect/Great/Good/Miss hits
+- Total notes and max possible score
 ```
 
 ---
@@ -279,6 +363,34 @@ ELSE → Lane 2
 - `normalColor` (vec4) - Default color (white, semi-transparent)
 - `hitColor` (vec4) - Flash color (green, opaque)
 - `flashDuration` (number) - How long to flash (0.1s)
+
+**Note**: May encounter errors if material/shader graph is invalid. The game will work without this effect.
+
+---
+
+### SongEndDetector (Game Completion Handler)
+**File**: [SongEndDetector.ts](Assets/Scripts/SongEndDetector.ts)
+
+**Responsibilities**:
+- Monitor audio playback status
+- Detect when song has finished playing
+- Trigger final score display
+- Call HitZoneManager's `showFinalScore()` method
+
+**Key Properties**:
+- `audioComponent` (AudioComponent) - Reference to music player
+- `hitZoneManager` (HitZoneManager) - Reference to scoring system
+- `songDuration` (number) - Optional duration parameter
+
+**Detection Logic**:
+```typescript
+onUpdate() {
+  if (audio previously playing AND now stopped) {
+    hitZoneManager.showFinalScore()
+    // Display formatted score report in console
+  }
+}
+```
 
 ---
 
@@ -300,21 +412,23 @@ At 6 seconds, 120 BPM:
 beat = (6 × 120) / 60 = 12
 ```
 
-### Hit Window
+### Hit Accuracy (Y-Distance Based)
 
-Default hit window: **0.25 beats**
+**Current Implementation**: Visual accuracy based on Y-distance from hitline
 
-At 120 BPM:
-- 0.25 beats = 0.125 seconds = 125ms
-
-Quality ranges:
+Quality ranges (in world units):
 ```
-Perfect: 0.00 - 0.05 beats (0-25ms)
-Great:   0.05 - 0.10 beats (25-50ms)
-Good:    0.10 - 0.15 beats (50-75ms)
-OK:      0.15 - 0.25 beats (75-125ms)
-Miss:    > 0.25 beats (>125ms)
+Perfect: Y-distance < 0.6 units (+100 points)
+Great:   Y-distance < 1.0 units (+70 points)
+Good:    Y-distance < 1.5 units (+40 points)
+Miss:    Y-distance >= 1.5 units (+0 points)
 ```
+
+**Why Y-distance instead of beat timing?**
+- More intuitive for players (visual feedback)
+- Consistent regardless of BPM changes
+- Easier to understand "hit it when it crosses the line"
+- Still maintains rhythm accuracy since notes move with music
 
 ### Note Spawn Timing
 
@@ -404,39 +518,39 @@ REUSE:
 ```
         Y = 100 (Spawn)
            ↑
-           │    🔴 🔴 🔴
-           │      ↓  ↓  ↓
+           │       🔴   🔴   🔴
+           │        ↓    ↓    ↓
            │
-           │    🔴 🔴 🔴
-           │      ↓  ↓  ↓
+           │       🔴   🔴   🔴
+           │        ↓    ↓    ↓
            │
-Y = 0 ─────┼─────────────── Hit Line
-           │   📏 📏 📏
+Y = -10 ───┼──────────────────── Hit Lines (3 separate hitlines)
+           │      📏   📏   📏
            │
            ↓
       Y = -20 (Destroy)
 
-X:  -8     0     +8
-   Left  Center Right
+X:     -15.0    0.0   +15.0
+        Left  Center  Right
 ```
 
-### Screen Space (Touch)
+**Note**: The hitlines are positioned at Y = -10 with fullscreen width (scale 15x12).
+
+### Screen Space (Touch) → World Space Conversion
 
 ```
-(0, 0)                    (1, 0)
-  ┌───────────────────────┐
-  │                       │
-  │   Touch coordinates   │
-  │   Normalized 0-1      │
-  │                       │
-  └───────────────────────┘
-(0, 1)                    (1, 1)
-
-Lane division:
-0.0 - 0.33: Left lane
-0.33 - 0.66: Center lane
-0.66 - 1.0: Right lane
+Touch Input (Screen Space)
+     ↓
+camera.screenSpaceToWorldSpace()
+     ↓
+World Position (X, Y, Z)
+     ↓
+Find Closest Lane by X-distance
+     ↓
+Lane Selection: -15.0, 0.0, or 15.0
 ```
+
+**Lane Detection**: Uses distance-based calculation to find closest lane, not screen division.
 
 ---
 
@@ -468,33 +582,74 @@ Lane division:
 
 ---
 
+## Current Features ✅
+
+### Implemented:
+
+1. **✅ Score System**:
+   - Full point tracking (Perfect: 100, Great: 70, Good: 40, Miss: 0)
+   - Total score calculation
+   - Score percentage display
+   - Accuracy tracking
+
+2. **✅ Combo System**:
+   - Increments on successful hits (Perfect/Great/Good)
+   - Resets on miss
+   - Max combo tracking
+   - Visual combo display on screen (ComboText UI)
+   - Milestone celebrations at 10, 50, 100
+
+3. **✅ Visual Feedback**:
+   - Hit line flash effect on successful hits
+   - Combo text updates in real-time
+   - Top-of-screen combo display
+
+4. **✅ End-of-Song Summary**:
+   - Final score display
+   - Breakdown of Perfect/Great/Good/Miss counts
+   - Max combo achieved
+   - Accuracy percentage
+   - Score percentage
+
+5. **✅ Y-Distance Hit Detection**:
+   - Visual-based accuracy (intuitive for players)
+   - Consistent across different BPMs
+   - Clear thresholds (0.6, 1.0, 1.5 units)
+
+6. **✅ UI Layer System**:
+   - Proper layer configuration (Layer 1)
+   - Camera render layers set correctly
+   - ScreenTransform for UI positioning
+
 ## Extension Points
 
 ### Easy to Add:
 
-1. **Score System**:
-   - Hook into `HitZoneManager.hitNote()`
-   - Track points, combo, accuracy
+1. **Multiple Difficulties**:
+   - Adjust Y-distance thresholds
+   - Smaller ranges = harder (e.g., Perfect < 0.3)
+   - Larger ranges = easier (e.g., Perfect < 1.0)
 
-2. **Combo System**:
-   - Increment on successful hit
-   - Reset on miss
-   - Apply multiplier
+2. **Long Notes / Hold Notes**:
+   - Add `isLong` and `duration` properties to SongData
+   - Implement TouchEnd detection in HitZoneManager
+   - Visual tail/trail on note
+   - Continuous scoring while held
 
-3. **Visual Effects**:
-   - Particle systems on hit
-   - Trail effects on notes
-   - Screen flash on perfect
+3. **Particle Effects**:
+   - Particle systems on Perfect hits
+   - Trail effects on falling notes
+   - Screen flash/shake on combo milestones
 
-4. **Multiple Difficulties**:
-   - Adjust `hitWindow` value
-   - Smaller window = harder
-   - Larger window = easier
+4. **Custom Note Visuals**:
+   - Different note prefabs for different difficulties
+   - Color-coded notes per lane
+   - Custom 2D images for notes (see note prefab setup guide)
 
-5. **Long Notes**:
-   - Add `isLong` property to SongData
-   - Hold detection in HitZoneManager
-   - Visual tail on note
+5. **Multiplayer/Leaderboard**:
+   - Save scores to persistent storage
+   - Compare with friends
+   - Online leaderboards
 
 ---
 
@@ -503,16 +658,32 @@ Lane division:
 ```
 TestSongData.ts
       │
-      └──► NoteSpawner.ts ──┐
-                │           │
-                └──► Note.ts│
-                            │
-Conductor.ts ───────────────┤
-      │                     │
-      └──────────────► HitZoneManager.ts
-                            │
-HitLineFeedback.ts ─────────┘
+      └──► NoteSpawner.ts ──────┐
+                │               │
+                └──► Note.ts    │
+                                │
+Conductor.ts ───────────────────┤
+      │                         │
+      │                         │
+      └──────────────► HitZoneManager.ts ◄──── ComboText (UI)
+                            │         │
+                            │         │
+HitLineFeedback.ts ─────────┘         │
+                                      │
+SongEndDetector.ts ───────────────────┘
+                │
+                └──► AudioComponent
 ```
+
+**Component Summary**:
+- **Conductor.ts**: Beat timing engine (references AudioComponent)
+- **NoteSpawner.ts**: Object pool manager (references Conductor, Note prefab)
+- **Note.ts**: Individual note movement (references Conductor)
+- **HitZoneManager.ts**: Input, scoring, combo (references Conductor, NoteSpawner, ComboText)
+- **HitLineFeedback.ts**: Visual effects (referenced by HitLines)
+- **SongEndDetector.ts**: End detection (references HitZoneManager, AudioComponent)
+- **UIDebugger.ts**: Development diagnostic tool (standalone)
+- **TestSongData.ts**: Static chart data (referenced by NoteSpawner)
 
 **No circular dependencies** ✅
 **Clear separation of concerns** ✅
@@ -520,4 +691,30 @@ HitLineFeedback.ts ─────────┘
 
 ---
 
-This architecture provides a solid foundation for your rhythm game and is easily extensible for future features!
+## Layer Configuration
+
+### Camera Setup
+- **Layer**: 1
+- **renderLayer**: 1835007 (bitwise mask)
+- **Purpose**: Renders both game objects and UI
+
+### Game Objects (Layer 1)
+- HitLine_Left
+- HitLine_Center
+- HitLine_Right
+- Notes (all instances from pool)
+- NoteSpawner
+- Conductor
+- SongEndDetector
+
+### UI Objects (Layer 1)
+- **ComboText**: Screen-space text at top of screen
+  - Uses ScreenTransform component
+  - Anchors: bottom=0.7, top=1.0 (top 30% of screen)
+  - Scale: 5x5x1
+  - Font size: 50
+  - Color: Yellow (1, 1, 0, 1)
+
+---
+
+This architecture provides a complete, feature-rich rhythm game with scoring, combos, and visual feedback!

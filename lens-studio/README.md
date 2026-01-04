@@ -6,15 +6,16 @@ Core gameplay & Lens Studio integration.
 
 ---
 
-## Responsibilities
-- Lens Studio project files
-- Rhythm gameplay implementation
-- Leaderboard Component integration
-- Remote Service Module (API calls)
-- Remote Assets (audio loading)
-- Sync Framework (PvP)
-- Touch input handling
+## Responsibilities & Progress
+- [x] Lens Studio project files
+- [In Progress] Rhythm gameplay implementation
+- [Planned] Leaderboard Component integration
+- [Planned] Remote Service Module (API calls)
+- [Planned] Remote Assets (audio loading)
+- [Planned]Sync Framework (PvP)
+- [x] Touch input handling
 
 ## Setup
 1. Open this folder in Lens Studio
-2. TBD
+2. Use Preview screen to interact with the project
+3. Click on "Preview Lens" to try it in your Snapchat App Lens session
