@@ -1,10 +1,10 @@
 @component
 export class Note extends BaseScriptComponent {
-    public targetBeat: number = 0; 
-    public conductor: any; 
+    public targetBeat: number = 0;
+    public conductor: any;
 
     @input
-    speed: number = 15.0; 
+    speed: number = 15.0;
 
     onAwake() {
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));

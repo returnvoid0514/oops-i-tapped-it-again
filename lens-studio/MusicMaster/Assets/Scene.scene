@@ -274,7 +274,7 @@
   ScriptInputs:
     "":
       conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
-      notePrefab: !<reference.Asset> 0ffa4f6c-ba73-4eaf-9bfe-639775fc9345
+      notePrefab: !<reference.Asset> d229cfa9-1168-4a50-a3cc-9e766721ba81
       infiniteMode: false
       songDataAsset: !<reference.Asset> 69cf4269-f0fc-4abc-bc1a-84ebc1de69ee
       spawnInterval: !<float> 1.000000
@@ -609,7 +609,7 @@
   ScriptInputs:
     "":
       conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
-      notePrefab: !<reference.Asset> 0ffa4f6c-ba73-4eaf-9bfe-639775fc9345
+      notePrefab: !<reference.Asset> d229cfa9-1168-4a50-a3cc-9e766721ba81
       infiniteMode: true
       songDataAsset: !<reference.Asset> 69cf4269-f0fc-4abc-bc1a-84ebc1de69ee
       spawnInterval: !<float> 2.000000
