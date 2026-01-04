@@ -22,13 +22,104 @@ export class HitZoneManager extends BaseScriptComponent {
     @input
     camera: Camera; // Reference to the camera
 
-    private lanePositions = [-8.0, 0.0, 8.0]; // Matching NoteSpawner lane positions
+    // Lane positions should match visual hit line positions in the scene
+    // With camera size 20, visible range is ~-20 to +20
+    // To make lanes span most of the screen, use wider spacing
+    private lanePositions = [-15.0, 0.0, 15.0]; // Spread lanes across screen width
+
+    // Score tracking
+    private scoreStats = {
+        perfect: 0,
+        great: 0,
+        good: 0,
+        miss: 0,
+        totalScore: 0,
+        currentCombo: 0,
+        maxCombo: 0
+    };
+
+    private readonly SCORE_VALUES = {
+        perfect: 100,
+        great: 70,
+        good: 40,
+        miss: 0
+    };
+
+    @input
+    comboText: Text; // Reference to UI Text component to display combo
 
     onAwake() {
         // Listen for touch events
         this.createEvent("TouchStartEvent").bind(this.onTouch.bind(this));
 
+        // Initialize combo display
+        this.updateComboDisplay();
+
         print("✅ HitZoneManager initialized");
+        print("🎮 Score system ready - Perfect: 100pts, Great: 70pts, Good: 40pts, Miss: 0pts");
+
+        // Check if combo text is assigned
+        if (this.comboText) {
+            print("🔥 Combo system active! Text component found.");
+            print(`📱 ComboText initial text: "${this.comboText.text}"`);
+        } else {
+            print("⚠️ WARNING: comboText not assigned! Please assign Text component in Inspector.");
+        }
+    }
+
+    private updateComboDisplay(): void {
+        if (!this.comboText) {
+            print("⚠️ updateComboDisplay: comboText is null!");
+            return;
+        }
+
+        const combo = this.scoreStats.currentCombo;
+
+        let newText = "";
+        if (combo === 0) {
+            newText = "";
+        } else if (combo < 10) {
+            newText = `${combo} COMBO`;
+        } else if (combo < 50) {
+            newText = `${combo} COMBO!`;
+        } else if (combo < 100) {
+            newText = `🔥 ${combo} COMBO! 🔥`;
+        } else {
+            newText = `⭐ ${combo} COMBO!! ⭐`;
+        }
+
+        this.comboText.text = newText;
+        print(`📺 Combo display updated: "${newText}" (combo=${combo})`);
+    }
+
+    private incrementCombo(): void {
+        this.scoreStats.currentCombo++;
+
+        // Update max combo if current is higher
+        if (this.scoreStats.currentCombo > this.scoreStats.maxCombo) {
+            this.scoreStats.maxCombo = this.scoreStats.currentCombo;
+        }
+
+        // Update UI
+        this.updateComboDisplay();
+
+        // Log milestone combos
+        if (this.scoreStats.currentCombo === 10) {
+            print("🔥 10 COMBO!");
+        } else if (this.scoreStats.currentCombo === 50) {
+            print("🔥🔥 50 COMBO!!");
+        } else if (this.scoreStats.currentCombo === 100) {
+            print("⭐⭐ 100 COMBO!!!");
+        }
+    }
+
+    private resetCombo(): void {
+        if (this.scoreStats.currentCombo > 0) {
+            print(`💔 Combo broken! (was ${this.scoreStats.currentCombo}x)`);
+        }
+
+        this.scoreStats.currentCombo = 0;
+        this.updateComboDisplay();
     }
 
     private onTouch(eventData: TouchStartEvent) {
@@ -64,34 +155,46 @@ export class HitZoneManager extends BaseScriptComponent {
     private checkNoteHit(lane: number) {
         const laneXPos = this.lanePositions[lane];
 
-        // Find all active notes in this lane
+        // Check which lane was hit: 0 = Left, 1 = Center, 2 = Right
+        print(`🎯 Checking lane ${lane} (${lane === 0 ? 'Left' : lane === 1 ? 'Center' : 'Right'})`);
+
+        // Find all active notes in this lane (already filtered by Y position in getActiveNotesInLane)
         const activeNotes = this.getActiveNotesInLane(laneXPos);
 
         if (activeNotes.length === 0) {
-            print("❌ Miss");
+            print("❌ Miss - No notes in hit zone");
             return;
         }
 
-        // Find the closest note to the hit line
+        // Find the closest note to the hit line by Y distance
+        const hitLineY = this.getHitLineYPosition(laneXPos);
         let closestNote = null;
-        let closestError = Infinity;
+        let closestDistance = Infinity;
 
         for (let noteObj of activeNotes) {
-            const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
-            if (noteScript && noteScript.targetBeat !== undefined) {
-                const error = this.conductor.getBeatError(noteScript.targetBeat);
+            const transform = noteObj.getTransform();
+            const pos = transform.getLocalPosition();
+            const yDistance = Math.abs(pos.y - hitLineY);
 
-                if (error < closestError) {
-                    closestError = error;
-                    closestNote = noteObj;
-                }
+            if (yDistance < closestDistance) {
+                closestDistance = yDistance;
+                closestNote = noteObj;
             }
         }
 
-        if (closestNote && closestError < this.hitWindow) {
-            this.hitNote(closestNote, closestError, lane);
+        if (closestNote) {
+            // Get beat error for scoring
+            const noteScript = closestNote.getComponent("Component.ScriptComponent") as any;
+            const targetBeat = noteScript ? noteScript.targetBeat : undefined;
+            const currentBeat = this.conductor.currentBeat;
+            const beatError = targetBeat !== undefined
+                ? this.conductor.getBeatError(targetBeat)
+                : 0;
+
+            // print(`✅ HIT! Y distance: ${closestDistance.toFixed(2)}, Beat error: ${beatError.toFixed(3)}`);
+            this.hitNote(closestNote, beatError, closestDistance, lane);
         } else {
-            print("❌ Miss");
+            print("❌ Miss - No valid note found");
         }
     }
 
@@ -118,6 +221,10 @@ export class HitZoneManager extends BaseScriptComponent {
             return activeNotes;
         }
 
+        // Get the Y position of the hit line to determine hit zone
+        const hitLineY = this.getHitLineYPosition(laneXPos);
+        const hitZoneHeight = 3.0; // Tolerance for Y position (adjustable)
+
         // Check all pooled notes
         for (let noteObj of spawnerScript.pool) {
             if (noteObj.enabled) {
@@ -126,15 +233,11 @@ export class HitZoneManager extends BaseScriptComponent {
 
                 // Check if note is in the correct lane (with small tolerance)
                 if (Math.abs(pos.x - laneXPos) < 1.0) {
-                    // Check timing instead of visual position!
-                    const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
-                    if (noteScript && noteScript.targetBeat !== undefined) {
-                        const beatError = Math.abs(this.conductor.currentBeat - noteScript.targetBeat);
-
-                        // Only consider notes within a reasonable time window (e.g., 2 beats)
-                        if (beatError < 2.0) {
-                            activeNotes.push(noteObj);
-                        }
+                    // Check if note is within the hit zone Y range
+                    const yDistance = Math.abs(pos.y - hitLineY);
+                    if (yDistance < hitZoneHeight) {
+                        activeNotes.push(noteObj);
+                        // print(`📍 Note found at Y=${pos.y.toFixed(1)}, HitLine Y=${hitLineY.toFixed(1)}, distance=${yDistance.toFixed(1)}`);
                     }
                 }
             }
@@ -143,39 +246,131 @@ export class HitZoneManager extends BaseScriptComponent {
         return activeNotes;
     }
 
-    private hitNote(noteObj: SceneObject, error: number, lane: number) {
-        // Determine hit quality (more forgiving standards)
+    private getHitLineYPosition(laneXPos: number): number {
+        // Determine which hit line to check based on lane position
+        let hitLine: SceneObject | null = null;
+
+        if (Math.abs(laneXPos - this.lanePositions[0]) < 0.1) {
+            hitLine = this.hitLineLeft;
+        } else if (Math.abs(laneXPos - this.lanePositions[1]) < 0.1) {
+            hitLine = this.hitLineCenter;
+        } else if (Math.abs(laneXPos - this.lanePositions[2]) < 0.1) {
+            hitLine = this.hitLineRight;
+        }
+
+        if (hitLine) {
+            const hitLineTransform = hitLine.getTransform();
+            return hitLineTransform.getLocalPosition().y;
+        }
+
+        return 0.0; // Default if no hit line found
+    }
+
+    private hitNote(noteObj: SceneObject, beatError: number, yDistance: number, lane: number): void {
+        // Determine hit quality ONLY based on Y distance (visual accuracy)
+        // Miss if Y distance is too far (beyond Good range)
         let quality = "Miss";
-        if (error < 0.15) {
+        let shouldDisableNote = false;
+        let pointsEarned = 0;
+
+        // Perfect: Very close to hitline
+        if (yDistance < 0.6) {
             quality = "Perfect!";
-        } else if (error < 0.3) {
+            shouldDisableNote = true;
+            this.scoreStats.perfect++;
+            pointsEarned = this.SCORE_VALUES.perfect;
+            this.incrementCombo();
+        }
+        // Great: Close to hitline
+        else if (yDistance < 1.0) {
             quality = "Great!";
-        } else if (error < 0.5) {
+            shouldDisableNote = true;
+            this.scoreStats.great++;
+            pointsEarned = this.SCORE_VALUES.great;
+            this.incrementCombo();
+        }
+        // Good: Moderately close
+        else if (yDistance < 1.5) {
             quality = "Good";
-        } else if (error < this.hitWindow) {
-            quality = "OK";
+            shouldDisableNote = true;
+            this.scoreStats.good++;
+            pointsEarned = this.SCORE_VALUES.good;
+            this.incrementCombo();
+        }
+        // Miss: Too far from hitline - don't count as a hit
+        else {
+            quality = "Miss";
+            shouldDisableNote = false; // Don't disable the note on miss
+            this.scoreStats.miss++;
+            pointsEarned = this.SCORE_VALUES.miss;
+            this.resetCombo();
         }
 
-        print(`Score => ${quality}`);
+        this.scoreStats.totalScore += pointsEarned;
 
-        // Disable the note
-        noteObj.enabled = false;
+        const comboText = this.scoreStats.currentCombo > 0 ? ` | 🔥 ${this.scoreStats.currentCombo}x` : "";
+        print(`✨ Score => ${quality} (+${pointsEarned}pts) | Total: ${this.scoreStats.totalScore}pts${comboText} (Y: ${yDistance.toFixed(2)})`);
 
-        // Flash the corresponding hit line
-        let targetHitLine: SceneObject | null = null;
-        if (lane === 0) {
-            targetHitLine = this.hitLineLeft;
-        } else if (lane === 1) {
-            targetHitLine = this.hitLineCenter;
-        } else if (lane === 2) {
-            targetHitLine = this.hitLineRight;
+        // Only disable the note if it was a successful hit (not Miss)
+        if (shouldDisableNote) {
+            noteObj.enabled = false;
         }
 
-        if (targetHitLine) {
-            const feedbackScript = targetHitLine.getComponent("Component.ScriptComponent") as any;
-            if (feedbackScript && feedbackScript.flash) {
-                feedbackScript.flash();
+        // Flash the corresponding hit line only on successful hits
+        if (shouldDisableNote) {
+            let targetHitLine: SceneObject | null = null;
+            if (lane === 0) {
+                targetHitLine = this.hitLineLeft;
+            } else if (lane === 1) {
+                targetHitLine = this.hitLineCenter;
+            } else if (lane === 2) {
+                targetHitLine = this.hitLineRight;
+            }
+
+            if (targetHitLine) {
+                const feedbackScript = targetHitLine.getComponent("Component.ScriptComponent") as any;
+                if (feedbackScript && feedbackScript.flash) {
+                    feedbackScript.flash();
+                }
             }
         }
+    }
+
+    // Public method to display final score - can be called when song ends
+    public showFinalScore(): void {
+        const totalNotes = this.scoreStats.perfect + this.scoreStats.great + this.scoreStats.good + this.scoreStats.miss;
+        const hitNotes = this.scoreStats.perfect + this.scoreStats.great + this.scoreStats.good;
+        const accuracy = totalNotes > 0 ? (hitNotes / totalNotes * 100) : 0;
+        const maxPossibleScore = totalNotes * this.SCORE_VALUES.perfect;
+        const scorePercentage = maxPossibleScore > 0 ? (this.scoreStats.totalScore / maxPossibleScore * 100) : 0;
+
+        print("╔════════════════════════════════════╗");
+        print("║       🎵 FINAL SCORE 🎵           ║");
+        print("╠════════════════════════════════════╣");
+        print(`║ Total Score: ${this.scoreStats.totalScore} pts (${scorePercentage.toFixed(1)}%)  `);
+        print(`║ Accuracy: ${accuracy.toFixed(1)}%                  `);
+        print(`║ Max Combo: 🔥 ${this.scoreStats.maxCombo}x              `);
+        print("╠════════════════════════════════════╣");
+        print(`║ Perfect!  ⭐ : ${this.scoreStats.perfect} (×100pts)     `);
+        print(`║ Great!    ✨ : ${this.scoreStats.great} (×70pts)      `);
+        print(`║ Good      👍 : ${this.scoreStats.good} (×40pts)      `);
+        print(`║ Miss      ❌ : ${this.scoreStats.miss} (×0pts)       `);
+        print("╠════════════════════════════════════╣");
+        print(`║ Total Notes: ${totalNotes}                  `);
+        print(`║ Max Score: ${maxPossibleScore}                  `);
+        print("╚════════════════════════════════════╝");
+    }
+
+    // Public method to reset score - useful for restart
+    public resetScore(): void {
+        this.scoreStats.perfect = 0;
+        this.scoreStats.great = 0;
+        this.scoreStats.good = 0;
+        this.scoreStats.miss = 0;
+        this.scoreStats.totalScore = 0;
+        this.scoreStats.currentCombo = 0;
+        this.scoreStats.maxCombo = 0;
+        this.updateComboDisplay();
+        print("🔄 Score reset!");
     }
 }

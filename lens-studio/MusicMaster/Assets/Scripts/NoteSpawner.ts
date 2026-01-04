@@ -77,7 +77,8 @@ export class NoteSpawner extends BaseScriptComponent {
                 noteScript["targetBeat"] = beat;
                 noteScript["conductor"] = this.conductor;
 
-                const xPos = lane * 8.0;
+                // Lane positions: -1 = left (-15), 0 = center (0), 1 = right (15)
+                const xPos = lane * 15.0; // Spread notes across wider screen area
                 noteObj.getTransform().setLocalPosition(new vec3(xPos, 100, 0));
             }
         }

@@ -27,6 +27,7 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     camera: false
+    comboText: false
     conductor: false
     hitLineCenter: false
     hitLineLeft: false
@@ -49,6 +50,7 @@
       hitLineRight: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hitWindow: 0.250000
       camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
+      comboText: !<reference.Text> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
@@ -60,3 +62,4 @@
     - // @input SceneObject hitLineRight
     - // @input float hitWindow = 0.25
     - // @input Component.Camera camera
+    - // @input Component.Text comboText
