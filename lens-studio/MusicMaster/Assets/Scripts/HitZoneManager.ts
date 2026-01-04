@@ -51,6 +51,9 @@ export class HitZoneManager extends BaseScriptComponent {
     // Track which notes have been judged to avoid duplicate miss judgments
     private judgedNotes = new Set<SceneObject>();
 
+    // Cache the NoteSpawner script reference to avoid repeated lookups
+    private spawnerScript: any = null;
+
     onAwake() {
         // Listen for touch events
         this.createEvent("TouchStartEvent").bind(this.onTouch.bind(this));
@@ -60,6 +63,9 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Initialize combo display
         this.updateComboDisplay();
+
+        // Cache the NoteSpawner script reference once
+        this.cacheSpawnerScript();
 
         print("✅ HitZoneManager initialized");
         print("🎮 Score system ready - Perfect: 100pts, Great: 70pts, Good: 40pts, Miss: 0pts");
@@ -71,6 +77,25 @@ export class HitZoneManager extends BaseScriptComponent {
         } else {
             print("⚠️ WARNING: comboText not assigned! Please assign Text component in Inspector.");
         }
+    }
+
+    private cacheSpawnerScript(): void {
+        if (!this.noteSpawnerObject) {
+            print("⚠️ NoteSpawner object not assigned!");
+            return;
+        }
+
+        const allComponents = this.noteSpawnerObject.getComponents("Component.ScriptComponent");
+        for (let i = 0; i < allComponents.length; i++) {
+            const script = allComponents[i] as any;
+            if (script.pool !== undefined) {
+                this.spawnerScript = script;
+                print("✅ NoteSpawner script cached successfully");
+                return;
+            }
+        }
+
+        print("⚠️ Could not find NoteSpawner script with pool property");
     }
 
     private onUpdate() {
@@ -212,23 +237,8 @@ export class HitZoneManager extends BaseScriptComponent {
     private getActiveNotesInLane(laneXPos: number): SceneObject[] {
         const activeNotes: SceneObject[] = [];
 
-        if (!this.noteSpawnerObject) {
-            return activeNotes;
-        }
-
-        // Get all script components and find the one with pool
-        const allComponents = this.noteSpawnerObject.getComponents("Component.ScriptComponent");
-        let spawnerScript: any = null;
-
-        for (let i = 0; i < allComponents.length; i++) {
-            const script = allComponents[i] as any;
-            if (script.pool !== undefined) {
-                spawnerScript = script;
-                break;
-            }
-        }
-
-        if (!spawnerScript || !spawnerScript.pool) {
+        // Use cached spawner script reference
+        if (!this.spawnerScript || !this.spawnerScript.pool) {
             return activeNotes;
         }
 
@@ -237,7 +247,7 @@ export class HitZoneManager extends BaseScriptComponent {
         const hitZoneHeight = 3.0; // Tolerance for Y position (adjustable)
 
         // Check all pooled notes
-        for (let noteObj of spawnerScript.pool) {
+        for (let noteObj of this.spawnerScript.pool) {
             if (noteObj.enabled) {
                 const transform = noteObj.getTransform();
                 const pos = transform.getLocalPosition();
@@ -278,23 +288,8 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private checkMissedNotes(): void {
-        if (!this.noteSpawnerObject) {
-            return;
-        }
-
-        // Get the NoteSpawner script to access the pool
-        const allComponents = this.noteSpawnerObject.getComponents("Component.ScriptComponent");
-        let spawnerScript: any = null;
-
-        for (let i = 0; i < allComponents.length; i++) {
-            const script = allComponents[i] as any;
-            if (script.pool !== undefined) {
-                spawnerScript = script;
-                break;
-            }
-        }
-
-        if (!spawnerScript || !spawnerScript.pool) {
+        // Use cached spawner script reference
+        if (!this.spawnerScript || !this.spawnerScript.pool) {
             return;
         }
 
@@ -302,7 +297,7 @@ export class HitZoneManager extends BaseScriptComponent {
         const missThreshold = -12.0; // Below the hitline (hitline is at -10)
 
         // Check all pooled notes
-        for (let noteObj of spawnerScript.pool) {
+        for (let noteObj of this.spawnerScript.pool) {
             if (noteObj.enabled && !this.judgedNotes.has(noteObj)) {
                 const transform = noteObj.getTransform();
                 const pos = transform.getLocalPosition();
