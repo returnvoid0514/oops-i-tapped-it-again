@@ -274,7 +274,7 @@
   ScriptInputs:
     "":
       conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
-      notePrefab: !<reference.Asset> d229cfa9-1168-4a50-a3cc-9e766721ba81
+      notePrefab: !<reference.Asset> 0ffa4f6c-ba73-4eaf-9bfe-639775fc9345
       infiniteMode: false
       songDataAsset: !<reference.Asset> 69cf4269-f0fc-4abc-bc1a-84ebc1de69ee
       spawnInterval: !<float> 1.000000
@@ -609,7 +609,7 @@
   ScriptInputs:
     "":
       conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
-      notePrefab: !<reference.Asset> d229cfa9-1168-4a50-a3cc-9e766721ba81
+      notePrefab: !<reference.Asset> 0ffa4f6c-ba73-4eaf-9bfe-639775fc9345
       infiniteMode: true
       songDataAsset: !<reference.Asset> 69cf4269-f0fc-4abc-bc1a-84ebc1de69ee
       spawnInterval: !<float> 2.000000
@@ -625,7 +625,7 @@
   LocalTransform: !<TransformEntity>
     Position: {x: -15.000000, y: -10.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 8.000000, y: 5.000000, z: 1.000000}
+    Scale: {x: 20.000000, y: 12.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -674,7 +674,7 @@
   LocalTransform: !<TransformEntity>
     Position: {x: 15.000000, y: -10.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 8.000000, y: 5.000000, z: 20.000000}
+    Scale: {x: 20.000000, y: 15.000000, z: 20.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -714,7 +714,7 @@
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: -10.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 8.000000, y: 5.000000, z: 20.000000}
+    Scale: {x: 20.000000, y: 12.000000, z: 20.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
