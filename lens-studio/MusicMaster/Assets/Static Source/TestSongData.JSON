@@ -1,0 +1,12 @@
+{
+  "songName": "TestBeat",
+  "bpm": 128,
+  "offset": 0.1,
+  "notes": [
+    { "beat": 1.0, "lane": 0 },
+    { "beat": 2.0, "lane": 1 },
+    { "beat": 2.5, "lane": 2 },
+    { "beat": 3.0, "lane": 0 },
+    { "beat": 4.0, "lane": 1, "isLongNote": true, "endBeat": 5.0 }
+  ]
+}

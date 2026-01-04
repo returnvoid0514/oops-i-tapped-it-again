@@ -1,0 +1,44 @@
+- !<AssetImportMetadata/7495550b-f12b-4f48-a3dc-8331040cb571>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 577363f7-8ff9-45e1-a122-b66805549394
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/577363f7-8ff9-45e1-a122-b66805549394>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 65aeb1fa-e08f-47a3-8a46-9bc574bcd2ee
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    speed: true
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - speed: !<float> 2.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input float speed = 15

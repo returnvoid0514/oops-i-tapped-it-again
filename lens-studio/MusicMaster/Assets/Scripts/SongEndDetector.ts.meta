@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/11779711-9ab5-410e-b518-386994e4d9b1>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 0a03b55f-efa9-4a93-b744-20c6ef7edb6f
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 0a03b55f-efa9-4a93-b744-20c6ef7edb6f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 246a7717-79d4-4a5d-8714-5c1c39ad4964
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/246a7717-79d4-4a5d-8714-5c1c39ad4964>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: a256008c-3d74-4d09-8894-153475b5d25c
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    audioComponent: false
+    hitZoneManager: false
+    songDuration: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - hitZoneManager: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
+      audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      songDuration: !<float> 60.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input AssignableType hitZoneManager
+    - // @input Component.AudioComponent audioComponent
+    - // @input float songDuration = 60
