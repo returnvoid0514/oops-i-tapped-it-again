@@ -25,7 +25,7 @@ export class InputManager extends BaseScriptComponent {
     }
 
     hitNote(note: Note, error: number) {
-        print("Hit! 误差拍数: " + error);
+        print("Hit! Beat error: " + error);
         
         note.getSceneObject().enabled = false;
     }
