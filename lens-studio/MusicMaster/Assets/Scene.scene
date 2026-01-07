@@ -12,7 +12,6 @@
     - !<own> ea5c5213-a56d-4d7e-932c-240685fe9c74
     - !<own> 3d6ab84c-1d94-490a-8f72-10cc3dd31574
     - !<own> 688f0e88-48d5-4c88-8e85-480c0b2954e3
-    - !<own> f9842d5e-934b-44a4-b2ac-5c024434487d
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       []
@@ -179,26 +178,6 @@
   DecayType: None
   DecayLimit: false
   DecayRange: 40.000000
-- !<RenderMeshVisual/06fa0158-e287-4fce-b351-b36ee86d1d26>
-  PrefabRemaps:
-    []
-  Name: Render Mesh Visual
-  Enabled: true
-  RenderOrder: 0
-  StretchMode: Stretch
-  VerticalAlignment: Center
-  HorizontalAlignment: Center
-  MeshShadowMode: Caster
-  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-  ShadowDensity: 0.600000
-  Materials:
-    - !<reference> 35f72046-9326-4209-ba94-bdb2c466e8c4
-  Mesh: !<reference> a10dc61a-9271-454a-994e-d1bf9b0e3a57
-  Skin: !<reference> 00000000-0000-0000-0000-000000000000
-  BlendShapesEnabled: true
-  BlendNormals: false
-  BlendShapes:
-    {}
 - !<ScriptComponent/0d12ca00-a805-4ff8-ac28-8d9c4ca157c8>
   PrefabRemaps:
     []
@@ -335,22 +314,6 @@
     bottom: 0.000000
     right: 0.000000
     top: 0.000000
-- !<ScriptComponent/5e61261f-af70-4773-8b98-8cff249d781b>
-  PrefabRemaps:
-    []
-  Name: Note
-  Enabled: true
-  ScriptAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
-  ScriptInputsDefault:
-    speed: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      speed: !<float> 2.000000
-  ScriptTypes:
-    "":
-      {}
 - !<Image/608fa51d-2294-4f30-b55a-bf1376ab281c>
   PrefabRemaps:
     []
@@ -742,24 +705,6 @@
   ScriptTypes:
     "":
       {}
-- !<SceneObject/f9842d5e-934b-44a4-b2ac-5c024434487d>
-  PrefabRemaps:
-    - 06fa0158-e287-4fce-b351-b36ee86d1d26: 0ec536a2-cf24-4b1d-53b8-9a600ad87913
-    - 5e61261f-af70-4773-8b98-8cff249d781b: f96385af-9e52-49f6-4898-fd3b770ecfbf
-    - f9842d5e-934b-44a4-b2ac-5c024434487d: a12327a6-dde1-4f90-4513-0f4af0a2dd71
-  Name: NoteTemplate
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 06fa0158-e287-4fce-b351-b36ee86d1d26
-    - !<own> 5e61261f-af70-4773-8b98-8cff249d781b
 - !<SceneObject/ff1393e8-8476-4a76-8450-8a355e6ce70a>
   PrefabRemaps:
     []
