@@ -241,6 +241,10 @@ export class HitZoneManager extends BaseScriptComponent {
         }
     }
 
+    // Maximum distance to search for notes when none are in the hit zone
+    // Notes within this range will be judged as Miss and removed
+    private readonly EXTENDED_MISS_RANGE = 8.0;
+
     private checkNoteHit(lane: number) {
         const laneXPos = this.lanePositions[lane];
 
@@ -249,14 +253,24 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Find all active notes in this lane (already filtered by Y position in getActiveNotesInLane)
         const activeNotes = this.getActiveNotesInLane(laneXPos);
+        const hitLineY = this.getHitLineYPosition(laneXPos);
 
+        // Two-stage search: if no notes in hit zone, search extended range
         if (activeNotes.length === 0) {
-            print("❌ Miss - No notes in hit zone");
+            // Stage 2: Search for closest note in the entire lane within extended range
+            const extendedResult = this.findClosestNoteInLane(laneXPos, hitLineY, this.EXTENDED_MISS_RANGE);
+
+            if (extendedResult) {
+                // Found a note within extended range - judge as Miss and remove it
+                print(`🎯 Extended search found note at Y distance: ${extendedResult.distance.toFixed(2)}`);
+                this.hitNote(extendedResult.note, 0, extendedResult.distance, lane);
+            } else {
+                print("❌ Miss - No notes in lane");
+            }
             return;
         }
 
         // Find the closest note to the hit line by Y distance
-        const hitLineY = this.getHitLineYPosition(laneXPos);
         let closestNote = null;
         let closestDistance = Infinity;
 
@@ -285,6 +299,39 @@ export class HitZoneManager extends BaseScriptComponent {
         } else {
             print("❌ Miss - No valid note found");
         }
+    }
+
+    // Find the closest note in a lane within a maximum distance
+    private findClosestNoteInLane(laneXPos: number, hitLineY: number, maxDistance: number): { note: SceneObject, distance: number } | null {
+        if (!this.spawnerScript || !this.spawnerScript.pool) {
+            return null;
+        }
+
+        let closestNote: SceneObject | null = null;
+        let closestDistance = Infinity;
+
+        for (let noteObj of this.spawnerScript.pool) {
+            if (noteObj.enabled) {
+                const transform = noteObj.getTransform();
+                const pos = transform.getLocalPosition();
+
+                // Check if note is in the correct lane (with small tolerance)
+                if (Math.abs(pos.x - laneXPos) < 1.0) {
+                    const yDistance = Math.abs(pos.y - hitLineY);
+
+                    // Only consider notes within the max distance
+                    if (yDistance < maxDistance && yDistance < closestDistance) {
+                        closestDistance = yDistance;
+                        closestNote = noteObj;
+                    }
+                }
+            }
+        }
+
+        if (closestNote) {
+            return { note: closestNote, distance: closestDistance };
+        }
+        return null;
     }
 
     private getActiveNotesInLane(laneXPos: number): SceneObject[] {
@@ -430,7 +477,7 @@ export class HitZoneManager extends BaseScriptComponent {
         // Miss: Too far from hitline - don't count as a hit
         else {
             quality = "Miss";
-            shouldDisableNote = false; // Don't disable the note on miss
+            shouldDisableNote = true;
             this.scoreStats.miss++;
             pointsEarned = this.SCORE_VALUES.miss;
             this.resetCombo();
