@@ -14,7 +14,7 @@ export class Conductor extends BaseScriptComponent {
 
     onAwake() {
         if (!this.audioTrack) {
-            print("Error: 请在 Inspector 中分配 AudioComponent");
+            print("Error: Please assign AudioComponent in Inspector");
             return;
         }
         

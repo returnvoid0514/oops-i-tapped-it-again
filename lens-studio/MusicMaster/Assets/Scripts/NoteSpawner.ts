@@ -24,17 +24,17 @@ export class NoteSpawner extends BaseScriptComponent {
 
     onAwake() {
         if (!this.notePrefab || !this.conductor) {
-            print("❌ Error: 请检查 NotePrefab 和 Conductor 是否分配！");
+            print("❌ Error: Please check if NotePrefab and Conductor are assigned!");
             return;
         }
 
         this.initPool();
 
         if (this.infiniteMode) {
-            print("🚀 启动模式: 无限随机生成 (Infinite Mode)");
+            print("🚀 Startup Mode: Infinite Random Generation");
             this.nextSpawnBeat = this.conductor.currentBeat + 2.0;
         } else {
-            print("📂 启动模式: 读取 谱面");
+            print("📂 Startup Mode: Loading Chart Data");
             this.loadStaticData();
         }
 
@@ -70,17 +70,22 @@ export class NoteSpawner extends BaseScriptComponent {
         const noteObj = this.pool.find(obj => !obj.enabled);
 
         if (noteObj) {
-            noteObj.enabled = true;
-
             const noteScript = noteObj.getComponent("Component.ScriptComponent");
-            if (noteScript) {
-                noteScript["targetBeat"] = beat;
-                noteScript["conductor"] = this.conductor;
-
-                // Lane positions: -1 = left (-15), 0 = center (0), 1 = right (15)
-                const xPos = lane * 15.0; // Spread notes across wider screen area
-                noteObj.getTransform().setLocalPosition(new vec3(xPos, 100, 0));
+            if (!noteScript) {
+                print("⚠️ WARNING: Note has no script component! Cannot spawn.");
+                return;
             }
+
+            // Set properties BEFORE enabling to avoid conductor reference warning
+            noteScript["targetBeat"] = beat;
+            noteScript["conductor"] = this.conductor;
+
+            // Lane positions: -1 = left (-15), 0 = center (0), 1 = right (15)
+            const xPos = lane * 15.0; // Spread notes across wider screen area
+            noteObj.getTransform().setLocalPosition(new vec3(xPos, 100, 0));
+
+            // Enable note AFTER all properties are set
+            noteObj.enabled = true;
         }
     }
 
@@ -102,31 +107,31 @@ export class NoteSpawner extends BaseScriptComponent {
             this.conductor.offset = SongData.offset;
         }
         
-        print("✅ 谱面加载成功！音符数: " + this.notesQueue.length);
+        print("✅ Chart loaded successfully! Note count: " + this.notesQueue.length);
     }
 
     private inspectAsset(obj: any) {
-    print("----- 🕵️‍♂️ 侦探模式启动 -----");
-    
+    print("----- 🕵️‍♂️ Debug Inspector Started -----");
+
     if (!obj) {
-        print("❌ 结果: 对象是 null 或 undefined");
+        print("❌ Result: Object is null or undefined");
         return;
     }
     if (obj.constructor) {
-        print("🏷️ 真实类型 (Class Name): " + obj.constructor.name);
+        print("🏷️ Actual Type (Class Name): " + obj.constructor.name);
     }
-    print("🔍 属性探测:");
+    print("🔍 Property Detection:");
     print("   - has .text? " + (obj.text !== undefined));
     print("   - has .json? " + (obj.json !== undefined));
-    
+
     if (obj.text) {
-        print("📄 .text 内容预览: " + obj.text.toString().substring(0, 50) + "...");
+        print("📄 .text Content Preview: " + obj.text.toString().substring(0, 50) + "...");
     }
-    
+
     if (obj.json) {
-        print("📦 .json 对象预览: " + JSON.stringify(obj.json).substring(0, 50) + "...");
+        print("📦 .json Object Preview: " + JSON.stringify(obj.json).substring(0, 50) + "...");
     }
-    
+
     print("----------------------------");
 }
 }
