@@ -8,11 +8,10 @@ Core gameplay & Lens Studio integration.
 
 ## Responsibilities & Progress
 - [x] Lens Studio project files
-- [In Progress] Rhythm gameplay implementation
-- [Planned] Leaderboard Component integration
-- [Planned] Remote Service Module (API calls)
+- [x] Rhythm gameplay implementation
+- [In Progress] Leaderboard Component integration
+- [Ice Box] Remote Service Module (API calls)
 - [Planned] Remote Assets (audio loading)
-- [Planned]Sync Framework (PvP)
 - [x] Touch input handling
 
 ## Setup
