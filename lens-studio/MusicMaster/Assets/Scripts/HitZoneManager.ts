@@ -188,7 +188,7 @@ export class HitZoneManager extends BaseScriptComponent {
         const combo = this.scoreStats.currentCombo;
 
         let newText = "";
-        if (combo === 0) {
+        if (combo < 5) {
             newText = "";
         } else if (combo < 10) {
             newText = `${combo} COMBO`;
