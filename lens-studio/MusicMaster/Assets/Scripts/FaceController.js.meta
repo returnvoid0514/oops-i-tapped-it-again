@@ -1,0 +1,52 @@
+- !<AssetImportMetadata/87d9077a-32a7-4ade-9ad5-1f55b2743777>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> a420a2af-0719-4c42-a69b-a28e3e66d2cd
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> a420a2af-0719-4c42-a69b-a28e3e66d2cd
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    JavaScriptAsset: !<own> 147e780b-e458-4173-91aa-5d6f51d96735
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/147e780b-e458-4173-91aa-5d6f51d96735>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 81a2bdbc-eeb6-4e18-9238-daaeb924e998
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    camera: false
+    circleScreenTransform: false
+    faceMesh: false
+    headBindingObject: false
+    radiusScale: false
+    triggerTarget: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - faceMesh: !<reference.FaceMesh> 00000000-0000-0000-0000-000000000000
+      camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
+      headBindingObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      circleScreenTransform: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
+      triggerTarget: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      radiusScale: !<float> 1.000000
+  ScriptTypes:
+    -
+      {}
