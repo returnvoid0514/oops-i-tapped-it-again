@@ -28,10 +28,9 @@
   ScriptInputsHidden:
     camera: false
     circleScreenTransform: false
-    faceMesh: false
+    debugPrint: false
     headBindingObject: false
-    radiusScale: false
-    triggerTarget: false
+    radiusPx: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -41,12 +40,11 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - faceMesh: !<reference.FaceMesh> 00000000-0000-0000-0000-000000000000
-      camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
+    - camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
       headBindingObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       circleScreenTransform: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
-      triggerTarget: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      radiusScale: !<float> 1.000000
+      radiusPx: !<float> 450.000000
+      debugPrint: true
   ScriptTypes:
     -
       {}

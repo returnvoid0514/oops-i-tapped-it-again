@@ -1,105 +1,76 @@
-//@input Component.FaceMesh faceMesh
 //@input Component.Camera camera
 //@input SceneObject headBindingObject
 //@input Component.ScreenTransform circleScreenTransform
-//@input SceneObject triggerTarget
-//@input float radiusScale = 1.0   // < 1.0 = stricter, > 1.0 = looser
+//@input float radiusPx = 450          // ✅ 先把半径设大，确保能进
+//@input bool debugPrint = true
 
-var wasInsideCircle = false;
+var wasInside = false;
+var t = 0;
 
-// Convert the head's world position to screen-space
-// NOTE: worldSpaceToScreenSpace may return normalized (0-1) OR pixels depending on Lens/Camera.
-// We'll normalize later by converting to pixels if needed.
-function getFaceScreenPosition() {
-    if (!script.camera || !script.headBindingObject) {
-        return null;
+function getScreenSizePx() {
+    if (global.deviceInfoSystem) {
+        if (typeof global.deviceInfoSystem.getScreenSize === "function") {
+            return global.deviceInfoSystem.getScreenSize();
+        }
+        if (typeof global.deviceInfoSystem.getScreenResolution === "function") {
+            return global.deviceInfoSystem.getScreenResolution();
+        }
     }
-
-    var worldPos = script.headBindingObject.getTransform().getWorldPosition();
-    var screenPos = script.camera.worldSpaceToScreenSpace(worldPos);
-
-    if (!screenPos) {
-        return null;
-    }
-
-    return new vec2(screenPos.x, screenPos.y);
+    return new vec2(720, 1280);
 }
 
-// Get circle center and radius in screen pixel space
-function getCircleData() {
-    if (!script.circleScreenTransform) {
-        return null;
-    }
-
-    // Circle center in screen pixels
-    var center = script.circleScreenTransform.localPointToScreenPoint(new vec2(0, 0));
-
-    // Radius from UI size (pixels)
-    // getSize() returns size in screen-space units for ScreenTransform
-    var size = script.circleScreenTransform.getSize();
-    var edgeLocal = new vec2(size.x * 0.5, 0);
-    var edge = script.circleScreenTransform.localPointToScreenPoint(edgeLocal);
-
-    var radius = center.distance(edge) * script.radiusScale;
-
-    return { center: center, radius: radius };
-}
-
-// Enable / disable the triggered object
-function setTriggered(enabled) {
-    if (!script.triggerTarget) {
-        return;
-    }
-    script.triggerTarget.enabled = enabled;
-}
-
-// Convert a point to pixels if it looks like normalized coordinates
-function toPixelsIfNeeded(p) {
-    var screenSize = global.deviceInfoSystem.getScreenSize();
-
-    // Heuristic: if it looks like normalized space around 0..1, treat it as normalized and convert to pixels.
+function toPixels(p) {
+    var s = getScreenSizePx();
+    // normalized -> pixels
     if (p.x >= -0.5 && p.x <= 1.5 && p.y >= -0.5 && p.y <= 1.5) {
-        return new vec2(p.x * screenSize.x, p.y * screenSize.y);
+        return new vec2(p.x * s.x, p.y * s.y);
     }
-    // Otherwise assume it's already pixels
     return p;
 }
 
-// Update loop
-var updateEvent = script.createEvent("UpdateEvent");
-updateEvent.bind(function () {
-    var facePos = getFaceScreenPosition();
-    var circle = getCircleData();
+function getFacePos() {
+    if (!script.camera || !script.headBindingObject) return null;
 
-    if (!facePos || !circle) {
-        return;
+    var w = script.headBindingObject.getTransform().getWorldPosition();
+    var sp = script.camera.worldSpaceToScreenSpace(w);
+    if (!sp) return null;
+
+    return new vec2(sp.x, sp.y);
+}
+
+function getCircleCenter() {
+    if (!script.circleScreenTransform) return null;
+    return script.circleScreenTransform.localPointToScreenPoint(new vec2(0, 0));
+}
+
+script.createEvent("UpdateEvent").bind(function () {
+    var face = getFacePos();
+    var center = getCircleCenter();
+    if (!face || !center) return;
+
+    var facePx = toPixels(face);
+    var centerPx = toPixels(center);
+
+    var dist = facePx.distance(centerPx);
+    var inside = dist <= script.radiusPx;
+
+    // 每 0.5s 打印一次，避免刷屏
+    if (script.debugPrint) {
+        t += getDeltaTime();
+        if (t >= 0.5) {
+            t = 0;
+            print(
+                "DBG facePx=" + facePx.x.toFixed(1) + "," + facePx.y.toFixed(1) +
+                " centerPx=" + centerPx.x.toFixed(1) + "," + centerPx.y.toFixed(1) +
+                " dist=" + dist.toFixed(1) +
+                " r=" + script.radiusPx.toFixed(1) +
+                " inside=" + inside
+            );
+        }
     }
 
-    //  Unify to pixel coordinates
-    var facePx = toPixelsIfNeeded(facePos);
-
-    //  On-screen check in pixels
-    var screenSize = global.deviceInfoSystem.getScreenSize();
-    var onScreen =
-        facePx.x >= 0 && facePx.x <= screenSize.x &&
-        facePx.y >= 0 && facePx.y <= screenSize.y;
-
-    //  Distance check in pixels
-    var isInsideCircle =
-        onScreen &&
-        facePx.distance(circle.center) <= circle.radius;
-
-    // Trigger only when state changes
-    if (isInsideCircle !== wasInsideCircle) {
-        wasInsideCircle = isInsideCircle;
-
-        print(isInsideCircle
-            ? "✅ Face entered circle"
-            : "⬅️ Face left circle"
-        );
-
-        setTriggered(isInsideCircle);
+    if (inside !== wasInside) {
+        wasInside = inside;
+        print(inside ? "✅ ENTERED" : "⬅️ LEFT");
     }
 });
-
-

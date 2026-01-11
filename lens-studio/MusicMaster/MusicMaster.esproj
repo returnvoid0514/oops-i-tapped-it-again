@@ -23,7 +23,7 @@ metaInfo:
     - Mobile
     - Web
   platformBundlesEnabled: false
-  iconHash: 7d653d94fb841628c43dbf26674bbb8a
+  iconHash: ""
   videoPreviewHash: ""
   fromTemplateName: Building Your First Lens
   fromTemplateUrl: Lens Studio 5.17.0.25121001
