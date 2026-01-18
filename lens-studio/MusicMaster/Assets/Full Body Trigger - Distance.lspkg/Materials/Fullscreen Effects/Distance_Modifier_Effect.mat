@@ -1,0 +1,66 @@
+- !<Material/1d3178ce-8055-4b71-af40-32f8282cfc0b>
+  PackagePath: ""
+  PassesInfo:
+    - !<own> 0b1adf36-35cb-4253-be4c-c62d47a04169
+- !<PassInfo/0b1adf36-35cb-4253-be4c-c62d47a04169>
+  CachedProperties:
+    - screenTextureBorderColor:
+        typeIdx: 5
+        value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    - screenTextureDims:
+        typeIdx: 5
+        value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+    - screenTextureTransform:
+        typeIdx: 7
+        value:
+          0: {x: 1.000000, y: 0.000000, z: 0.000000}
+          1: {x: 0.000000, y: 1.000000, z: 0.000000}
+          2: {x: 0.000000, y: 0.000000, z: 1.000000}
+    - screenTextureUvMinMax:
+        typeIdx: 5
+        value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  DepthWrite: false
+  DepthTest: false
+  DepthFunction: LessEqual
+  TwoSided: false
+  ColorMask: {x: true, y: true, z: true, w: true}
+  CullMode: Back
+  PolygonOffset: {x: 0.000000, y: 0.000000}
+  FrustumCulling: Auto
+  FrustumCullPad: 0.000000
+  InstanceCount: 1
+  Defines:
+    []
+  BlendMode: Disabled
+  Properties:
+    Port_RangeMaxA_N006:
+      typeIdx: 1
+      value: 0.900000
+    Port_RangeMaxB_N006:
+      typeIdx: 1
+      value: 75.000000
+    Port_RangeMinA_N006:
+      typeIdx: 1
+      value: 0.050000
+    Port_RangeMinB_N006:
+      typeIdx: 1
+      value: 720.000000
+    PreviewEnabled:
+      typeIdx: 0
+      value: 0
+    intensity:
+      typeIdx: 1
+      value: 0.000000
+    screenTexture:
+      typeIdx: 9
+      value:
+        id: 583d8db8-aa0a-41fa-bbb5-3c606a0c81d3
+        sampler:
+          filteringMode: Bilinear
+          wrapModeU: ClampToEdge
+          wrapModeV: ClampToEdge
+          wrapModeW: ClampToEdge
+          borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 1.000000}
+          mipmaps: false
+        type: Texture2D
+  Pass: !<reference> e2c83258-0e83-4c55-b460-c9e2dbc747e8

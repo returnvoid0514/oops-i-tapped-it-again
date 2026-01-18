@@ -1,0 +1,56 @@
+- !<AssetImportMetadata/5cf3ea2f-8975-16c4-4b1d-c3cbec1575f7>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> ac3ad22b-47b3-49e8-b730-894df1b535a4
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> ac3ad22b-47b3-49e8-b730-894df1b535a4
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    AssetLibraryId: 2z33LAL7BrZZ9JhW3DQWsU
+  AssetDataMap:
+    JavaScriptAsset: !<own> 856db20c-eba7-4082-ad55-9cae9749835e
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/856db20c-eba7-4082-ad55-9cae9749835e>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: b69ff789-63b2-40a8-bf0d-a165c9eebcc3
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    camera: false
+    circleScreenTransform: false
+    circleUiToHide: false
+    debugPrint: false
+    gameRootToEnable: false
+    headBindingObject: false
+    holdSeconds: false
+    radiusScale: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
+      headBindingObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      circleScreenTransform: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
+      gameRootToEnable: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      circleUiToHide: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      debugPrint: false
+      radiusScale: !<float> 1.000000
+      holdSeconds: 0.150000
+  ScriptTypes:
+    -
+      {}

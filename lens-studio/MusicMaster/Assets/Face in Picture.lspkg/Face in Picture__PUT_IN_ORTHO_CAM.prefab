@@ -1,0 +1,598 @@
+- !<ObjectPrefab/55ca037b-ea13-47cb-9b9d-89e8293796ff>
+  PackagePath: ""
+  objects:
+    - !<own> ff718734-d4e8-473d-b981-b23171a746a0
+  LazyLoading: false
+  RetainAssets: true
+- !<ScreenTransform/0b0e1b47-551e-4e48-a9a0-e0cdf45da5f9>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: -39.000000}
+    rotation: {x: 0.000000, y: -0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
+- !<SceneObject/0ddd5f5a-1695-4eb5-9adc-d8d277179972>
+  PrefabRemaps:
+    []
+  Name: "Second Face - Mouth [EDIT_ME]"
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 2.262001, y: -2.030000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 0.252000, y: 0.252000, z: 0.252000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 5c17587d-2088-410c-a829-06cbebe0a827
+- !<SceneObject/1fdea305-8e26-4a29-b91c-c1d139680312>
+  PrefabRemaps:
+    []
+  Name: FirstFace
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 120.000000, y: 0.000000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 4579f647-df83-4336-ae70-8893cf5e5413
+- !<SceneObject/2b0414c7-13c6-40b0-9c27-0912033b6e56>
+  PrefabRemaps:
+    []
+  Name: Second Face
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> ed4e1ae9-171a-41a5-8608-239d3cd78426
+    - !<own> 6fb9a4d7-61ef-40e7-b83b-6da9ca362027
+    - !<own> 0ddd5f5a-1695-4eb5-9adc-d8d277179972
+    - !<own> e0461aee-fae2-4c7b-b154-d0bdbd32c19b
+  Components:
+    - !<own> f26b0e43-068a-4f2d-a7f3-a45e6cafb594
+    - !<own> 35183096-fb81-419d-8c52-944e24675c9d
+- !<Image/335040ab-b0a3-49e8-ba22-b44bef479952>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 2
+  StretchMode: Fill
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> b9f0eac0-f2e0-478c-9ca9-74c5efc0e581
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ScreenTransform/35183096-fb81-419d-8c52-944e24675c9d>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: -1.000000}
+    rotation: {x: 0.000000, y: -0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
+- !<SceneObject/35c570fe-07aa-4c31-bd48-213413d48a75>
+  PrefabRemaps:
+    []
+  Name: "Background [REMOVE_ME]"
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -39.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 0b0e1b47-551e-4e48-a9a0-e0cdf45da5f9
+    - !<own> 8b981917-b3a3-4419-8704-0040113ece0c
+- !<FaceInsetVisual/39e7f0e3-d296-479e-ace0-ae5af3ec3ad1>
+  PrefabRemaps:
+    []
+  Name: Face Inset 2
+  Enabled: true
+  RenderOrder: 3
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> fc4cb20c-47e4-4df2-a86d-b9934e58e8bf
+  FaceIndex: 1
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+  FaceRegion: RightEye
+  CustomFaceRegion:
+    indices:
+      []
+    vertices:
+      []
+  InnerBorderRadius: 0.200000
+  OuterBorderRadius: 0.900000
+  SubDivisionCount: 64
+  Pivot: {x: 0.000000, y: 0.000000}
+  UVScale: {x: 1.000000, y: 1.000000}
+  UVOffset: {x: 0.000000, y: 0.000000}
+  FlipX: false
+  FlipY: false
+- !<ScreenTransform/42afb074-dac8-4cc1-a609-5f685918b15d>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: -40.000000}
+    rotation: {x: 0.000000, y: -0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
+- !<ScriptComponent/4579f647-df83-4336-ae70-8893cf5e5413>
+  PrefabRemaps:
+    []
+  Name: FaceInsetController
+  Enabled: true
+  ScriptAsset: !<reference> 49fb4fb2-970a-41f2-b52a-e566de3204f1
+  ScriptInputsDefault:
+    face: true
+    fallbackToFirst: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      faceInsets: !<reference.FaceInsetVisual[]>
+        - !<reference> d4254dd3-ceb6-4c74-8119-38e615887737
+      face: 0
+      fallbackToFirst: false
+      billboard: !<reference.Image> 335040ab-b0a3-49e8-ba22-b44bef479952
+      defaultCamTex: !<reference.Texture> a3371a36-ce60-44c9-809a-67d5769bd2ed
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/4a23acdf-0e41-436b-b47b-24a7bdba1098>
+  PrefabRemaps:
+    []
+  Name: First Face
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 35c570fe-07aa-4c31-bd48-213413d48a75
+    - !<own> c7886045-b63c-4b28-a6ca-df5359effc1b
+    - !<own> 1fdea305-8e26-4a29-b91c-c1d139680312
+  Components:
+    - !<own> fb3101bc-214e-4815-bc6a-733099b4d8ad
+    - !<own> c47a0227-00d1-45d7-9179-34e2474a27c9
+- !<ScriptComponent/57eb82e6-4db7-4d4b-b415-d698fa9880ca>
+  PrefabRemaps:
+    []
+  Name: FaceInsetController
+  Enabled: true
+  ScriptAsset: !<reference> 49fb4fb2-970a-41f2-b52a-e566de3204f1
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      faceInsets: !<reference.FaceInsetVisual[]>
+        - !<reference> 39e7f0e3-d296-479e-ace0-ae5af3ec3ad1
+        - !<reference> 9cb8d74d-27c0-4c4e-8d52-98e992623aee
+        - !<reference> 5c17587d-2088-410c-a829-06cbebe0a827
+      face: 1
+      fallbackToFirst: true
+      billboard: !<reference.Image> 335040ab-b0a3-49e8-ba22-b44bef479952
+      defaultCamTex: !<reference.Texture> a3371a36-ce60-44c9-809a-67d5769bd2ed
+  ScriptTypes:
+    "":
+      {}
+- !<FaceInsetVisual/5c17587d-2088-410c-a829-06cbebe0a827>
+  PrefabRemaps:
+    []
+  Name: Face Inset 2
+  Enabled: true
+  RenderOrder: 5
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> a9c1623e-7a13-4f93-87d9-d44db70ba91b
+  FaceIndex: 1
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+  FaceRegion: Mouth
+  CustomFaceRegion:
+    indices:
+      []
+    vertices:
+      []
+  InnerBorderRadius: 0.200000
+  OuterBorderRadius: 0.190000
+  SubDivisionCount: 64
+  Pivot: {x: 0.000000, y: 0.000000}
+  UVScale: {x: 1.000000, y: 1.000000}
+  UVOffset: {x: 0.000000, y: 0.000000}
+  FlipX: false
+  FlipY: false
+- !<ScreenRegionComponent/64586e28-5d10-4f55-8dfd-04727f59a0be>
+  PrefabRemaps:
+    []
+  Name: Screen Region
+  Enabled: true
+  ScreenRegionType: FullFrame
+  ResizeWithKeyboard: false
+- !<SceneObject/6fb9a4d7-61ef-40e7-b83b-6da9ca362027>
+  PrefabRemaps:
+    []
+  Name: "Second Face - Left Eye [EDIT_ME]"
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 1.482002, y: -1.464000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 0.200000, y: 0.200000, z: 0.200000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 9cb8d74d-27c0-4c4e-8d52-98e992623aee
+- !<Image/8b981917-b3a3-4419-8704-0040113ece0c>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fill
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> c3cc812d-ba0e-452a-a03c-1ca7a60fc0f4
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<FaceInsetVisual/9cb8d74d-27c0-4c4e-8d52-98e992623aee>
+  PrefabRemaps:
+    []
+  Name: Face Inset 2
+  Enabled: true
+  RenderOrder: 4
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> b8c249d8-5496-4dec-88a5-66b05a01cf95
+  FaceIndex: 1
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+  FaceRegion: LeftEye
+  CustomFaceRegion:
+    indices:
+      []
+    vertices:
+      []
+  InnerBorderRadius: 0.200000
+  OuterBorderRadius: 0.800000
+  SubDivisionCount: 64
+  Pivot: {x: 0.000000, y: 0.000000}
+  UVScale: {x: 1.000000, y: 1.000000}
+  UVOffset: {x: 0.000000, y: 0.000000}
+  FlipX: false
+  FlipY: false
+- !<ScreenTransform/b397b0cc-057f-4b63-97d9-1c0a026026f5>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: -40.000000}
+    rotation: {x: 0.000000, y: -0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
+- !<ScreenTransform/c47a0227-00d1-45d7-9179-34e2474a27c9>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: -1.000000}
+    rotation: {x: 0.000000, y: -0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
+- !<SceneObject/c7886045-b63c-4b28-a6ca-df5359effc1b>
+  PrefabRemaps:
+    []
+  Name: "First Face - Face [EDIT_ME] "
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: -1.024002, y: 2.078000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 0.350000, y: 0.350000, z: 0.350000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> d4254dd3-ceb6-4c74-8119-38e615887737
+- !<SceneObject/c88362a7-1c63-44ad-9008-80bee13ad9ea>
+  PrefabRemaps:
+    []
+  Name: "Billboard [EDIT_ME]"
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -40.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 42afb074-dac8-4cc1-a609-5f685918b15d
+    - !<own> 335040ab-b0a3-49e8-ba22-b44bef479952
+- !<FaceInsetVisual/d4254dd3-ceb6-4c74-8119-38e615887737>
+  PrefabRemaps:
+    []
+  Name: Face Inset 2
+  Enabled: true
+  RenderOrder: 1
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 58b275e4-bdf3-41ab-b197-fe759fbf739e
+  FaceIndex: 0
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+  FaceRegion: Face
+  CustomFaceRegion:
+    indices:
+      []
+    vertices:
+      []
+  InnerBorderRadius: 0.000000
+  OuterBorderRadius: 0.900000
+  SubDivisionCount: 64
+  Pivot: {x: 0.000000, y: 0.000000}
+  UVScale: {x: 1.000000, y: 1.000000}
+  UVOffset: {x: 0.000000, y: 0.000000}
+  FlipX: false
+  FlipY: false
+- !<SceneObject/e0461aee-fae2-4c7b-b154-d0bdbd32c19b>
+  PrefabRemaps:
+    []
+  Name: SecondFace
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 120.000000, y: 0.000000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 57eb82e6-4db7-4d4b-b415-d698fa9880ca
+- !<SceneObject/ed4e1ae9-171a-41a5-8608-239d3cd78426>
+  PrefabRemaps:
+    []
+  Name: "Second Face - Right Eye [EDIT_ME]"
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 3.029999, y: -1.464000, z: 1.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 0.200000, y: 0.200000, z: 0.200000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 39e7f0e3-d296-479e-ace0-ae5af3ec3ad1
+- !<ScreenRegionComponent/f26b0e43-068a-4f2d-a7f3-a45e6cafb594>
+  PrefabRemaps:
+    []
+  Name: Screen Region
+  Enabled: true
+  ScreenRegionType: FullFrame
+  ResizeWithKeyboard: false
+- !<ScreenRegionComponent/fb3101bc-214e-4815-bc6a-733099b4d8ad>
+  PrefabRemaps:
+    []
+  Name: Screen Region
+  Enabled: true
+  ScreenRegionType: FullFrame
+  ResizeWithKeyboard: false
+- !<SceneObject/ff718734-d4e8-473d-b981-b23171a746a0>
+  PrefabRemaps:
+    - 0b0e1b47-551e-4e48-a9a0-e0cdf45da5f9: 0b0e1b47-551e-4e48-565f-1f320ba25a06
+    - 0ddd5f5a-1695-4eb5-9adc-d8d277179972: 0ddd5f5a-1695-4eb5-6523-272d88e8668d
+    - 1fdea305-8e26-4a29-b91c-c1d139680312: 1fdea305-8e26-4a29-46e3-3e2ec697fced
+    - 2b0414c7-13c6-40b0-9c27-0912033b6e56: 2b0414c7-13c6-40b0-63d8-f6edfcc491a9
+    - 335040ab-b0a3-49e8-ba22-b44bef479952: 335040ab-b0a3-49e8-45dd-4bb410b866ad
+    - 35183096-fb81-419d-8c52-944e24675c9d: 35183096-fb81-419d-73ad-6bb1db98a362
+    - 35c570fe-07aa-4c31-bd48-213413d48a75: 35c570fe-07aa-4c31-42b7-decbec2b758a
+    - 39e7f0e3-d296-479e-ace0-ae5af3ec3ad1: 39e7f0e3-d296-479e-531f-51a50c13c52e
+    - 42afb074-dac8-4cc1-a609-5f685918b15d: 42afb074-dac8-4cc1-59f6-a097a6e74ea2
+    - 4579f647-df83-4336-ae70-8893cf5e5413: 4579f647-df83-4336-518f-776c30a1abec
+    - 4a23acdf-0e41-436b-b47b-24a7bdba1098: 4a23acdf-0e41-436b-4b84-db584245ef67
+    - 57eb82e6-4db7-4d4b-b415-d698fa9880ca: 57eb82e6-4db7-4d4b-4bea-296705677f35
+    - 5c17587d-2088-410c-a829-06cbebe0a827: 5c17587d-2088-410c-57d6-f934141f57d8
+    - 64586e28-5d10-4f55-8dfd-04727f59a0be: 64586e28-5d10-4f55-7202-fb8d80a65f41
+    - 6fb9a4d7-61ef-40e7-b83b-6da9ca362027: 6fb9a4d7-61ef-40e7-47c4-925635c9dfd8
+    - 8b981917-b3a3-4419-8704-0040113ece0c: 8b981917-b3a3-4419-78fb-ffbfeec131f3
+    - 9cb8d74d-27c0-4c4e-8d52-98e992623aee: 9cb8d74d-27c0-4c4e-72ad-67166d9dc511
+    - b397b0cc-057f-4b63-97d9-1c0a026026f5: b397b0cc-057f-4b63-6826-e3f5fd9fd90a
+    - c47a0227-00d1-45d7-9179-34e2474a27c9: c47a0227-00d1-45d7-6e86-cb1db8b5d836
+    - c7886045-b63c-4b28-a6ca-df5359effc1b: c7886045-b63c-4b28-5935-20aca61003e4
+    - c88362a7-1c63-44ad-9008-80bee13ad9ea: c88362a7-1c63-44ad-6ff7-7f411ec52615
+    - d4254dd3-ceb6-4c74-8119-38e615887737: d4254dd3-ceb6-4c74-7ee6-c719ea7788c8
+    - e0461aee-fae2-4c7b-b154-d0bdbd32c19b: e0461aee-fae2-4c7b-4eab-2f4242cd3e64
+    - ed4e1ae9-171a-41a5-8608-239d3cd78426: ed4e1ae9-171a-41a5-79f7-dc62c3287bd9
+    - f26b0e43-068a-4f2d-a7f3-a45e6cafb594: f26b0e43-068a-4f2d-580c-5ba193504a6b
+    - fb3101bc-214e-4815-bc6a-733099b4d8ad: fb3101bc-214e-4815-4395-8ccf664b2752
+    - ff718734-d4e8-473d-b981-b23171a746a0: ff718734-d4e8-473d-467e-4dce8e58b95f
+  Name: Face in Picture__PUT_IN_ORTHO_CAM
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -40.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 4a23acdf-0e41-436b-b47b-24a7bdba1098
+    - !<own> c88362a7-1c63-44ad-9008-80bee13ad9ea
+    - !<own> 2b0414c7-13c6-40b0-9c27-0912033b6e56
+  Components:
+    - !<own> 64586e28-5d10-4f55-8dfd-04727f59a0be
+    - !<own> b397b0cc-057f-4b63-97d9-1c0a026026f5

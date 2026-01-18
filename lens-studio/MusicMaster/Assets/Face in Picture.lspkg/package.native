@@ -1,0 +1,37 @@
+- !<NativePackageDescriptor/c8a42a75-587f-41f1-9dee-84fcab3f3a82>
+  PackagePath: ""
+  StudioVersion:
+    major: 5
+    minor: 17
+    patch: 0
+    build: 25121001
+    type: Unset
+    buildFlavor: ""
+    timestamp: 0
+    commit: ""
+  Description: "The Face In Picture template allows you to fill a hole of a 2D image with the user’s face. Additionally, it shows you how to overlay facial features like the user’s eyes and mouth over an imported 2D image. Learn more in the Face In Picture Template guide</p"
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  UpdateCheckpoint: 83
+  ExportUid: 02db1b24-dc9b-40a1-8aac-926b1a151a44
+  ComponentUid: 3f2d5801-b6dd-4115-ab67-337f0b0daf56
+  PackagePolicy: CanBeUnpackedTransparent
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  Instantiable: !<reference> 00000000-0000-0000-0000-000000000000
+  AssetLibraryDependencyStructure: !<AssetLibraryDependencyStructure>
+    Name: ""
+    AssetId: ""
+    Hash: ""
+    Version:
+      major: 0
+      minor: 0
+      patch: 0
+      build: 0

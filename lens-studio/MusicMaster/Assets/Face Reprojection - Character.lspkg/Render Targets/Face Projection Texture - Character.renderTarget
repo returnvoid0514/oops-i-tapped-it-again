@@ -1,0 +1,19 @@
+- !<RenderTarget/24094fc4-f81a-493c-a6f6-a6296bdb6299>
+  PackagePath: ""
+  UseScreenResolution: false
+  Resolution:
+    x: 1024
+    y: 1024
+  ResolutionScale: 1.000000
+  AntialiasingMode: Disabled
+  AntialiasingQuality: Ultra
+  MSAAStrategy: OnlyWhenRequired
+  TAASharpening: 1.000000
+  TAADebug: false
+  TAAColorClamping: true
+  TAAVelocityDilation: true
+  TAADebugConsts: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
+  ClearColorOption: CustomColor
+  ClearColor: {x: 1.000000, y: 0.999969, z: 0.999985, w: 0.100008}
+  InputTexture: !<reference> 00000000-0000-0000-0000-000000000000
+  DepthBuffer: Auto

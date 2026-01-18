@@ -1,0 +1,40 @@
+- !<NativePackageDescriptor/401508e5-50b3-482c-941c-33521dea3b69>
+  PackagePath: ""
+  StudioVersion:
+    major: 5
+    minor: 17
+    patch: 0
+    build: 25121001
+    type: Unset
+    buildFlavor: ""
+    timestamp: 0
+    commit: ""
+  Description: |-
+    The Full Body Trigger  - Distance Package allows you to trigger different screen effects with distance check between joints and screen elements. This asset use the distance between wrists as an example to modify the parameters in the post effect. Find the Object Tracking - Dance preview to preview the effect.
+    
+    Learn more. https://docs.snap.com/lens-studio/essential-skills/ar-tracking/body/body-templates/full-body-triggers
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  UpdateCheckpoint: 83
+  ExportUid: 669cacde-e0be-4772-93fe-b2f3ad268975
+  ComponentUid: e95c509a-7ba4-442a-85d0-b76770a6f0a6
+  PackagePolicy: CanBeUnpackedTransparent
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  Instantiable: !<reference> 00000000-0000-0000-0000-000000000000
+  AssetLibraryDependencyStructure: !<AssetLibraryDependencyStructure>
+    Name: ""
+    AssetId: ""
+    Hash: ""
+    Version:
+      major: 0
+      minor: 0
+      patch: 0
+      build: 0

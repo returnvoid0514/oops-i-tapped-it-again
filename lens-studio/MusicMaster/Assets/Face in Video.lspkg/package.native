@@ -1,0 +1,37 @@
+- !<NativePackageDescriptor/549e4a75-7d1a-4ea4-94ac-4f602e5c5af3>
+  PackagePath: ""
+  StudioVersion:
+    major: 5
+    minor: 17
+    patch: 0
+    build: 25121001
+    type: Unset
+    buildFlavor: ""
+    timestamp: 0
+    commit: ""
+  Description: "The Face In Video asset allows you to attach your own content to a video using tracking data from After Effects.This asset is great for building a Lens which tracks the user's face to content in a video."
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  VersionMajor: 0
+  VersionMinor: 2
+  VersionPatch: 0
+  UpdateCheckpoint: 83
+  ExportUid: 26fd3eed-8a57-481b-a56d-44ffe299b50f
+  ComponentUid: ebd28d62-f615-4110-a463-8177cf90f13a
+  PackagePolicy: CanBeUnpackedTransparent
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  Instantiable: !<reference> 00000000-0000-0000-0000-000000000000
+  AssetLibraryDependencyStructure: !<AssetLibraryDependencyStructure>
+    Name: ""
+    AssetId: ""
+    Hash: ""
+    Version:
+      major: 0
+      minor: 0
+      patch: 0
+      build: 0

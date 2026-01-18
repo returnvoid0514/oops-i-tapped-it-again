@@ -1,0 +1,58 @@
+- !<AssetImportMetadata/f92f27da-4a9e-7aab-2d3c-fd1adab0cb27>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> b28a8406-65b9-4d93-b06c-b0b7d2dc4a4d
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> b28a8406-65b9-4d93-b06c-b0b7d2dc4a4d
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    JavaScriptAsset: !<own> d2603555-2587-4cc1-a17e-5b8143bdb1ea
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/d2603555-2587-4cc1-a17e-5b8143bdb1ea>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 580aa715-78e7-4464-8286-00b83a865060
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    compareTarget: false
+    effectMaterial: false
+    effectObject: false
+    mainJoint: false
+    multiplier: false
+    parameter: false
+    printDebugLog: false
+    targetJoint: false
+    targetObject: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - mainJoint: Nose
+      compareTarget: 0
+      targetJoint: Nose
+      targetObject: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
+      printDebugLog: false
+      effectObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      effectMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      parameter: ""
+      multiplier: !<float> 1.000000
+  ScriptTypes:
+    -
+      {}

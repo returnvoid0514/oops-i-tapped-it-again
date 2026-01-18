@@ -1,0 +1,80 @@
+- !<AssetImportMetadata/00d5e38d-6269-278f-eac3-4f0125202009>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> 7f02b4f4-1e70-4b38-b4bf-053c2c5565c7
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> 7f02b4f4-1e70-4b38-b4bf-053c2c5565c7
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    JavaScriptAsset: !<own> 3f92d7f6-0f22-4829-924d-df2b67801414
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/3f92d7f6-0f22-4829-924d-df2b67801414>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: The primary script that drives the face in video
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: d79a4c64-38d2-4d6f-9017-0b050508b4a2
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    advanced: false
+    backgroundImage: false
+    errorImage: false
+    extentsTarget: false
+    imageAlpha: false
+    imageOffsetX: false
+    imageOffsetY: false
+    imageRotation: false
+    imageSize: false
+    imageSort: false
+    mainImage: false
+    movie: false
+    movieImage: false
+    opacityTexture: false
+    renderingCamera: false
+    showVideo: false
+    trackPosition: false
+    trackRotation: false
+    trackScale: false
+    trackedImageTransform: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - renderingCamera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
+      showVideo: true
+      movie: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      mainImage: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      opacityTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      imageSize: !<float> 1.000000
+      imageOffsetX: !<float> 0.000000
+      imageOffsetY: !<float> 0.000000
+      imageRotation: !<float> 0.000000
+      imageAlpha: !<float> 1.000000
+      imageSort: 0
+      advanced: false
+      trackPosition: true
+      trackScale: true
+      trackRotation: true
+      trackedImageTransform: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
+      movieImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      extentsTarget: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
+      backgroundImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      errorImage: !<reference.Image> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}

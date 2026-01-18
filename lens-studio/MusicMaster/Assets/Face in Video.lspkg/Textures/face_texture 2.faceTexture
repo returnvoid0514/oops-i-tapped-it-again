@@ -1,0 +1,9 @@
+- !<FaceTexture/25681e12-8525-414b-87de-184b0e560d16>
+  PackagePath: ""
+  FaceIndex: 0
+  InputTexture: !<reference> eff6f9b8-41f4-4970-8a28-a5b0f9dd7e12
+  Scale: {x: 0.800000, y: 0.800000}
+  Offset: {x: 0.000000, y: 0.100000}
+  AdjustOffset: false
+  FaceRegion: HeadCenter
+  ScreenTexture: true

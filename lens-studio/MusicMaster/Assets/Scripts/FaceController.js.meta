@@ -27,10 +27,10 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     camera: false
-    circleScreenTransform: false
+    circleUI: false
     debugPrint: false
     headBindingObject: false
-    radiusPx: false
+    radiusScale: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -42,8 +42,8 @@
   DefaultScriptInputs:
     - camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
       headBindingObject: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
-      circleScreenTransform: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
-      radiusPx: !<float> 450.000000
+      circleUI: !<reference.ScreenTransform> 00000000-0000-0000-0000-000000000000
+      radiusScale: 0.480000
       debugPrint: true
   ScriptTypes:
     -

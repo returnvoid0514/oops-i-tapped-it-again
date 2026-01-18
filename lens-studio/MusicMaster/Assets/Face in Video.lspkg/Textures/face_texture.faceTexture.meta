@@ -1,0 +1,16 @@
+- !<AssetImportMetadata/1505eb77-1db6-9435-84ff-64269c88cd4f>
+  ImportedAssetIds:
+    Texture: !<reference> 4a581f39-3a9f-4724-a651-6c182b4f923f
+  ImporterName: FaceTextureImporter
+  PrimaryAsset: !<reference> 4a581f39-3a9f-4724-a651-6c182b4f923f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    {}
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
