@@ -1,0 +1,54 @@
+- !<AssetImportMetadata/e0aa14b3-097f-2c9d-8d53-93a28903d4f3>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> 787f7496-f867-409b-afcd-3ca764e41940
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> 787f7496-f867-409b-afcd-3ca764e41940
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    JavaScriptAsset: !<own> 9174a5c6-5a76-4baa-a309-4c374939255d
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/9174a5c6-5a76-4baa-a309-4c374939255d>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: b69ff789-63b2-40a8-bf0d-a165c9eebcc3
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    advancedSetup: false
+    customRenderMesh: false
+    faceIndex: false
+    inputTexture: false
+    outputTexture: false
+    projectionMat: false
+    targetCaptureCos: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - inputTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      outputTexture: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      customRenderMesh: !<reference.RenderMesh> 00000000-0000-0000-0000-000000000000
+      faceIndex: 0
+      advancedSetup: false
+      targetCaptureCos: !<float> 0.000000
+      projectionMat: !<reference.Material> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}

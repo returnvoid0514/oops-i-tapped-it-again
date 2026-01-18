@@ -1,0 +1,48 @@
+- !<AssetImportMetadata/686eafa5-a421-7a31-8f78-8f8cd95bc2b9>
+  ImportedAssetIds:
+    JavaScriptAsset: !<reference> df0c5cff-89e6-44bc-a9b4-18fbaa2abc55
+  ImporterName: JavaScriptAssetImporter
+  PrimaryAsset: !<reference> df0c5cff-89e6-44bc-a9b4-18fbaa2abc55
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    AssetLibraryId: 2z33LAL7BrZZ9JhW3DQWsU
+  AssetDataMap:
+    JavaScriptAsset: !<own> 604d2621-b825-4341-a784-dc524bd73ea3
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptAssetData/604d2621-b825-4341-a784-dc524bd73ea3>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 1
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: a123e8bc-321d-4068-8906-8b0981ea16d0
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    blendshapeName: false
+    expressionName: false
+    meshFrom: false
+    meshTo: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - expressionName: ""
+      meshFrom: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+      blendshapeName: ""
+      meshTo: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}

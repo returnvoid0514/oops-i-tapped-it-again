@@ -1,0 +1,502 @@
+- !<AssetImportMetadata/f3f9c47e-bca9-309d-c706-2cbdd6271564>
+  ImportedAssetIds:
+    ObjectPrefab: !<reference> 55c13d4c-4775-44b0-b1ea-d0928283e501
+  ImporterName: ObjectPrefabImporter
+  PrimaryAsset: !<reference> 55c13d4c-4775-44b0-b1ea-d0928283e501
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    ObjectPrefab: !<own> 45c97fd6-0b77-46f2-9c00-33a70e218ca7
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/0211f37b-e3b5-4ed4-4239-137d3ae1bec0>
+  PrefabRemaps:
+    []
+  Name: Character
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 483bc3d8-61f5-403b-776b-ed79d1f28766
+    - !<own> 7a85da25-7073-432b-6a3a-bf4ab5271a66
+  Components:
+    []
+- !<SceneObject/09429891-0c9e-4005-7ddc-8387482f2329>
+  PrefabRemaps:
+    []
+  Name: Right Eye
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 15c98e54-678f-4e94-7ed1-0baedea0a7ba
+  Components:
+    - !<own> c1e9941d-5712-4790-51fc-afa1265b1e5b
+    - !<own> 398a2c26-5abf-4b47-4cbb-d93dda3643f4
+- !<ScriptComponent/0f5a9d76-8c98-42ab-7804-ad7f96ad6870>
+  PrefabRemaps:
+    []
+  Name: Expression Controller
+  Enabled: true
+  ScriptAsset: !<reference> c89f396e-897b-4ab3-ac0d-efbbad472010
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      expressionName: EyeBlinkRight
+      meshFrom: !<reference.RenderMeshVisual> e0010520-0a87-4c7a-640b-0f352149f607
+      blendshapeName: r_eye_close
+      meshTo: !<reference.RenderMeshVisual> e0010520-0a87-4c7a-640b-0f352149f607
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/15c98e54-678f-4e94-7ed1-0baedea0a7ba>
+  PrefabRemaps:
+    []
+  Name: Right Eye Sclera
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 2.500000, y: 2.500000, z: 2.500000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> bfe190ee-5b10-4ea8-4425-57d942e7c7b5
+- !<SceneObject/234dd128-878e-49f6-4532-eb99655678ea>
+  PrefabRemaps:
+    []
+  Name: Scripts
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: -40.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 92546176-70ee-4596-6e41-9d6416e98b26
+    - !<own> 8aae89be-4ca2-4428-5648-2d406b982371
+  Components:
+    []
+- !<ScriptComponent/2988e854-a401-444b-5561-5ee5de5908f5>
+  PrefabRemaps:
+    []
+  Name: Face Reprojection
+  Enabled: true
+  ScriptAsset: !<reference> acc4bf67-6a8b-4fc9-857f-c0b0779df5e7
+  ScriptInputsDefault:
+    faceIndex: true
+    advancedSetup: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      inputTexture: !<reference.Texture> ae00e150-6a72-43f0-a5e1-0004d87a38ad
+      outputTexture: !<reference.Texture> 70dab1e3-6c99-4e3d-8792-77a21b5e27eb
+      customRenderMesh: !<reference.RenderMesh> e9cf642e-ebe3-465e-a8a4-f6907ffd6ebf
+      faceIndex: 0
+      advancedSetup: false
+      targetCaptureCos: 0.500000
+      projectionMat: !<reference.Material> a3970ccc-5d20-4d4e-aa22-33570fb67644
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/2df2ba7a-afbc-4401-55d1-83af9d50a332>
+  PrefabRemaps:
+    []
+  Name: Left Eye Sclera
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 2.500000, y: 2.500000, z: 2.500000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 58aea6ea-8b3b-4131-4d08-9b91938a8612
+- !<PinToMeshComponent/2f2e5c60-95e8-4235-41c8-686f026a630c>
+  PrefabRemaps:
+    []
+  Name: Pin To Mesh
+  Enabled: true
+  Target: !<reference> e0010520-0a87-4c7a-640b-0f352149f607
+  PinUV: {x: 0.730000, y: 0.580000}
+  OffsetPosition: {x: 0.000000, y: 0.800000, z: -1.300000}
+  OffsetRotation: {x: 0.000000, y: -90.000000, z: -90.000000}
+  UseVertexNormal: false
+  Orientation: OnlyPosition
+- !<PinToMeshComponent/398a2c26-5abf-4b47-4cbb-d93dda3643f4>
+  PrefabRemaps:
+    []
+  Name: Pin To Mesh
+  Enabled: true
+  Target: !<reference> e0010520-0a87-4c7a-640b-0f352149f607
+  PinUV: {x: 0.730000, y: 0.380000}
+  OffsetPosition: {x: 0.000000, y: 0.800000, z: -1.300000}
+  OffsetRotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+  UseVertexNormal: false
+  Orientation: OnlyPosition
+- !<ScriptComponent/3a4160a0-2d97-4a63-42e0-7ae8f7faaaca>
+  PrefabRemaps:
+    []
+  Name: Expression Controller
+  Enabled: true
+  ScriptAsset: !<reference> c89f396e-897b-4ab3-ac0d-efbbad472010
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      expressionName: EyeBlinkLeft
+      meshFrom: !<reference.RenderMeshVisual> e0010520-0a87-4c7a-640b-0f352149f607
+      blendshapeName: l_eye_close
+      meshTo: !<reference.RenderMeshVisual> e0010520-0a87-4c7a-640b-0f352149f607
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/40f228a4-2250-403e-47ec-758307d1f0e9>
+  PrefabRemaps:
+    []
+  Name: Left Eye
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: -2.970781, y: 1.291078, z: -41.145756}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 2df2ba7a-afbc-4401-55d1-83af9d50a332
+  Components:
+    - !<own> a46abe06-5e9c-4d4b-5945-1dccb15849e7
+    - !<own> 2f2e5c60-95e8-4235-41c8-686f026a630c
+- !<ObjectPrefabAssetData/45c97fd6-0b77-46f2-9c00-33a70e218ca7>
+  Prototype: !<ObjectOwner/7fea5844-709d-4c88-8529-57e4202a9252>
+    PackagePath: ""
+    objects:
+      - !<own> 736e1142-9831-4b42-5f8d-6d7757b6ee68
+- !<SceneObject/483bc3d8-61f5-403b-776b-ed79d1f28766>
+  PrefabRemaps:
+    []
+  Name: Head Binding
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: -0.055584, y: -7.885853, z: -48.032692}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> ff720be0-ad82-49c8-4f18-1e2e3dfe810a
+  Components:
+    - !<own> fa69bb26-806d-410d-6b88-093cf65c0311
+- !<RenderMeshVisual/57842b1a-882e-43ca-4e21-154d720482b6>
+  PrefabRemaps:
+    []
+  Name: Render Mesh Visual
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 0.098039, y: 0.098039, z: 0.098039, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 37d29df3-2d21-4e37-ad09-41032d80de8d
+  Mesh: !<reference> 3b2a0801-69ac-49bc-b3d4-ef3867e79223
+  Skin: !<reference> 00000000-0000-0000-0000-000000000000
+  BlendShapesEnabled: true
+  BlendNormals: false
+  BlendShapes:
+    {}
+- !<RenderMeshVisual/58aea6ea-8b3b-4131-4d08-9b91938a8612>
+  PrefabRemaps:
+    []
+  Name: Render Mesh Visual
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 5bd0ecde-a0c4-4613-bffa-3d4cbbc94339
+  Mesh: !<reference> cf15c01a-0656-45d1-916e-9e0acd260636
+  Skin: !<reference> 00000000-0000-0000-0000-000000000000
+  BlendShapesEnabled: true
+  BlendNormals: false
+  BlendShapes:
+    {}
+- !<SceneObject/736e1142-9831-4b42-5f8d-6d7757b6ee68>
+  PrefabRemaps:
+    []
+  Name: Face Reprojection - Character
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 0211f37b-e3b5-4ed4-4239-137d3ae1bec0
+    - !<own> 234dd128-878e-49f6-4532-eb99655678ea
+  Components:
+    []
+- !<SceneObject/7a85da25-7073-432b-6a3a-bf4ab5271a66>
+  PrefabRemaps:
+    []
+  Name: Attachments
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> 40f228a4-2250-403e-47ec-758307d1f0e9
+    - !<own> 09429891-0c9e-4005-7ddc-8387482f2329
+    - !<own> bd612efe-d2ec-4e1b-6ff3-ecd3f2cfb47e
+  Components:
+    []
+- !<SceneObject/8aae89be-4ca2-4428-5648-2d406b982371>
+  PrefabRemaps:
+    []
+  Name: Reproject Face Texture to Mesh
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 2988e854-a401-444b-5561-5ee5de5908f5
+    - !<own> b7ca395b-008f-4ee5-4f36-3ed95fe2f1b6
+- !<SceneObject/92546176-70ee-4596-6e41-9d6416e98b26>
+  PrefabRemaps:
+    []
+  Name: Expression Controller
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 3a4160a0-2d97-4a63-42e0-7ae8f7faaaca
+    - !<own> 0f5a9d76-8c98-42ab-7804-ad7f96ad6870
+- !<Head/a46abe06-5e9c-4d4b-5945-1dccb15849e7>
+  PrefabRemaps:
+    []
+  Name: Head Binding
+  Enabled: true
+  AttachmentPointType: LeftEyeballCenter
+  FaceIndex: 0
+  AttachedBarycentricVertex:
+    indices:
+      - 0
+      - 0
+      - 0
+    weights:
+      - 0.000000
+      - 0.000000
+      - 0.000000
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ScriptComponent/b7ca395b-008f-4ee5-4f36-3ed95fe2f1b6>
+  PrefabRemaps:
+    []
+  Name: ReplaceTextureProvider
+  Enabled: true
+  ScriptAsset: !<reference> b9f0e037-0206-4d57-8d47-c21b4df2c7b8
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      textureTo: !<reference.Texture> 68cd7548-9018-41fa-b5a0-685878cfcd25
+      textureFrom: !<reference.Texture> 70dab1e3-6c99-4e3d-8792-77a21b5e27eb
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/bd612efe-d2ec-4e1b-6ff3-ecd3f2cfb47e>
+  PrefabRemaps:
+    []
+  Name: Bow
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    - !<own> cd56a105-00f5-4e09-457f-e8177be4f2e6
+  Components:
+    - !<own> fd82e5d0-6c91-419f-65b0-3bed9ca28173
+    - !<own> e55660f6-e756-45e4-7190-ab4e3aa0a905
+- !<RenderMeshVisual/bfe190ee-5b10-4ea8-4425-57d942e7c7b5>
+  PrefabRemaps:
+    []
+  Name: Render Mesh Visual
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 5bd0ecde-a0c4-4613-bffa-3d4cbbc94339
+  Mesh: !<reference> cf15c01a-0656-45d1-916e-9e0acd260636
+  Skin: !<reference> 00000000-0000-0000-0000-000000000000
+  BlendShapesEnabled: true
+  BlendNormals: false
+  BlendShapes:
+    {}
+- !<Head/c1e9941d-5712-4790-51fc-afa1265b1e5b>
+  PrefabRemaps:
+    []
+  Name: Head Binding
+  Enabled: true
+  AttachmentPointType: RightEyeballCenter
+  FaceIndex: 0
+  AttachedBarycentricVertex:
+    indices:
+      - 0
+      - 0
+      - 0
+    weights:
+      - 0.000000
+      - 0.000000
+      - 0.000000
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/cd56a105-00f5-4e09-457f-e8177be4f2e6>
+  PrefabRemaps:
+    []
+  Name: Bow
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 0.700000, y: 0.700000, z: 0.700000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 57842b1a-882e-43ca-4e21-154d720482b6
+- !<RenderMeshVisual/e0010520-0a87-4c7a-640b-0f352149f607>
+  PrefabRemaps:
+    []
+  Name: Render Mesh Visual
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> d73858f5-6c7e-4d3c-bbf0-5aca3b082f91
+  Mesh: !<reference> e9cf642e-ebe3-465e-a8a4-f6907ffd6ebf
+  Skin: !<reference> 00000000-0000-0000-0000-000000000000
+  BlendShapesEnabled: true
+  BlendNormals: true
+  BlendShapes:
+    ExternalFaceMesh: 1.000000
+    l_eye_close: 0.000000
+    r_eye_close: 0.000000
+- !<PinToMeshComponent/e55660f6-e756-45e4-7190-ab4e3aa0a905>
+  PrefabRemaps:
+    []
+  Name: Pin To Mesh
+  Enabled: true
+  Target: !<reference> e0010520-0a87-4c7a-640b-0f352149f607
+  PinUV: {x: 0.533761, y: 0.327186}
+  OffsetPosition: {x: 0.000000, y: 0.000000, z: 1.000000}
+  OffsetRotation: {x: -20.000000, y: 120.000000, z: 30.000000}
+  UseVertexNormal: false
+  Orientation: PositionAndDirection
+- !<Head/fa69bb26-806d-410d-6b88-093cf65c0311>
+  PrefabRemaps:
+    []
+  Name: Head Binding
+  Enabled: true
+  AttachmentPointType: HeadCenter
+  FaceIndex: 0
+  AttachedBarycentricVertex:
+    indices:
+      - 0
+      - 0
+      - 0
+    weights:
+      - 0.000000
+      - 0.000000
+      - 0.000000
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+- !<Head/fd82e5d0-6c91-419f-65b0-3bed9ca28173>
+  PrefabRemaps:
+    []
+  Name: Head Binding
+  Enabled: true
+  AttachmentPointType: RightEyeballCenter
+  FaceIndex: 0
+  AttachedBarycentricVertex:
+    indices:
+      - 0
+      - 0
+      - 0
+    weights:
+      - 0.000000
+      - 0.000000
+      - 0.000000
+  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/ff720be0-ad82-49c8-4f18-1e2e3dfe810a>
+  PrefabRemaps:
+    []
+  Name: Face Mesh
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> e0010520-0a87-4c7a-640b-0f352149f607
