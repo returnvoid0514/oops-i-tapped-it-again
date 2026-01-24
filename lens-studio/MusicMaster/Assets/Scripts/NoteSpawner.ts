@@ -17,32 +17,41 @@ export class NoteSpawner extends BaseScriptComponent {
     spawnInterval: number = 1.0;
     public pool: SceneObject[] = [];
     private poolSize: number = 30;
-    
+
     private notesQueue: any[] = [];
-    
+    private originalNotesQueue: any[] = []; // Store original for reset
+
     private nextSpawnBeat: number = 0;
+    private initialNextSpawnBeat: number = 0; // Store initial for reset
+
+    // Control flag for spawning
+    private isSpawning: boolean = false;
 
     onAwake() {
         if (!this.notePrefab || !this.conductor) {
-            print("❌ Error: Please check if NotePrefab and Conductor are assigned!");
+            print("Error: Please check if NotePrefab and Conductor are assigned!");
             return;
         }
 
         this.initPool();
 
         if (this.infiniteMode) {
-            print("🚀 Startup Mode: Infinite Random Generation");
-            this.nextSpawnBeat = this.conductor.currentBeat + 2.0;
+            print("Startup Mode: Infinite Random Generation");
+            this.initialNextSpawnBeat = 2.0; // Will be added to currentBeat on start
         } else {
-            print("📂 Startup Mode: Loading Chart Data");
+            print("Startup Mode: Loading Chart Data");
             this.loadStaticData();
         }
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
+        // Note spawning is now controlled by GameStateManager
     }
 
     private onUpdate() {
         if (!this.conductor) return;
+
+        // Only spawn notes when game is playing
+        if (!this.isSpawning) return;
 
         const currentBeat = this.conductor.currentBeat;
         const spawnWindow = 8.0;
@@ -100,14 +109,52 @@ export class NoteSpawner extends BaseScriptComponent {
 
 
     private loadStaticData() {
+        this.originalNotesQueue = [...SongData.notes];
         this.notesQueue = [...SongData.notes];
-        
+
         if (this.conductor) {
             this.conductor.bpm = SongData.bpm;
             this.conductor.offset = SongData.offset;
         }
-        
-        print("✅ Chart loaded successfully! Note count: " + this.notesQueue.length);
+
+        print("Chart loaded successfully! Note count: " + this.notesQueue.length);
+    }
+
+    // Start spawning notes - called by GameStateManager
+    public start(): void {
+        this.isSpawning = true;
+
+        if (this.infiniteMode) {
+            this.nextSpawnBeat = this.conductor.currentBeat + this.initialNextSpawnBeat;
+        }
+
+        print("NoteSpawner: Started spawning");
+    }
+
+    // Stop spawning notes - called by GameStateManager
+    public stop(): void {
+        this.isSpawning = false;
+        print("NoteSpawner: Stopped spawning");
+    }
+
+    // Reset spawner state - called by GameStateManager
+    public reset(): void {
+        this.isSpawning = false;
+
+        // Reset notes queue from original data
+        if (!this.infiniteMode) {
+            this.notesQueue = [...this.originalNotesQueue];
+        }
+
+        // Reset next spawn beat
+        this.nextSpawnBeat = 0;
+
+        // Disable all pooled notes
+        for (let noteObj of this.pool) {
+            noteObj.enabled = false;
+        }
+
+        print("NoteSpawner: Reset complete - " + this.notesQueue.length + " notes queued");
     }
 
     private inspectAsset(obj: any) {
