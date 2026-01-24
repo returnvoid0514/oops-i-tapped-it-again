@@ -29,6 +29,7 @@
     audioTrack: false
     bpm: false
     offset: false
+    startText: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -41,6 +42,7 @@
     - audioTrack: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
       bpm: !<float> 120.000000
       offset: !<float> 0.000000
+      startText: !<reference.Text> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
@@ -48,3 +50,4 @@
     - // @input Component.AudioComponent audioTrack
     - // @input float bpm = 120
     - // @input float offset
+    - // @input Component.Text startText

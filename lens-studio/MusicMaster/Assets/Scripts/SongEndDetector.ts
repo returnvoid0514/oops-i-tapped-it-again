@@ -1,8 +1,7 @@
 import { HitZoneManager } from "./HitZoneManager";
-import { GameStateManager } from "./GameStateManager";
 
-// This script detects when the song ends and triggers the game end state
-// Attach this to a scene object and assign the required components in Inspector
+// This script detects when the song ends and displays the final score
+// Attach this to a scene object and assign the HitZoneManager and AudioComponent in Inspector
 
 @component
 export class SongEndDetector extends BaseScriptComponent {
@@ -13,34 +12,30 @@ export class SongEndDetector extends BaseScriptComponent {
     audioComponent: AudioComponent;
 
     @input
-    gameStateManager: GameStateManager;
-
-    @input
     songDuration: number = 60.0; // Duration in seconds, or set to 0 to auto-detect
 
     private hasEnded: boolean = false;
     private startTime: number = 0;
-    private isActive: boolean = false;
 
     onAwake() {
         if (!this.hitZoneManager) {
-            print("SongEndDetector: Please assign HitZoneManager in Inspector!");
+            print("❌ SongEndDetector: Please assign HitZoneManager in Inspector!");
             return;
         }
 
         if (!this.audioComponent) {
-            print("SongEndDetector: Please assign AudioComponent in Inspector!");
+            print("❌ SongEndDetector: Please assign AudioComponent in Inspector!");
             return;
         }
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
+        this.startTime = getTime();
 
-        print("SongEndDetector initialized");
+        print("🎵 SongEndDetector initialized");
     }
 
     onUpdate() {
-        // Only check for song end when game is active
-        if (!this.isActive || this.hasEnded) return;
+        if (this.hasEnded) return;
 
         // Check if audio has stopped playing
         if (this.audioComponent && !this.audioComponent.isPlaying()) {
@@ -62,23 +57,10 @@ export class SongEndDetector extends BaseScriptComponent {
         if (this.hasEnded) return;
 
         this.hasEnded = true;
-        print("\nSong ended! Triggering game end state...\n");
+        print("\n🎵 Song ended! Displaying final score...\n");
 
-        // Notify GameStateManager to handle the end state
-        if (this.gameStateManager) {
-            this.gameStateManager.onSongEnd();
-        } else {
-            // Fallback: directly show final score if no GameStateManager
-            this.hitZoneManager.showFinalScore();
-        }
-    }
-
-    // Reset detector state - called by GameStateManager
-    public reset(): void {
-        this.hasEnded = false;
-        this.startTime = getTime();
-        this.isActive = true;
-        print("SongEndDetector: Reset and activated");
+        // Display final score
+        this.hitZoneManager.showFinalScore();
     }
 
     // Public method to manually trigger score display (e.g., for testing)

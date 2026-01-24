@@ -8,9 +8,17 @@ export class Conductor extends BaseScriptComponent {
 
     @input
     offset: number = 0;
+
+    // Optional: Text to show "TAP TO START" - assign in Inspector
+    @input
+    startText: Text;
+
     public currentSongPosition: number = 0;
     public currentBeat: number = 0;
     private lastSampleTime: number = 0;
+
+    // Game starts when user taps
+    public isGameStarted: boolean = false;
 
     onAwake() {
         if (!this.audioTrack) {
@@ -19,7 +27,36 @@ export class Conductor extends BaseScriptComponent {
         }
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
-        // Removed auto-play - game now starts via GameStateManager
+
+        // Show start text if assigned
+        if (this.startText) {
+            this.startText.text = "TAP TO START";
+        }
+
+        // Listen for tap to start game
+        this.createEvent("TouchStartEvent").bind(this.onTouchStart.bind(this));
+    }
+
+    private onTouchStart(eventData: TouchStartEvent) {
+        if (!this.isGameStarted) {
+            this.startGame();
+        }
+    }
+
+    private startGame() {
+        this.isGameStarted = true;
+
+        // Hide start text
+        if (this.startText) {
+            const textObj = this.startText.getSceneObject();
+            if (textObj) {
+                textObj.enabled = false;
+            }
+        }
+
+        // Start the music
+        this.audioTrack.play(1);
+        print("🎵 Game started!");
     }
 
     onUpdate() {
@@ -28,41 +65,10 @@ export class Conductor extends BaseScriptComponent {
         this.currentSongPosition = this.audioTrack.position - this.offset;
 
         this.currentBeat = (this.currentSongPosition * this.bpm) / 60;
+
     }
 
     public getBeatError(targetBeat: number): number {
         return Math.abs(this.currentBeat - targetBeat);
-    }
-
-    // Start audio playback
-    public play(): void {
-        if (this.audioTrack) {
-            this.audioTrack.play(1);
-            print("Conductor: Audio playback started");
-        }
-    }
-
-    // Stop audio playback
-    public stop(): void {
-        if (this.audioTrack) {
-            this.audioTrack.stop(true);
-            print("Conductor: Audio playback stopped");
-        }
-    }
-
-    // Reset to beginning
-    public reset(): void {
-        if (this.audioTrack) {
-            this.audioTrack.stop(true);
-        }
-        this.currentSongPosition = 0;
-        this.currentBeat = 0;
-        this.lastSampleTime = 0;
-        print("Conductor: Reset to beginning");
-    }
-
-    // Check if audio is currently playing
-    public isPlaying(): boolean {
-        return this.audioTrack ? this.audioTrack.isPlaying() : false;
     }
 }

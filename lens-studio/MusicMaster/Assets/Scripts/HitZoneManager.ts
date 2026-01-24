@@ -267,6 +267,11 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private onTouch(eventData: TouchStartEvent) {
+        // Ignore touches until game starts
+        if (this.conductor && !this.conductor.isGameStarted) {
+            return;
+        }
+
         if (!this.camera) {
             print("❌ Camera not assigned!");
             return;
@@ -451,6 +456,11 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private checkMissedNotes(): void {
+        // Don't check for misses until game starts
+        if (this.conductor && !this.conductor.isGameStarted) {
+            return;
+        }
+
         // Use cached spawner script reference
         if (!this.spawnerScript) {
             // Try to cache again if not available
@@ -611,49 +621,6 @@ export class HitZoneManager extends BaseScriptComponent {
         this.scoreStats.currentCombo = 0;
         this.scoreStats.maxCombo = 0;
         this.updateComboDisplay();
-        print("Score reset!");
-    }
-
-    // Full reset for game restart - called by GameStateManager
-    public reset(): void {
-        // Reset score stats
-        this.resetScore();
-
-        // Clear judged notes tracking
-        this.judgedNotes.clear();
-
-        // Reset UI text displays
-        if (this.comboText) {
-            this.comboText.text = "";
-        }
-
-        if (this.hitStatusText) {
-            this.hitStatusText.text = "";
-        }
-
-        // Reset timers
-        this.hitStatusTimer = 0;
-        this.debugTimer = 0;
-
-        print("HitZoneManager: Full reset complete");
-    }
-
-    // Get score stats for external display (e.g., GameStateManager)
-    public getScoreStats(): {
-        perfect: number;
-        great: number;
-        good: number;
-        miss: number;
-        totalScore: number;
-        maxCombo: number;
-    } {
-        return {
-            perfect: this.scoreStats.perfect,
-            great: this.scoreStats.great,
-            good: this.scoreStats.good,
-            miss: this.scoreStats.miss,
-            totalScore: this.scoreStats.totalScore,
-            maxCombo: this.scoreStats.maxCombo
-        };
+        print("🔄 Score reset!");
     }
 }
