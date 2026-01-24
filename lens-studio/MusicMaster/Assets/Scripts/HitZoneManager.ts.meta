@@ -35,6 +35,7 @@
     hitStatusText: false
     hitWindow: false
     noteSpawnerObject: false
+    scoreText: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -53,6 +54,7 @@
       camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
       comboText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       hitStatusText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      scoreText: !<reference.Text> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
@@ -66,3 +68,4 @@
     - // @input Component.Camera camera
     - // @input Component.Text comboText
     - // @input Component.Text hitStatusText
+    - // @input Component.Text scoreText

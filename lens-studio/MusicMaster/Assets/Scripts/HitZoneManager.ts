@@ -51,6 +51,9 @@ export class HitZoneManager extends BaseScriptComponent {
     @input
     hitStatusText: Text; // Reference to UI Text component to display hit status (Perfect/Great/Good/Miss)
 
+    @input
+    scoreText: Text; // Reference to UI Text component to display live score (top-right)
+
     // Track which notes have been judged to avoid duplicate miss judgments
     private judgedNotes = new Set<SceneObject>();
 
@@ -94,6 +97,12 @@ export class HitZoneManager extends BaseScriptComponent {
             this.hitStatusText.text = "";
         } else {
             print("⚠️ WARNING: hitStatusText not assigned! Please assign Text component in Inspector.");
+        }
+
+        // Initialize score display
+        if (this.scoreText) {
+            print("📊 Live score display active!");
+            this.scoreText.text = "Score: 0";
         }
     }
 
@@ -202,6 +211,13 @@ export class HitZoneManager extends BaseScriptComponent {
 
         this.comboText.text = newText;
         print(`📺 Combo display updated: "${newText}" (combo=${combo})`);
+    }
+
+    private updateScoreDisplay(): void {
+        if (!this.scoreText) {
+            return;
+        }
+        this.scoreText.text = "Score: " + `${this.scoreStats.totalScore}`;
     }
 
     private incrementCombo(): void {
@@ -552,6 +568,9 @@ export class HitZoneManager extends BaseScriptComponent {
         }
 
         this.scoreStats.totalScore += pointsEarned;
+
+        // Update live score display
+        this.updateScoreDisplay();
 
         // Show hit status on screen
         this.showHitStatus(quality);
