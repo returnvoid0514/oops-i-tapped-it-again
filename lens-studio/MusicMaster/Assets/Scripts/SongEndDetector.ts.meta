@@ -27,7 +27,9 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     audioComponent: false
+    conductor: false
     hitZoneManager: false
+    leaderboard: false
     songDuration: false
   ScriptTypesHidden:
     {}
@@ -40,11 +42,15 @@
   DefaultScriptInputs:
     - hitZoneManager: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       audioComponent: !<reference.AudioComponent> 00000000-0000-0000-0000-000000000000
+      conductor: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       songDuration: !<float> 60.000000
+      leaderboard: !<reference.ScriptComponent> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input AssignableType hitZoneManager
     - // @input Component.AudioComponent audioComponent
+    - // @input AssignableType_1 conductor
     - // @input float songDuration = 60
+    - // @input Component.ScriptComponent leaderboard

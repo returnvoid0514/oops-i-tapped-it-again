@@ -34,6 +34,7 @@
     hitLineRight: false
     hitStatusText: false
     hitWindow: false
+    leaderboard: false
     noteSpawnerObject: false
     scoreText: false
   ScriptTypesHidden:
@@ -55,6 +56,7 @@
       comboText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       hitStatusText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       scoreText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      leaderboard: !<reference.ScriptComponent> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
@@ -69,3 +71,4 @@
     - // @input Component.Text comboText
     - // @input Component.Text hitStatusText
     - // @input Component.Text scoreText
+    - // @input Component.ScriptComponent leaderboard

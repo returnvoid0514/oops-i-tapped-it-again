@@ -54,6 +54,9 @@ export class HitZoneManager extends BaseScriptComponent {
     @input
     scoreText: Text; // Reference to UI Text component to display live score (top-right)
 
+    @input
+    leaderboard: ScriptComponent; // Reference to Leaderboard Component
+
     // Track which notes have been judged to avoid duplicate miss judgments
     private judgedNotes = new Set<SceneObject>();
 
@@ -501,10 +504,20 @@ export class HitZoneManager extends BaseScriptComponent {
         }
     }
 
-    // Public method to display final score - can be called when song ends
-    // Score is already shown via scoreText in real-time
+    // Public method to display final score and submit to leaderboard
     public showFinalScore(): void {
-        // No-op: score display is handled by scoreText UI component
+        if (this.leaderboard) {
+            (this.leaderboard as any).submitScoreAsync(this.scoreStats.totalScore);
+            print("Score submitted to leaderboard: " + this.scoreStats.totalScore);
+        }
+    }
+
+    // Public method to get score stats for leaderboard
+    public getScoreStats(): { totalScore: number; maxCombo: number } {
+        return {
+            totalScore: this.scoreStats.totalScore,
+            maxCombo: this.scoreStats.maxCombo
+        };
     }
 
     // Public method to reset score - useful for restart

@@ -806,7 +806,9 @@
     "":
       hitZoneManager: !<MappingBased.AssignableType> f3568a03-d7ef-4196-8ba5-7cdd4ed23175
       audioComponent: !<reference.AudioComponent> babb89d8-bddc-49fa-a180-6bd75c7764c7
+      conductor: !<MappingBased.AssignableType_1> 84405190-188e-4080-9d35-3a254f3d697e
       songDuration: !<float> 0.000000
+      leaderboard: !<reference.ScriptComponent> fee2c8c0-5ded-46be-a108-fabecb13fd15
   ScriptTypes:
     "":
       {}
@@ -948,7 +950,7 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    []
+    - !<own> 8403587b-b150-40e5-993b-c072ffb3e153
   Components:
     - !<own> 38c0b4d8-415d-40d4-85d8-5e5d08016beb
     - !<own> ca9d37f4-1301-4785-bef8-60910a0500e1
@@ -1633,6 +1635,22 @@
     ExternalFaceMesh: 1.000000
     l_eye_close: 0.000000
     r_eye_close: 0.000000
+- !<SceneObject/8403587b-b150-40e5-993b-c072ffb3e153>
+  PrefabRemaps:
+    []
+  Name: LeaderboardComponent
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> fea9b9c6-fd21-442d-b244-ac6d06cebe46
+    - !<own> fee2c8c0-5ded-46be-a108-fabecb13fd15
 - !<ScriptComponent/84405190-188e-4080-9d35-3a254f3d697e>
   PrefabRemaps:
     []
@@ -3365,6 +3383,7 @@
       comboText: !<reference.Text> 71f52f5e-1e38-4e49-87c4-07dedd997695
       hitStatusText: !<reference.Text> f4b5297d-ecde-4431-b01f-5a291cbe0f78
       scoreText: !<reference.Text> 026b317c-741d-4cbe-b142-a2669cb99090
+      leaderboard: !<reference.ScriptComponent> fee2c8c0-5ded-46be-a108-fabecb13fd15
   ScriptTypes:
     "":
       {}
@@ -3503,6 +3522,110 @@
   BlendNormals: false
   BlendShapes:
     {}
+- !<ScreenTransform/fea9b9c6-fd21-442d-b244-ac6d06cebe46>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
+- !<ScriptComponent/fee2c8c0-5ded-46be-a108-fabecb13fd15>
+  PrefabRemaps:
+    []
+  Name: LeaderboardComponent
+  Enabled: true
+  ScriptAsset: !<reference> f35db787-be82-4edc-9413-dc356f19ad1f
+  ScriptInputsDefault:
+    autoInitialize: true
+    userLimit: true
+    scoreOrdering: true
+    bitmojiModule: true
+    remoteMediaModule: true
+    leaderboardModule: true
+    debugMode: true
+    headerOption: true
+    backgroundCustomization: true
+    backgroundTexture: true
+    customStickerId: true
+    useBackgroundBlur: true
+    leaderboardVisuals: true
+    componentDependencies: true
+    useNotification: true
+    useScoreWidget: true
+    hideScoreWidgetOption: true
+    delayTime: true
+    endStateOption: true
+    leaderboardEntry: true
+    scoreWidgetPrefab: true
+    renderOrder: true
+    testingScenario: true
+    entriesCount: true
+    scoreToSubmit: true
+    printDebugStatements: true
+    printWarningStatements: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      autoInitialize: true
+      leaderboardName: MusicMaster_Scores
+      userLimit: 10
+      scoreLifetimeOption: 2
+      leaderboardStartDate: 05/24/2026
+      scoreOrdering: 1
+      bitmojiModule: !<reference.BitmojiModule> bc24cc0c-473c-4cf3-b875-6a9b6963eee3
+      remoteMediaModule: !<reference.RemoteMediaModule> 2f268c65-d2ff-44aa-be05-b291a8a4269d
+      leaderboardModule: !<reference.LeaderboardModule> b64949b3-b8e6-4e2f-9ebb-ef25f6f223d5
+      debugMode: 0
+      headerOption: 1
+      backgroundCustomization: 0
+      backgroundTexture: !<reference.Texture> 0a3850df-88c1-4c03-ba5e-564d87534dba
+      customStickerId: !<string> 35824076
+      useBackgroundBlur: false
+      leaderboardVisuals: !<reference.ObjectPrefab> 27400846-1018-49d1-bd75-1c78409afa7b
+      componentDependencies: !<reference.ObjectPrefab> 290d1fe6-2e1d-4dc5-8131-790fde695daf
+      useNotification: true
+      useScoreWidget: true
+      hideScoreWidgetOption: 0
+      delayTime: 1.250000
+      endStateOption: 2
+      leaderboardEntry: !<reference.ObjectPrefab> 5777fa32-5b75-4184-8b98-bb9a4c92151b
+      scoreWidgetPrefab: !<reference.ObjectPrefab> 72aaa69a-92c4-4c5a-a38c-d983f4a0bc97
+      renderOrder: 1
+      testingScenario: 0
+      entriesCount: 10
+      scoreToSubmit: 100
+      printDebugStatements: true
+      printWarningStatements: true
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/ff1393e8-8476-4a76-8450-8a355e6ce70a>
   PrefabRemaps:
     []
