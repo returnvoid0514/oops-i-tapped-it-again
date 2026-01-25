@@ -43,3 +43,6 @@ backend/data/
 .coverage
 htmlcov/
 *.egg-info/
+
+# Claude Code
+.claude/
