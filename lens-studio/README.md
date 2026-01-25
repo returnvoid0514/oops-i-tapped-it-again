@@ -11,10 +11,11 @@ Core gameplay & Lens Studio integration.
 - [x] Rhythm gameplay implementation
 - [In Progress] Leaderboard Component integration
 - [Ice Box] Remote Service Module (API calls)
-- [Planned] Remote Assets (audio loading)
+- [In Progress] Remote Assets (audio loading)
 - [x] Touch input handling
 
 ## Setup
 1. Open this folder in Lens Studio
 2. Use Preview screen to interact with the project
 3. Click on "Preview Lens" to try it in your Snapchat App Lens session
+4. For session using static node map or auto generate, Check on the box "inifinite mode" for GameLogic object in scene
