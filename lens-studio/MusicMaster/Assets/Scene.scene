@@ -1010,26 +1010,6 @@
   Components:
     - !<own> 7cbd4bde-69ff-4147-8b4c-cb8325e738f0
     - !<own> 8aa69461-a132-4fb4-9ce7-c706fa550f13
-- !<ScriptComponent/491c4dd6-3360-4285-9564-937d2a20c771>
-  PrefabRemaps:
-    []
-  Name: NoteSpawner
-  Enabled: true
-  ScriptAsset: !<reference> 269ba04d-334a-4585-b48f-172864909a8e
-  ScriptInputsDefault:
-    spawnInterval: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
-      notePrefab: !<reference.Asset> 7da1e5e0-d3bc-4749-b302-d667ce6d7b01
-      infiniteMode: true
-      songDataAsset: !<reference.Asset> 69cf4269-f0fc-4abc-bc1a-84ebc1de69ee
-      spawnInterval: !<float> 1.000000
-  ScriptTypes:
-    "":
-      {}
 - !<Head/4b5523ca-340f-463c-b5b1-b73cfa66975b>
   PrefabRemaps:
     []
@@ -2595,15 +2575,14 @@
   Enabled: true
   ScriptAsset: !<reference> 269ba04d-334a-4585-b48f-172864909a8e
   ScriptInputsDefault:
-    {}
+    infiniteMode: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
       notePrefab: !<reference.Asset> 7da1e5e0-d3bc-4749-b302-d667ce6d7b01
-      infiniteMode: true
-      songDataAsset: !<reference.Asset> 69cf4269-f0fc-4abc-bc1a-84ebc1de69ee
+      infiniteMode: false
       spawnInterval: !<float> 2.000000
   ScriptTypes:
     "":
@@ -3241,7 +3220,6 @@
     HasSegmentScaleCompensation: false
   Children:
     - !<own> 99f53637-3a2a-4648-ba56-ae415171966d
-    - !<own> ea5c5213-a56d-4d7e-932c-240685fe9c74
     - !<own> 8616ca27-66d2-4a29-82c5-3dc6ac1ae2fa
     - !<own> 3d6ab84c-1d94-490a-8f72-10cc3dd31574
   Components:
@@ -3265,21 +3243,6 @@
   ScriptTypes:
     "":
       {}
-- !<SceneObject/ea5c5213-a56d-4d7e-932c-240685fe9c74>
-  PrefabRemaps:
-    []
-  Name: NoteSpawner
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: -1.500000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 0.100000, y: 0.100000, z: 0.100000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 491c4dd6-3360-4285-9564-937d2a20c771
 - !<ScriptComponent/ebbb99d7-7cdc-4583-a336-f5785a77247c>
   PrefabRemaps:
     []
