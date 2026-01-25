@@ -64,9 +64,6 @@ export class HitZoneManager extends BaseScriptComponent {
     // Cache the NoteSpawner script reference to avoid repeated lookups
     private spawnerScript: any = null;
 
-    // Debug: Track time for periodic diagnostics
-    private debugTimer: number = 0;
-
     onAwake() {
         // Listen for touch events
         this.createEvent("TouchStartEvent").bind(this.onTouch.bind(this));
@@ -80,35 +77,19 @@ export class HitZoneManager extends BaseScriptComponent {
         // Cache the NoteSpawner script reference once
         this.cacheSpawnerScript();
 
-        print("✅ HitZoneManager initialized");
-        print("🎮 Score system ready - Perfect: 100pts, Great: 70pts, Good: 40pts, Miss: 0pts");
-
-        // Check if combo text is assigned
-        if (this.comboText) {
-            print("🔥 Combo system active! Text component found.");
-            print(`📱 ComboText initial text: "${this.comboText.text}"`);
-        } else {
-            print("⚠️ WARNING: comboText not assigned! Please assign Text component in Inspector.");
-        }
-
-        // Check if hit status text is assigned
+        // Initialize hit status text
         if (this.hitStatusText) {
-            print("✨ Hit status display active!");
             this.hitStatusText.text = "";
-        } else {
-            print("⚠️ WARNING: hitStatusText not assigned! Please assign Text component in Inspector.");
         }
 
         // Initialize score display
         if (this.scoreText) {
-            print("📊 Live score display active!");
             this.scoreText.text = "Score: 0";
         }
     }
 
     private cacheSpawnerScript(): void {
         if (!this.noteSpawnerObject) {
-            print("⚠️ NoteSpawner object not assigned!");
             return;
         }
 
@@ -117,12 +98,9 @@ export class HitZoneManager extends BaseScriptComponent {
             const script = allComponents[i] as any;
             if (script.pool !== undefined) {
                 this.spawnerScript = script;
-                print("✅ NoteSpawner script cached successfully");
                 return;
             }
         }
-
-        print("⚠️ Could not find NoteSpawner script with pool property");
     }
 
     private onUpdate() {
@@ -136,61 +114,10 @@ export class HitZoneManager extends BaseScriptComponent {
                 this.hitStatusText.text = "";
             }
         }
-
-        // Debug: Periodic diagnostic every 5 seconds
-        this.debugTimer += getDeltaTime();
-        if (this.debugTimer >= 5.0) {
-            this.debugTimer = 0;
-            this.diagnosticCheck();
-        }
-    }
-
-    private diagnosticCheck(): void {
-        if (!this.spawnerScript || !this.spawnerScript.pool) {
-            return;
-        }
-
-        let enabledCount = 0;
-        const enabledNotes: string[] = [];
-        let stuckNotes: string[] = [];
-
-        for (let noteObj of this.spawnerScript.pool) {
-            if (noteObj.enabled) {
-                enabledCount++;
-                const pos = noteObj.getTransform().getLocalPosition();
-                enabledNotes.push(`(${pos.x.toFixed(0)}, ${pos.y.toFixed(0)})`);
-
-                // Check if note has conductor reference
-                const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
-                if (!noteScript || !noteScript.conductor) {
-                    stuckNotes.push(`(${pos.x.toFixed(0)}, ${pos.y.toFixed(0)}) NO CONDUCTOR`);
-                }
-            }
-        }
-
-        if (enabledCount > 0) {
-            print(`🔍 DIAGNOSTIC: ${enabledCount} enabled notes: ${enabledNotes.join(", ")}`);
-        }
-
-        if (stuckNotes.length > 0) {
-            print(`⚠️ STUCK NOTES DETECTED: ${stuckNotes.join(", ")}`);
-
-            // Force disable stuck notes to prevent them from blocking gameplay
-            for (let noteObj of this.spawnerScript.pool) {
-                if (noteObj.enabled) {
-                    const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
-                    if (!noteScript || !noteScript.conductor) {
-                        print(`🔧 Force disabling stuck note at ${noteObj.getTransform().getLocalPosition().y.toFixed(1)}`);
-                        noteObj.enabled = false;
-                    }
-                }
-            }
-        }
     }
 
     private updateComboDisplay(): void {
         if (!this.comboText) {
-            print("⚠️ updateComboDisplay: comboText is null!");
             return;
         }
 
@@ -210,7 +137,6 @@ export class HitZoneManager extends BaseScriptComponent {
         }
 
         this.comboText.text = newText;
-        print(`📺 Combo display updated: "${newText}" (combo=${combo})`);
     }
 
     private updateScoreDisplay(): void {
@@ -230,22 +156,9 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Update UI
         this.updateComboDisplay();
-
-        // Log milestone combos
-        if (this.scoreStats.currentCombo === 10) {
-            print("🔥 10 COMBO!");
-        } else if (this.scoreStats.currentCombo === 50) {
-            print("🔥🔥 50 COMBO!!");
-        } else if (this.scoreStats.currentCombo === 100) {
-            print("⭐⭐ 100 COMBO!!!");
-        }
     }
 
     private resetCombo(): void {
-        if (this.scoreStats.currentCombo > 0) {
-            print(`💔 Combo broken! (was ${this.scoreStats.currentCombo}x)`);
-        }
-
         this.scoreStats.currentCombo = 0;
         this.updateComboDisplay();
     }
@@ -289,7 +202,6 @@ export class HitZoneManager extends BaseScriptComponent {
         }
 
         if (!this.camera) {
-            print("❌ Camera not assigned!");
             return;
         }
 
@@ -324,9 +236,6 @@ export class HitZoneManager extends BaseScriptComponent {
     private checkNoteHit(lane: number) {
         const laneXPos = this.lanePositions[lane];
 
-        // Check which lane was hit: 0 = Left, 1 = Center, 2 = Right
-        print(`🎯 Checking lane ${lane} (${lane === 0 ? 'Left' : lane === 1 ? 'Center' : 'Right'})`);
-
         // Find all active notes in this lane (already filtered by Y position in getActiveNotesInLane)
         const activeNotes = this.getActiveNotesInLane(laneXPos);
         const hitLineY = this.getHitLineYPosition(laneXPos);
@@ -338,10 +247,7 @@ export class HitZoneManager extends BaseScriptComponent {
 
             if (extendedResult) {
                 // Found a note within extended range - judge as Miss and remove it
-                print(`🎯 Extended search found note at Y distance: ${extendedResult.distance.toFixed(2)}`);
                 this.hitNote(extendedResult.note, 0, extendedResult.distance, lane);
-            } else {
-                print("❌ Miss - No notes in lane");
             }
             return;
         }
@@ -365,15 +271,11 @@ export class HitZoneManager extends BaseScriptComponent {
             // Get beat error for scoring
             const noteScript = closestNote.getComponent("Component.ScriptComponent") as any;
             const targetBeat = noteScript ? noteScript.targetBeat : undefined;
-            const currentBeat = this.conductor.currentBeat;
             const beatError = targetBeat !== undefined
                 ? this.conductor.getBeatError(targetBeat)
                 : 0;
 
-            // print(`✅ HIT! Y distance: ${closestDistance.toFixed(2)}, Beat error: ${beatError.toFixed(3)}`);
             this.hitNote(closestNote, beatError, closestDistance, lane);
-        } else {
-            print("❌ Miss - No valid note found");
         }
     }
 
@@ -442,7 +344,6 @@ export class HitZoneManager extends BaseScriptComponent {
                     const yDistance = Math.abs(pos.y - hitLineY);
                     if (yDistance < hitZoneHeight) {
                         activeNotes.push(noteObj);
-                        // print(`📍 Note found at Y=${pos.y.toFixed(1)}, HitLine Y=${hitLineY.toFixed(1)}, distance=${yDistance.toFixed(1)}`);
                     }
                 }
             }
@@ -511,8 +412,6 @@ export class HitZoneManager extends BaseScriptComponent {
                     // Show miss status on screen
                     this.showHitStatus("Miss");
 
-                    print(`💀 Auto-Miss! Note at (${pos.x.toFixed(1)}, ${pos.y.toFixed(2)}) | Total: ${this.scoreStats.totalScore}pts`);
-
                     // Disable the note
                     noteObj.enabled = false;
 
@@ -575,9 +474,6 @@ export class HitZoneManager extends BaseScriptComponent {
         // Show hit status on screen
         this.showHitStatus(quality);
 
-        const comboText = this.scoreStats.currentCombo > 0 ? ` | 🔥 ${this.scoreStats.currentCombo}x` : "";
-        print(`✨ Score => ${quality} (+${pointsEarned}pts) | Total: ${this.scoreStats.totalScore}pts${comboText} (Y: ${yDistance.toFixed(2)})`);
-
         // Only disable the note if it was a successful hit (not Miss)
         if (shouldDisableNote) {
             noteObj.enabled = false;
@@ -606,28 +502,9 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     // Public method to display final score - can be called when song ends
+    // Score is already shown via scoreText in real-time
     public showFinalScore(): void {
-        const totalNotes = this.scoreStats.perfect + this.scoreStats.great + this.scoreStats.good + this.scoreStats.miss;
-        const hitNotes = this.scoreStats.perfect + this.scoreStats.great + this.scoreStats.good;
-        const accuracy = totalNotes > 0 ? (hitNotes / totalNotes * 100) : 0;
-        const maxPossibleScore = totalNotes * this.SCORE_VALUES.perfect;
-        const scorePercentage = maxPossibleScore > 0 ? (this.scoreStats.totalScore / maxPossibleScore * 100) : 0;
-
-        print("╔════════════════════════════════════╗");
-        print("║       🎵 FINAL SCORE 🎵           ║");
-        print("╠════════════════════════════════════╣");
-        print(`║ Total Score: ${this.scoreStats.totalScore} pts (${scorePercentage.toFixed(1)}%)  `);
-        print(`║ Accuracy: ${accuracy.toFixed(1)}%                  `);
-        print(`║ Max Combo: 🔥 ${this.scoreStats.maxCombo}x              `);
-        print("╠════════════════════════════════════╣");
-        print(`║ Perfect!  ⭐ : ${this.scoreStats.perfect} (×100pts)     `);
-        print(`║ Great!    ✨ : ${this.scoreStats.great} (×70pts)      `);
-        print(`║ Good      👍 : ${this.scoreStats.good} (×40pts)      `);
-        print(`║ Miss      ❌ : ${this.scoreStats.miss} (×0pts)       `);
-        print("╠════════════════════════════════════╣");
-        print(`║ Total Notes: ${totalNotes}                  `);
-        print(`║ Max Score: ${maxPossibleScore}                  `);
-        print("╚════════════════════════════════════╝");
+        // No-op: score display is handled by scoreText UI component
     }
 
     // Public method to reset score - useful for restart
@@ -640,6 +517,5 @@ export class HitZoneManager extends BaseScriptComponent {
         this.scoreStats.currentCombo = 0;
         this.scoreStats.maxCombo = 0;
         this.updateComboDisplay();
-        print("🔄 Score reset!");
     }
 }

@@ -17,8 +17,6 @@ export class Note extends BaseScriptComponent {
         }
 
         if (!this.conductor) {
-            // Conductor will be set before note is enabled, so this should rarely happen
-            print(`⚠️ Note at ${this.getTransform().getLocalPosition().y.toFixed(1)} has no conductor!`);
             return;
         }
 

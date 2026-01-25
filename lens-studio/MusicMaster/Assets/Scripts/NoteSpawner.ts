@@ -20,26 +20,19 @@ export class NoteSpawner extends BaseScriptComponent {
 
     private nextSpawnBeat: number = 0;
 
-    // Debug tracking
-    private lastDebugBeat: number = -1;
-
     onAwake() {
-        print(`NoteSpawner: Starting on object "${this.getSceneObject().name}"...`);
-
         if (!this.notePrefab || !this.conductor) {
-            print("❌ Error: Please check if NotePrefab and Conductor are assigned!");
             return;
         }
 
         this.initPool();
-        print(`NoteSpawner: Pool initialized with ${this.pool.length} notes`);
 
         if (this.infiniteMode) {
-            print("🚀 Startup Mode: Infinite Random Generation");
             this.nextSpawnBeat = this.conductor.currentBeat + 2.0;
+            print("🎵 NoteSpawner: Infinite mode enabled");
         } else {
-            print("📂 Startup Mode: Loading Chart Data");
             this.loadStaticData();
+            print("🎵 NoteSpawner: Song library mode - loaded " + this.notesQueue.length + " notes");
         }
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
@@ -61,19 +54,10 @@ export class NoteSpawner extends BaseScriptComponent {
                 this.nextSpawnBeat += this.spawnInterval;
             }
         } else {
-            // Debug: Log queue status periodically
-            if (Math.floor(currentBeat) % 4 === 0 && Math.floor(currentBeat) !== this.lastDebugBeat) {
-                this.lastDebugBeat = Math.floor(currentBeat);
-                print(`NoteSpawner: Beat ${currentBeat.toFixed(1)}, Queue: ${this.notesQueue.length} notes`);
-            }
-
             if (this.notesQueue.length > 0) {
                 if (this.notesQueue[0].beat < currentBeat + spawnWindow) {
                     const noteData = this.notesQueue.shift();
-
                     const laneIndex = (noteData.lane !== undefined) ? (noteData.lane - 1) : 0;
-
-                    print(`NoteSpawner: Spawning note at beat ${noteData.beat}, lane ${noteData.lane} (index ${laneIndex})`);
                     this.spawnNote(noteData.beat, laneIndex);
                 }
             }
@@ -86,7 +70,6 @@ export class NoteSpawner extends BaseScriptComponent {
         if (noteObj) {
             const noteScript = noteObj.getComponent("Component.ScriptComponent");
             if (!noteScript) {
-                print("⚠️ WARNING: Note has no script component! Cannot spawn.");
                 return;
             }
 
@@ -125,12 +108,8 @@ export class NoteSpawner extends BaseScriptComponent {
                 this.conductor.bpm = song.bpm;
                 this.conductor.offset = song.offset;
             }
-
-            print(`NoteSpawner: Loaded "${song.songName}" from SongLibrary`);
-            print(`  BPM: ${song.bpm}, Notes: ${this.notesQueue.length}`);
         } else {
             this.notesQueue = [];
-            print("NoteSpawner: No songs in SongLibrary!");
         }
     }
 
@@ -150,7 +129,5 @@ export class NoteSpawner extends BaseScriptComponent {
         if (this.conductor) {
             this.nextSpawnBeat = this.conductor.currentBeat + 2.0;
         }
-
-        print("NoteSpawner: Reset complete");
     }
 }

@@ -19,19 +19,15 @@ export class SongEndDetector extends BaseScriptComponent {
 
     onAwake() {
         if (!this.hitZoneManager) {
-            print("❌ SongEndDetector: Please assign HitZoneManager in Inspector!");
             return;
         }
 
         if (!this.audioComponent) {
-            print("❌ SongEndDetector: Please assign AudioComponent in Inspector!");
             return;
         }
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
         this.startTime = getTime();
-
-        print("🎵 SongEndDetector initialized");
     }
 
     onUpdate() {
@@ -57,7 +53,6 @@ export class SongEndDetector extends BaseScriptComponent {
         if (this.hasEnded) return;
 
         this.hasEnded = true;
-        print("\n🎵 Song ended! Displaying final score...\n");
 
         // Display final score
         this.hitZoneManager.showFinalScore();
