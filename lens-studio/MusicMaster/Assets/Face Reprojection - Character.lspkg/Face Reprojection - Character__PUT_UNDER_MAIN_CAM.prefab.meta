@@ -81,15 +81,18 @@
   Enabled: true
   ScriptAsset: !<reference> 52753483-d104-4a6a-8cf7-c6b4fb966b42
   ScriptInputsDefault:
-    {}
+    expressionName: true
+    meshFrom: true
+    blendshapeName: true
+    meshTo: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      expressionName: EyeBlinkLeft
-      meshFrom: !<reference.RenderMeshVisual> c273b2cd-794e-4aea-7df3-9dc0f6ca8929
-      blendshapeName: l_eye_close
-      meshTo: !<reference.RenderMeshVisual> c273b2cd-794e-4aea-7df3-9dc0f6ca8929
+      expressionName: ""
+      meshFrom: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+      blendshapeName: ""
+      meshTo: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}
@@ -313,15 +316,18 @@
   Enabled: true
   ScriptAsset: !<reference> 52753483-d104-4a6a-8cf7-c6b4fb966b42
   ScriptInputsDefault:
-    {}
+    expressionName: true
+    meshFrom: true
+    blendshapeName: true
+    meshTo: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      expressionName: EyeBlinkRight
-      meshFrom: !<reference.RenderMeshVisual> c273b2cd-794e-4aea-7df3-9dc0f6ca8929
-      blendshapeName: r_eye_close
-      meshTo: !<reference.RenderMeshVisual> c273b2cd-794e-4aea-7df3-9dc0f6ca8929
+      expressionName: ""
+      meshFrom: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
+      blendshapeName: ""
+      meshTo: !<reference.RenderMeshVisual> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}

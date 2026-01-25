@@ -73,13 +73,14 @@
   Enabled: true
   ScriptAsset: !<reference> e9cee0c8-6990-4a3e-a874-02db3090addc
   ScriptInputsDefault:
-    {}
+    textureTo: true
+    textureFrom: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
-      textureTo: !<reference.Texture> c2c81711-0ee4-416b-abb9-ab880461cdb2
-      textureFrom: !<reference.Texture> 59855e49-bed8-4b2d-9129-52f9748e18da
+      textureTo: !<reference.Texture> 00000000-0000-0000-0000-000000000000
+      textureFrom: !<reference.Texture> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}
