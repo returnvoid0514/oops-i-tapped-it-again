@@ -1,12 +1,31 @@
 export const SongData = {
-    "bpm": 120,
+    "bpm": 112.3,
     "offset": 0.0,
     "notes": [
-        { "beat": 4.0, "lane": 0 },
-        { "beat": 4.5, "lane": 1 },
-        { "beat": 5.0, "lane": 2 },
-        { "beat": 6.0, "lane": 1 },
-        { "beat": 7.0, "lane": 0 },
-        { "beat": 8.0, "lane": 1, "isLong": true }
+        { "beat": 1.04, "lane": 1 },
+        { "beat": 5.39, "lane": 0 },
+        { "beat": 9.52, "lane": 1 },
+        { "beat": 13.78, "lane": 2 },
+        { "beat": 17.91, "lane": 0 },
+        { "beat": 22.52, "lane": 1 },
+        { "beat": 26.61, "lane": 2 },
+        { "beat": 30.7, "lane": 1 },
+        { "beat": 34.43, "lane": 0 },
+        { "beat": 38.52, "lane": 2 },
+        { "beat": 42.43, "lane": 1 },
+        { "beat": 46.48, "lane": 0 },
+        { "beat": 50.57, "lane": 2 },
+        { "beat": 54.65, "lane": 1 },
+        { "beat": 58.7, "lane": 0 },
+        { "beat": 62.87, "lane": 2 },
+        { "beat": 66.7, "lane": 1 },
+        { "beat": 71.04, "lane": 0 },
+        { "beat": 75.35, "lane": 2 },
+        { "beat": 79.91, "lane": 1 },
+        { "beat": 83.48, "lane": 0 },
+        { "beat": 87.57, "lane": 2 },
+        { "beat": 91.96, "lane": 1 },
+        { "beat": 96.57, "lane": 0 },
+        { "beat": 100.39, "lane": 2 }
     ]
 };

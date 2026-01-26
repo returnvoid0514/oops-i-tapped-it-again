@@ -22,6 +22,9 @@ export class HitZoneManager extends BaseScriptComponent {
     @input
     camera: Camera; // Reference to the camera
 
+    @input
+    hitLineY: number = -10.0; // Y position of hit line (MUST match NoteSpawner.hitLineY)
+
     // Lane positions should match visual hit line positions in the scene
     // With camera size 20, visible range is ~-20 to +20
     // To make lanes span most of the screen, use wider spacing
@@ -58,6 +61,10 @@ export class HitZoneManager extends BaseScriptComponent {
     private hitStatusTimer: number = 0;
     private readonly HIT_STATUS_DISPLAY_DURATION = 0.55; // How long to show hit status (seconds)
 
+    // Debug: Track touch events
+    private touchCount: number = 0;
+    private lastTouchTime: number = 0;
+
     // Cache the NoteSpawner script reference to avoid repeated lookups
     private spawnerScript: any = null;
 
@@ -78,28 +85,27 @@ export class HitZoneManager extends BaseScriptComponent {
         this.cacheSpawnerScript();
 
         print("✅ HitZoneManager initialized");
-        print("🎮 Score system ready - Perfect: 100pts, Great: 70pts, Good: 40pts, Miss: 0pts");
 
-        // Check if combo text is assigned
-        if (this.comboText) {
-            print("🔥 Combo system active! Text component found.");
-            print(`📱 ComboText initial text: "${this.comboText.text}"`);
-        } else {
-            print("⚠️ WARNING: comboText not assigned! Please assign Text component in Inspector.");
+        // Debug: Log the configured hitLineY and actual hit line object positions
+        print(`📍 Configured hitLineY: ${this.hitLineY}`);
+        if (this.hitLineLeft) {
+            print(`📍 hitLineLeft actual Y: ${this.hitLineLeft.getTransform().getLocalPosition().y}`);
+        }
+        if (this.hitLineCenter) {
+            print(`📍 hitLineCenter actual Y: ${this.hitLineCenter.getTransform().getLocalPosition().y}`);
+        }
+        if (this.hitLineRight) {
+            print(`📍 hitLineRight actual Y: ${this.hitLineRight.getTransform().getLocalPosition().y}`);
         }
 
-        // Check if hit status text is assigned
+        // Initialize hit status text
         if (this.hitStatusText) {
-            print("✨ Hit status display active!");
             this.hitStatusText.text = "";
-        } else {
-            print("⚠️ WARNING: hitStatusText not assigned! Please assign Text component in Inspector.");
         }
     }
 
     private cacheSpawnerScript(): void {
         if (!this.noteSpawnerObject) {
-            print("⚠️ NoteSpawner object not assigned!");
             return;
         }
 
@@ -108,12 +114,9 @@ export class HitZoneManager extends BaseScriptComponent {
             const script = allComponents[i] as any;
             if (script.pool !== undefined) {
                 this.spawnerScript = script;
-                print("✅ NoteSpawner script cached successfully");
                 return;
             }
         }
-
-        print("⚠️ Could not find NoteSpawner script with pool property");
     }
 
     private onUpdate() {
@@ -128,12 +131,12 @@ export class HitZoneManager extends BaseScriptComponent {
             }
         }
 
-        // Debug: Periodic diagnostic every 5 seconds
-        this.debugTimer += getDeltaTime();
-        if (this.debugTimer >= 5.0) {
-            this.debugTimer = 0;
-            this.diagnosticCheck();
-        }
+        // Diagnostic disabled for performance - uncomment if debugging needed
+        // this.debugTimer += getDeltaTime();
+        // if (this.debugTimer >= 5.0) {
+        //     this.debugTimer = 0;
+        //     this.diagnosticCheck();
+        // }
     }
 
     private diagnosticCheck(): void {
@@ -267,8 +270,14 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private onTouch(eventData: TouchStartEvent) {
+        // Debug: Track touch timing
+        const currentTime = getTime();
+        const timeSinceLastTouch = currentTime - this.lastTouchTime;
+        this.touchCount++;
+        this.lastTouchTime = currentTime;
+        print(`👆 Touch #${this.touchCount} - Gap: ${(timeSinceLastTouch * 1000).toFixed(0)}ms`);
+
         if (!this.camera) {
-            print("❌ Camera not assigned!");
             return;
         }
 
@@ -297,18 +306,15 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     // Maximum distance to search for notes when none are in the hit zone
-    // Notes within this range will be judged as Miss and removed
-    private readonly EXTENDED_MISS_RANGE = 8.0;
+    private readonly EXTENDED_MISS_RANGE = 12.0;
 
     private checkNoteHit(lane: number) {
         const laneXPos = this.lanePositions[lane];
 
-        // Check which lane was hit: 0 = Left, 1 = Center, 2 = Right
-        print(`🎯 Checking lane ${lane} (${lane === 0 ? 'Left' : lane === 1 ? 'Center' : 'Right'})`);
-
         // Find all active notes in this lane (already filtered by Y position in getActiveNotesInLane)
         const activeNotes = this.getActiveNotesInLane(laneXPos);
-        const hitLineY = this.getHitLineYPosition(laneXPos);
+        // Use the configured hitLineY to match Note.ts color zones
+        const hitLineY = this.hitLineY;
 
         // Two-stage search: if no notes in hit zone, search extended range
         if (activeNotes.length === 0) {
@@ -316,76 +322,141 @@ export class HitZoneManager extends BaseScriptComponent {
             const extendedResult = this.findClosestNoteInLane(laneXPos, hitLineY, this.EXTENDED_MISS_RANGE);
 
             if (extendedResult) {
-                // Found a note within extended range - judge as Miss and remove it
-                print(`🎯 Extended search found note at Y distance: ${extendedResult.distance.toFixed(2)}`);
-                this.hitNote(extendedResult.note, 0, extendedResult.distance, lane);
+                // Found a note within extended range - judge and remove it
+                const noteScript = extendedResult.note.getComponent("Component.ScriptComponent") as any;
+                const noteId = noteScript ? (noteScript.noteId || 0) : 0;
+                print(`🎯 Extended search found Note #${noteId} at dist=${extendedResult.distance.toFixed(1)}`);
+                this.hitNote(extendedResult.note, 0, extendedResult.distance, lane, noteId);
             } else {
-                print("❌ Miss - No notes in lane");
+                // No note found - show "empty tap" feedback
+                this.showEmptyTapFeedback(lane);
             }
             return;
         }
 
-        // Find the closest note to the hit line by Y distance
-        let closestNote = null;
-        let closestDistance = Infinity;
+        // Separate notes into "late" (below hit line) and "early" (above/at hit line)
+        // Priority: late notes first (most late), then early notes (closest to hit line)
+        let lateNotes: { obj: SceneObject, y: number, dist: number, id: number }[] = [];
+        let earlyNotes: { obj: SceneObject, y: number, dist: number, id: number }[] = [];
 
         for (let noteObj of activeNotes) {
-            const transform = noteObj.getTransform();
-            const pos = transform.getLocalPosition();
-            const yDistance = Math.abs(pos.y - hitLineY);
-
-            if (yDistance < closestDistance) {
-                closestDistance = yDistance;
-                closestNote = noteObj;
+            const pos = noteObj.getTransform().getLocalPosition();
+            const dist = Math.abs(pos.y - hitLineY);
+            const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
+            const noteId = noteScript ? (noteScript.noteId || 0) : 0;
+            // Late = below hit line (pos.y < hitLineY)
+            // Early = at or above hit line (pos.y >= hitLineY)
+            if (pos.y < hitLineY) {
+                lateNotes.push({ obj: noteObj, y: pos.y, dist: dist, id: noteId });
+            } else {
+                earlyNotes.push({ obj: noteObj, y: pos.y, dist: dist, id: noteId });
             }
         }
 
-        if (closestNote) {
+        // Debug: Log the categorization with note IDs
+        if (lateNotes.length > 0 || earlyNotes.length > 0) {
+            let lateInfo = lateNotes.map(n => `#${n.id}@${n.y.toFixed(1)}`).join(", ");
+            let earlyInfo = earlyNotes.map(n => `#${n.id}@${n.y.toFixed(1)}`).join(", ");
+            print(`🎯 Hit check: hitLineY=${hitLineY}, Late[${lateNotes.length}]: ${lateInfo}, Early[${earlyNotes.length}]: ${earlyInfo}`);
+        }
+
+        let selectedNote: SceneObject | null = null;
+        let selectedDistance = 0;
+        let selectedId = 0;
+
+        if (lateNotes.length > 0) {
+            // Among late notes, pick the MOST late (lowest Y = farthest below hit line)
+            // This rescues the note closest to being auto-missed
+            let mostLate = lateNotes[0];
+            for (let i = 1; i < lateNotes.length; i++) {
+                if (lateNotes[i].y < mostLate.y) {
+                    mostLate = lateNotes[i];
+                }
+            }
+            selectedNote = mostLate.obj;
+            selectedDistance = mostLate.dist;
+            selectedId = mostLate.id;
+            print(`   → Selected LATE Note #${mostLate.id} at Y=${mostLate.y.toFixed(1)}`);
+        } else if (earlyNotes.length > 0) {
+            // Among early notes, pick the CLOSEST to hit line (smallest distance)
+            // This is the note about to arrive
+            let closest = earlyNotes[0];
+            for (let i = 1; i < earlyNotes.length; i++) {
+                if (earlyNotes[i].dist < closest.dist) {
+                    closest = earlyNotes[i];
+                }
+            }
+            selectedNote = closest.obj;
+            selectedDistance = closest.dist;
+            selectedId = closest.id;
+            print(`   → Selected EARLY Note #${closest.id} at Y=${closest.y.toFixed(1)} (dist=${closest.dist.toFixed(1)})`);
+        }
+
+        if (selectedNote) {
             // Get beat error for scoring
-            const noteScript = closestNote.getComponent("Component.ScriptComponent") as any;
+            const noteScript = selectedNote.getComponent("Component.ScriptComponent") as any;
             const targetBeat = noteScript ? noteScript.targetBeat : undefined;
-            const currentBeat = this.conductor.currentBeat;
             const beatError = targetBeat !== undefined
                 ? this.conductor.getBeatError(targetBeat)
                 : 0;
 
-            // print(`✅ HIT! Y distance: ${closestDistance.toFixed(2)}, Beat error: ${beatError.toFixed(3)}`);
-            this.hitNote(closestNote, beatError, closestDistance, lane);
-        } else {
-            print("❌ Miss - No valid note found");
+            this.hitNote(selectedNote, beatError, selectedDistance, lane, selectedId);
         }
     }
 
-    // Find the closest note in a lane within a maximum distance
+    // Find the best note to hit in a lane within a maximum distance
+    // Priority: late notes (most late first) > early notes (closest to hit line)
     private findClosestNoteInLane(laneXPos: number, hitLineY: number, maxDistance: number): { note: SceneObject, distance: number } | null {
         if (!this.spawnerScript || !this.spawnerScript.pool) {
             return null;
         }
 
-        let closestNote: SceneObject | null = null;
-        let closestDistance = Infinity;
+        // Separate into late and early notes, storing Y position for proper sorting
+        let lateNotes: { note: SceneObject, distance: number, y: number }[] = [];
+        let earlyNotes: { note: SceneObject, distance: number }[] = [];
 
         for (let noteObj of this.spawnerScript.pool) {
             if (noteObj.enabled) {
-                const transform = noteObj.getTransform();
-                const pos = transform.getLocalPosition();
+                const pos = noteObj.getTransform().getLocalPosition();
 
                 // Check if note is in the correct lane (with small tolerance)
                 if (Math.abs(pos.x - laneXPos) < 1.0) {
                     const yDistance = Math.abs(pos.y - hitLineY);
 
                     // Only consider notes within the max distance
-                    if (yDistance < maxDistance && yDistance < closestDistance) {
-                        closestDistance = yDistance;
-                        closestNote = noteObj;
+                    if (yDistance < maxDistance) {
+                        if (pos.y < hitLineY) {
+                            lateNotes.push({ note: noteObj, distance: yDistance, y: pos.y });
+                        } else {
+                            earlyNotes.push({ note: noteObj, distance: yDistance });
+                        }
                     }
                 }
             }
         }
 
-        if (closestNote) {
-            return { note: closestNote, distance: closestDistance };
+        if (lateNotes.length > 0) {
+            // Among late notes, pick the MOST late (lowest Y value)
+            let mostLate = lateNotes[0];
+            for (let i = 1; i < lateNotes.length; i++) {
+                if (lateNotes[i].y < mostLate.y) {
+                    mostLate = lateNotes[i];
+                }
+            }
+            return { note: mostLate.note, distance: mostLate.distance };
         }
+
+        if (earlyNotes.length > 0) {
+            // Among early notes, pick the closest to hit line
+            let closest = earlyNotes[0];
+            for (let i = 1; i < earlyNotes.length; i++) {
+                if (earlyNotes[i].distance < closest.distance) {
+                    closest = earlyNotes[i];
+                }
+            }
+            return closest;
+        }
+
         return null;
     }
 
@@ -405,9 +476,15 @@ export class HitZoneManager extends BaseScriptComponent {
             return activeNotes;
         }
 
-        // Get the Y position of the hit line to determine hit zone
-        const hitLineY = this.getHitLineYPosition(laneXPos);
-        const hitZoneHeight = 3.0; // Tolerance for Y position (adjustable)
+        // Use the configured hitLineY to match Note.ts color zones
+        const hitLineY = this.hitLineY;
+
+        // Different ranges for early vs late notes:
+        // - Early notes (above hit line): up to 8 units above
+        // - Late notes (below hit line): up to miss threshold (8 units below)
+        // This ensures late notes are always found for priority selection
+        const earlyZoneLimit = hitLineY + 8.0;  // 8 units above
+        const lateZoneLimit = hitLineY - 8.0;   // 8 units below (match miss threshold)
 
         // Check all pooled notes
         for (let noteObj of this.spawnerScript.pool) {
@@ -417,11 +494,11 @@ export class HitZoneManager extends BaseScriptComponent {
 
                 // Check if note is in the correct lane (with small tolerance)
                 if (Math.abs(pos.x - laneXPos) < 1.0) {
-                    // Check if note is within the hit zone Y range
-                    const yDistance = Math.abs(pos.y - hitLineY);
-                    if (yDistance < hitZoneHeight) {
+                    // Check if note is within the appropriate zone
+                    // Early notes: pos.y <= earlyZoneLimit (above or at hit line)
+                    // Late notes: pos.y >= lateZoneLimit (below hit line but not auto-missed)
+                    if (pos.y <= earlyZoneLimit && pos.y >= lateZoneLimit) {
                         activeNotes.push(noteObj);
-                        // print(`📍 Note found at Y=${pos.y.toFixed(1)}, HitLine Y=${hitLineY.toFixed(1)}, distance=${yDistance.toFixed(1)}`);
                     }
                 }
             }
@@ -464,10 +541,14 @@ export class HitZoneManager extends BaseScriptComponent {
             return;
         }
 
-        // Define the miss threshold - notes below this Y position are considered missed
-        const missThreshold = -12.0; // Below the hitline (hitline is at -10)
+        // Use the configured hitLineY to match Note.ts color zones
+        const hitLineY = this.hitLineY;
 
-        // Check all pooled notes
+        // Miss threshold: hitLineY - 8 (auto-miss and disable)
+        // Note: Note.ts now handles its own color changes based on position
+        const missThreshold = hitLineY - 8.0;
+
+        // Check all pooled notes for auto-miss
         for (let noteObj of this.spawnerScript.pool) {
             if (noteObj.enabled && !this.judgedNotes.has(noteObj)) {
                 const transform = noteObj.getTransform();
@@ -475,6 +556,13 @@ export class HitZoneManager extends BaseScriptComponent {
 
                 // If note has passed below the miss threshold, count it as a miss
                 if (pos.y < missThreshold) {
+                    // Debug: Log which note (and lane) is being auto-missed
+                    const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
+                    const noteId = noteScript ? (noteScript.noteId || 0) : 0;
+                    const laneIndex = pos.x < -7 ? 0 : (pos.x > 7 ? 2 : 1);
+                    const laneName = laneIndex === 0 ? "Left" : (laneIndex === 1 ? "Center" : "Right");
+                    print(`🚫 AUTO-MISS: Note #${noteId} at Y=${pos.y.toFixed(1)}, Lane ${laneName} (X=${pos.x.toFixed(0)})`);
+
                     // Mark this note as judged
                     this.judgedNotes.add(noteObj);
 
@@ -485,7 +573,8 @@ export class HitZoneManager extends BaseScriptComponent {
                     // Show miss status on screen
                     this.showHitStatus("Miss");
 
-                    print(`💀 Auto-Miss! Note at (${pos.x.toFixed(1)}, ${pos.y.toFixed(2)}) | Total: ${this.scoreStats.totalScore}pts`);
+                    // Move note off-screen before disabling
+                    transform.setLocalPosition(new vec3(0, 1000, 0));
 
                     // Disable the note
                     noteObj.enabled = false;
@@ -498,7 +587,7 @@ export class HitZoneManager extends BaseScriptComponent {
         }
     }
 
-    private hitNote(noteObj: SceneObject, beatError: number, yDistance: number, lane: number): void {
+    private hitNote(noteObj: SceneObject, beatError: number, yDistance: number, lane: number, noteId: number = 0): void {
         // Mark this note as judged to prevent auto-miss
         this.judgedNotes.add(noteObj);
 
@@ -509,7 +598,7 @@ export class HitZoneManager extends BaseScriptComponent {
         let pointsEarned = 0;
 
         // Perfect: Very close to hitline
-        if (yDistance < 0.6) {
+        if (yDistance < 2.0) {
             quality = "Perfect!";
             shouldDisableNote = true;
             this.scoreStats.perfect++;
@@ -517,7 +606,7 @@ export class HitZoneManager extends BaseScriptComponent {
             this.incrementCombo();
         }
         // Great: Close to hitline
-        else if (yDistance < 1.0) {
+        else if (yDistance < 4.0) {
             quality = "Great!";
             shouldDisableNote = true;
             this.scoreStats.great++;
@@ -525,14 +614,14 @@ export class HitZoneManager extends BaseScriptComponent {
             this.incrementCombo();
         }
         // Good: Moderately close
-        else if (yDistance < 1.5) {
+        else if (yDistance < 6.0) {
             quality = "Good";
             shouldDisableNote = true;
             this.scoreStats.good++;
             pointsEarned = this.SCORE_VALUES.good;
             this.incrementCombo();
         }
-        // Miss: Too far from hitline - don't count as a hit
+        // Miss: Too far from hitline
         else {
             quality = "Miss";
             shouldDisableNote = true;
@@ -546,12 +635,17 @@ export class HitZoneManager extends BaseScriptComponent {
         // Show hit status on screen
         this.showHitStatus(quality);
 
-        const comboText = this.scoreStats.currentCombo > 0 ? ` | 🔥 ${this.scoreStats.currentCombo}x` : "";
-        print(`✨ Score => ${quality} (+${pointsEarned}pts) | Total: ${this.scoreStats.totalScore}pts${comboText} (Y: ${yDistance.toFixed(2)})`);
+        print(`   ✓ Note #${noteId} → ${quality} (distance: ${yDistance.toFixed(1)})`);
 
-        // Only disable the note if it was a successful hit (not Miss)
+        // Disable the note and make it visually disappear
         if (shouldDisableNote) {
+            // Move note off-screen immediately for instant visual feedback
+            const transform = noteObj.getTransform();
+            transform.setLocalPosition(new vec3(0, 1000, 0));
+
+            // Disable the note
             noteObj.enabled = false;
+
             // Clean up from judged notes set when disabled
             this.judgedNotes.delete(noteObj);
         }
@@ -572,6 +666,30 @@ export class HitZoneManager extends BaseScriptComponent {
                 if (feedbackScript && feedbackScript.flash) {
                     feedbackScript.flash();
                 }
+            }
+        }
+    }
+
+    // Show feedback when tapping with no note present
+    private showEmptyTapFeedback(lane: number): void {
+        // Flash the hit line with a dimmer effect to show tap was registered
+        let targetHitLine: SceneObject | null = null;
+        if (lane === 0) {
+            targetHitLine = this.hitLineLeft;
+        } else if (lane === 1) {
+            targetHitLine = this.hitLineCenter;
+        } else if (lane === 2) {
+            targetHitLine = this.hitLineRight;
+        }
+
+        if (targetHitLine) {
+            const feedbackScript = targetHitLine.getComponent("Component.ScriptComponent") as any;
+            if (feedbackScript && feedbackScript.flashEmpty) {
+                // Use a different flash for empty taps (dimmer/different color)
+                feedbackScript.flashEmpty();
+            } else if (feedbackScript && feedbackScript.flash) {
+                // Fall back to regular flash if flashEmpty not available
+                feedbackScript.flash();
             }
         }
     }
