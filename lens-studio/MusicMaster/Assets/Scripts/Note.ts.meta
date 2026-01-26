@@ -26,7 +26,11 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    expiredColor: false
+    hitLineY: false
+    normalColor: false
     speed: true
+    tooEarlyColor: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -37,8 +41,16 @@
     []
   DefaultScriptInputs:
     - speed: !<float> 2.000000
+      normalColor: !<Vec4> {x: 0.300000, y: 0.500000, z: 1.000000, w: 1.000000}
+      tooEarlyColor: !<Vec4> {x: 1.000000, y: 0.800000, z: 0.200000, w: 0.600000}
+      expiredColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.400000}
+      hitLineY: !<float> -10.000000
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input float speed = 15
+    - "// @input vec4 normalColor = {0.3,0.5,1,1}"
+    - "// @input vec4 tooEarlyColor = {1,0.8,0.2,0.6}"
+    - "// @input vec4 expiredColor = {0.5,0.5,0.5,0.4}"
+    - // @input float hitLineY = -10

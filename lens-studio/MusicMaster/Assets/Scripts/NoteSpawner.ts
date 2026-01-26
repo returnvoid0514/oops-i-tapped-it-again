@@ -15,12 +15,18 @@ export class NoteSpawner extends BaseScriptComponent {
     songDataAsset: Asset;
     @input
     spawnInterval: number = 1.0;
+    @input
+    hitLineY: number = -10.0; // Y position of hit line (match this to your hit line objects)
+
     public pool: SceneObject[] = [];
     private poolSize: number = 30;
-    
+
     private notesQueue: any[] = [];
-    
+
     private nextSpawnBeat: number = 0;
+
+    // Counter for unique note IDs
+    private noteIdCounter: number = 0;
 
     onAwake() {
         if (!this.notePrefab || !this.conductor) {
@@ -76,9 +82,21 @@ export class NoteSpawner extends BaseScriptComponent {
                 return;
             }
 
+            // Assign unique note ID
+            this.noteIdCounter++;
+            const noteId = this.noteIdCounter;
+            noteScript["noteId"] = noteId;
+
             // Set properties BEFORE enabling to avoid conductor reference warning
             noteScript["targetBeat"] = beat;
             noteScript["conductor"] = this.conductor;
+            noteScript["hitLineY"] = this.hitLineY; // Pass hit line position for color zones
+
+            // Reset note appearance (in case it was expired from previous use)
+            const noteScriptAny = noteScript as any;
+            if (noteScriptAny.resetAppearance) {
+                noteScriptAny.resetAppearance();
+            }
 
             // Lane positions: -1 = left (-15), 0 = center (0), 1 = right (15)
             const xPos = lane * 15.0; // Spread notes across wider screen area
@@ -86,6 +104,10 @@ export class NoteSpawner extends BaseScriptComponent {
 
             // Enable note AFTER all properties are set
             noteObj.enabled = true;
+
+            // Log spawn with ID
+            const laneName = lane === -1 ? "Left" : (lane === 0 ? "Center" : "Right");
+            print(`🎵 SPAWN Note #${noteId} → Lane ${laneName} (X=${xPos}), Beat ${beat.toFixed(2)}`);
         }
     }
 
@@ -100,38 +122,68 @@ export class NoteSpawner extends BaseScriptComponent {
 
 
     private loadStaticData() {
-        this.notesQueue = [...SongData.notes];
-        
-        if (this.conductor) {
-            this.conductor.bpm = SongData.bpm;
-            this.conductor.offset = SongData.offset;
+        let songData: any = null;
+
+        // Try to load from JSON asset first (if assigned in Inspector)
+        if (this.songDataAsset) {
+            songData = this.loadFromJsonAsset();
         }
-        
-        print("✅ Chart loaded successfully! Note count: " + this.notesQueue.length);
+
+        // Fall back to hardcoded TypeScript data
+        if (!songData) {
+            print("📂 Using fallback TypeScript data");
+            songData = SongData;
+        }
+
+        // Load notes into queue
+        if (songData && songData.notes) {
+            this.notesQueue = [...songData.notes];
+
+            if (this.conductor) {
+                this.conductor.bpm = songData.bpm || 120;
+                this.conductor.offset = songData.offset || 0;
+            }
+
+            print("✅ Chart loaded successfully! Note count: " + this.notesQueue.length);
+            print(`   BPM: ${songData.bpm}, Offset: ${songData.offset}`);
+        } else {
+            print("❌ Error: No valid song data found!");
+        }
     }
 
-    private inspectAsset(obj: any) {
-    print("----- 🕵️‍♂️ Debug Inspector Started -----");
+    private loadFromJsonAsset(): any {
+        if (!this.songDataAsset) {
+            return null;
+        }
 
-    if (!obj) {
-        print("❌ Result: Object is null or undefined");
-        return;
-    }
-    if (obj.constructor) {
-        print("🏷️ Actual Type (Class Name): " + obj.constructor.name);
-    }
-    print("🔍 Property Detection:");
-    print("   - has .text? " + (obj.text !== undefined));
-    print("   - has .json? " + (obj.json !== undefined));
+        const asset = this.songDataAsset as any;
 
-    if (obj.text) {
-        print("📄 .text Content Preview: " + obj.text.toString().substring(0, 50) + "...");
-    }
+        // Try different ways to access JSON data from the asset
+        try {
+            // Method 1: Direct JSON property (for JsonAsset types)
+            if (asset.json !== undefined) {
+                print("📂 Loaded song data from JSON asset (.json property)");
+                return asset.json;
+            }
 
-    if (obj.json) {
-        print("📦 .json Object Preview: " + JSON.stringify(obj.json).substring(0, 50) + "...");
-    }
+            // Method 2: Text property that needs parsing (for TextAsset types)
+            if (asset.text !== undefined) {
+                const parsed = JSON.parse(asset.text);
+                print("📂 Loaded song data from JSON asset (.text property)");
+                return parsed;
+            }
 
-    print("----------------------------");
-}
+            // Method 3: Some assets expose data directly
+            if (asset.notes !== undefined) {
+                print("📂 Loaded song data from JSON asset (direct properties)");
+                return asset;
+            }
+
+            print("⚠️ songDataAsset assigned but couldn't read data from it");
+            return null;
+        } catch (e) {
+            print("❌ Error parsing JSON asset: " + e);
+            return null;
+        }
+    }
 }
