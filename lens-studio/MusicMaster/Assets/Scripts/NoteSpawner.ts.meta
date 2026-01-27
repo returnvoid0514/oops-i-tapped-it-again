@@ -27,9 +27,9 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     conductor: false
+    hitLineY: false
     infiniteMode: false
     notePrefab: false
-    songDataAsset: false
     spawnInterval: false
   ScriptTypesHidden:
     {}
@@ -43,8 +43,8 @@
     - conductor: !<MappingBased.AssignableType> 00000000-0000-0000-0000-000000000000
       notePrefab: !<reference.Asset> 00000000-0000-0000-0000-000000000000
       infiniteMode: false
-      songDataAsset: !<reference.Asset> 00000000-0000-0000-0000-000000000000
       spawnInterval: !<float> 1.000000
+      hitLineY: !<float> -10.000000
   ScriptTypes:
     -
       {}
@@ -52,5 +52,5 @@
     - // @input AssignableType conductor
     - // @input Asset.Asset notePrefab
     - // @input bool infiniteMode
-    - // @input Asset.Asset songDataAsset
     - // @input float spawnInterval = 1
+    - // @input float hitLineY = -10

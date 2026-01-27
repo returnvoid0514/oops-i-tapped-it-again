@@ -50,11 +50,19 @@
   ScriptAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
   ScriptInputsDefault:
     speed: true
+    normalColor: true
+    tooEarlyColor: true
+    expiredColor: true
+    hitLineY: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       speed: !<float> 2.000000
+      normalColor: !<Vec4> {x: 0.300000, y: 0.500000, z: 1.000000, w: 1.000000}
+      tooEarlyColor: !<Vec4> {x: 1.000000, y: 0.800000, z: 0.200000, w: 0.600000}
+      expiredColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.400000}
+      hitLineY: !<float> -10.000000
   ScriptTypes:
     "":
       {}

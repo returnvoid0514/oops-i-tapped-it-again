@@ -1,8 +1,8 @@
-- !<AssetImportMetadata/e840ba55-29cb-45d0-a94a-0145fb0f380c>
+- !<AssetImportMetadata/29caa4a6-fc19-48fb-925d-ec180bd434ad>
   ImportedAssetIds:
-    RenderTarget: !<reference> d70197fd-d278-4794-84df-8348448db717
-  ImporterName: RenderTargetImporter
-  PrimaryAsset: !<reference> d70197fd-d278-4794-84df-8348448db717
+    JsonAsset: !<reference> 5273f67e-957f-41d8-bc19-7417cc2d3450
+  ImporterName: JsonAssetImporter
+  PrimaryAsset: !<reference> 5273f67e-957f-41d8-bc19-7417cc2d3450
   PackageType: NotAPackage
   LegacyPackagePolicy: ~
   ExtraData:

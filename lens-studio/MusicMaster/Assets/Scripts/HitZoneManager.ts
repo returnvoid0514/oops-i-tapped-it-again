@@ -54,16 +54,18 @@ export class HitZoneManager extends BaseScriptComponent {
     @input
     hitStatusText: Text; // Reference to UI Text component to display hit status (Perfect/Great/Good/Miss)
 
+    @input
+    scoreText: Text; // Reference to UI Text component to display live score (top-right)
+
+    @input
+    leaderboard: ScriptComponent; // Reference to Leaderboard Component
+
     // Track which notes have been judged to avoid duplicate miss judgments
     private judgedNotes = new Set<SceneObject>();
 
     // Timer for auto-hiding hit status text
     private hitStatusTimer: number = 0;
     private readonly HIT_STATUS_DISPLAY_DURATION = 0.55; // How long to show hit status (seconds)
-
-    // Debug: Track touch events
-    private touchCount: number = 0;
-    private lastTouchTime: number = 0;
 
     // Cache the NoteSpawner script reference to avoid repeated lookups
     private spawnerScript: any = null;
@@ -84,23 +86,14 @@ export class HitZoneManager extends BaseScriptComponent {
         // Cache the NoteSpawner script reference once
         this.cacheSpawnerScript();
 
-        print("✅ HitZoneManager initialized");
-
-        // Debug: Log the configured hitLineY and actual hit line object positions
-        print(`📍 Configured hitLineY: ${this.hitLineY}`);
-        if (this.hitLineLeft) {
-            print(`📍 hitLineLeft actual Y: ${this.hitLineLeft.getTransform().getLocalPosition().y}`);
-        }
-        if (this.hitLineCenter) {
-            print(`📍 hitLineCenter actual Y: ${this.hitLineCenter.getTransform().getLocalPosition().y}`);
-        }
-        if (this.hitLineRight) {
-            print(`📍 hitLineRight actual Y: ${this.hitLineRight.getTransform().getLocalPosition().y}`);
-        }
-
         // Initialize hit status text
         if (this.hitStatusText) {
             this.hitStatusText.text = "";
+        }
+
+        // Initialize score display
+        if (this.scoreText) {
+            this.scoreText.text = "Score: 0";
         }
     }
 
@@ -162,19 +155,12 @@ export class HitZoneManager extends BaseScriptComponent {
             }
         }
 
-        if (enabledCount > 0) {
-            print(`🔍 DIAGNOSTIC: ${enabledCount} enabled notes: ${enabledNotes.join(", ")}`);
-        }
-
         if (stuckNotes.length > 0) {
-            print(`⚠️ STUCK NOTES DETECTED: ${stuckNotes.join(", ")}`);
-
             // Force disable stuck notes to prevent them from blocking gameplay
             for (let noteObj of this.spawnerScript.pool) {
                 if (noteObj.enabled) {
                     const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
                     if (!noteScript || !noteScript.conductor) {
-                        print(`🔧 Force disabling stuck note at ${noteObj.getTransform().getLocalPosition().y.toFixed(1)}`);
                         noteObj.enabled = false;
                     }
                 }
@@ -184,7 +170,6 @@ export class HitZoneManager extends BaseScriptComponent {
 
     private updateComboDisplay(): void {
         if (!this.comboText) {
-            print("⚠️ updateComboDisplay: comboText is null!");
             return;
         }
 
@@ -204,7 +189,13 @@ export class HitZoneManager extends BaseScriptComponent {
         }
 
         this.comboText.text = newText;
-        print(`📺 Combo display updated: "${newText}" (combo=${combo})`);
+    }
+
+    private updateScoreDisplay(): void {
+        if (!this.scoreText) {
+            return;
+        }
+        this.scoreText.text = "Score: " + `${this.scoreStats.totalScore}`;
     }
 
     private incrementCombo(): void {
@@ -217,22 +208,9 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Update UI
         this.updateComboDisplay();
-
-        // Log milestone combos
-        if (this.scoreStats.currentCombo === 10) {
-            print("🔥 10 COMBO!");
-        } else if (this.scoreStats.currentCombo === 50) {
-            print("🔥🔥 50 COMBO!!");
-        } else if (this.scoreStats.currentCombo === 100) {
-            print("⭐⭐ 100 COMBO!!!");
-        }
     }
 
     private resetCombo(): void {
-        if (this.scoreStats.currentCombo > 0) {
-            print(`💔 Combo broken! (was ${this.scoreStats.currentCombo}x)`);
-        }
-
         this.scoreStats.currentCombo = 0;
         this.updateComboDisplay();
     }
@@ -270,12 +248,10 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private onTouch(eventData: TouchStartEvent) {
-        // Debug: Track touch timing
-        const currentTime = getTime();
-        const timeSinceLastTouch = currentTime - this.lastTouchTime;
-        this.touchCount++;
-        this.lastTouchTime = currentTime;
-        print(`👆 Touch #${this.touchCount} - Gap: ${(timeSinceLastTouch * 1000).toFixed(0)}ms`);
+        // Ignore touches until game starts
+        if (this.conductor && !this.conductor.isGameStarted) {
+            return;
+        }
 
         if (!this.camera) {
             return;
@@ -306,7 +282,8 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     // Maximum distance to search for notes when none are in the hit zone
-    private readonly EXTENDED_MISS_RANGE = 12.0;
+    // Notes within this range will be judged as Miss and removed
+    private readonly EXTENDED_MISS_RANGE = 8.0;
 
     private checkNoteHit(lane: number) {
         const laneXPos = this.lanePositions[lane];
@@ -325,7 +302,6 @@ export class HitZoneManager extends BaseScriptComponent {
                 // Found a note within extended range - judge and remove it
                 const noteScript = extendedResult.note.getComponent("Component.ScriptComponent") as any;
                 const noteId = noteScript ? (noteScript.noteId || 0) : 0;
-                print(`🎯 Extended search found Note #${noteId} at dist=${extendedResult.distance.toFixed(1)}`);
                 this.hitNote(extendedResult.note, 0, extendedResult.distance, lane, noteId);
             } else {
                 // No note found - show "empty tap" feedback
@@ -353,13 +329,6 @@ export class HitZoneManager extends BaseScriptComponent {
             }
         }
 
-        // Debug: Log the categorization with note IDs
-        if (lateNotes.length > 0 || earlyNotes.length > 0) {
-            let lateInfo = lateNotes.map(n => `#${n.id}@${n.y.toFixed(1)}`).join(", ");
-            let earlyInfo = earlyNotes.map(n => `#${n.id}@${n.y.toFixed(1)}`).join(", ");
-            print(`🎯 Hit check: hitLineY=${hitLineY}, Late[${lateNotes.length}]: ${lateInfo}, Early[${earlyNotes.length}]: ${earlyInfo}`);
-        }
-
         let selectedNote: SceneObject | null = null;
         let selectedDistance = 0;
         let selectedId = 0;
@@ -376,7 +345,6 @@ export class HitZoneManager extends BaseScriptComponent {
             selectedNote = mostLate.obj;
             selectedDistance = mostLate.dist;
             selectedId = mostLate.id;
-            print(`   → Selected LATE Note #${mostLate.id} at Y=${mostLate.y.toFixed(1)}`);
         } else if (earlyNotes.length > 0) {
             // Among early notes, pick the CLOSEST to hit line (smallest distance)
             // This is the note about to arrive
@@ -389,7 +357,6 @@ export class HitZoneManager extends BaseScriptComponent {
             selectedNote = closest.obj;
             selectedDistance = closest.dist;
             selectedId = closest.id;
-            print(`   → Selected EARLY Note #${closest.id} at Y=${closest.y.toFixed(1)} (dist=${closest.dist.toFixed(1)})`);
         }
 
         if (selectedNote) {
@@ -481,10 +448,10 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Different ranges for early vs late notes:
         // - Early notes (above hit line): up to 8 units above
-        // - Late notes (below hit line): up to miss threshold (8 units below)
+        // - Late notes (below hit line): up to 8 units below (match miss threshold)
         // This ensures late notes are always found for priority selection
         const earlyZoneLimit = hitLineY + 8.0;  // 8 units above
-        const lateZoneLimit = hitLineY - 8.0;   // 8 units below (match miss threshold)
+        const lateZoneLimit = hitLineY - 8.0;   // 8 units below
 
         // Check all pooled notes
         for (let noteObj of this.spawnerScript.pool) {
@@ -495,8 +462,6 @@ export class HitZoneManager extends BaseScriptComponent {
                 // Check if note is in the correct lane (with small tolerance)
                 if (Math.abs(pos.x - laneXPos) < 1.0) {
                     // Check if note is within the appropriate zone
-                    // Early notes: pos.y <= earlyZoneLimit (above or at hit line)
-                    // Late notes: pos.y >= lateZoneLimit (below hit line but not auto-missed)
                     if (pos.y <= earlyZoneLimit && pos.y >= lateZoneLimit) {
                         activeNotes.push(noteObj);
                     }
@@ -528,6 +493,11 @@ export class HitZoneManager extends BaseScriptComponent {
     }
 
     private checkMissedNotes(): void {
+        // Don't check for misses until game starts
+        if (this.conductor && !this.conductor.isGameStarted) {
+            return;
+        }
+
         // Use cached spawner script reference
         if (!this.spawnerScript) {
             // Try to cache again if not available
@@ -541,12 +511,8 @@ export class HitZoneManager extends BaseScriptComponent {
             return;
         }
 
-        // Use the configured hitLineY to match Note.ts color zones
-        const hitLineY = this.hitLineY;
-
-        // Miss threshold: hitLineY - 8 (auto-miss and disable)
-        // Note: Note.ts now handles its own color changes based on position
-        const missThreshold = hitLineY - 8.0;
+        // Miss threshold: hitLineY - 2.0 (auto-miss and disable)
+        const missThreshold = this.hitLineY - 2.0;
 
         // Check all pooled notes for auto-miss
         for (let noteObj of this.spawnerScript.pool) {
@@ -556,13 +522,6 @@ export class HitZoneManager extends BaseScriptComponent {
 
                 // If note has passed below the miss threshold, count it as a miss
                 if (pos.y < missThreshold) {
-                    // Debug: Log which note (and lane) is being auto-missed
-                    const noteScript = noteObj.getComponent("Component.ScriptComponent") as any;
-                    const noteId = noteScript ? (noteScript.noteId || 0) : 0;
-                    const laneIndex = pos.x < -7 ? 0 : (pos.x > 7 ? 2 : 1);
-                    const laneName = laneIndex === 0 ? "Left" : (laneIndex === 1 ? "Center" : "Right");
-                    print(`🚫 AUTO-MISS: Note #${noteId} at Y=${pos.y.toFixed(1)}, Lane ${laneName} (X=${pos.x.toFixed(0)})`);
-
                     // Mark this note as judged
                     this.judgedNotes.add(noteObj);
 
@@ -598,7 +557,7 @@ export class HitZoneManager extends BaseScriptComponent {
         let pointsEarned = 0;
 
         // Perfect: Very close to hitline
-        if (yDistance < 2.0) {
+        if (yDistance < 0.6) {
             quality = "Perfect!";
             shouldDisableNote = true;
             this.scoreStats.perfect++;
@@ -606,7 +565,7 @@ export class HitZoneManager extends BaseScriptComponent {
             this.incrementCombo();
         }
         // Great: Close to hitline
-        else if (yDistance < 4.0) {
+        else if (yDistance < 1.0) {
             quality = "Great!";
             shouldDisableNote = true;
             this.scoreStats.great++;
@@ -614,7 +573,7 @@ export class HitZoneManager extends BaseScriptComponent {
             this.incrementCombo();
         }
         // Good: Moderately close
-        else if (yDistance < 6.0) {
+        else if (yDistance < 1.5) {
             quality = "Good";
             shouldDisableNote = true;
             this.scoreStats.good++;
@@ -632,10 +591,11 @@ export class HitZoneManager extends BaseScriptComponent {
 
         this.scoreStats.totalScore += pointsEarned;
 
+        // Update live score display
+        this.updateScoreDisplay();
+
         // Show hit status on screen
         this.showHitStatus(quality);
-
-        print(`   ✓ Note #${noteId} → ${quality} (distance: ${yDistance.toFixed(1)})`);
 
         // Disable the note and make it visually disappear
         if (shouldDisableNote) {
@@ -694,29 +654,20 @@ export class HitZoneManager extends BaseScriptComponent {
         }
     }
 
-    // Public method to display final score - can be called when song ends
+    // Public method to display final score and submit to leaderboard
     public showFinalScore(): void {
-        const totalNotes = this.scoreStats.perfect + this.scoreStats.great + this.scoreStats.good + this.scoreStats.miss;
-        const hitNotes = this.scoreStats.perfect + this.scoreStats.great + this.scoreStats.good;
-        const accuracy = totalNotes > 0 ? (hitNotes / totalNotes * 100) : 0;
-        const maxPossibleScore = totalNotes * this.SCORE_VALUES.perfect;
-        const scorePercentage = maxPossibleScore > 0 ? (this.scoreStats.totalScore / maxPossibleScore * 100) : 0;
+        if (this.leaderboard) {
+            (this.leaderboard as any).submitScoreAsync(this.scoreStats.totalScore);
+            print("Score submitted to leaderboard: " + this.scoreStats.totalScore);
+        }
+    }
 
-        print("╔════════════════════════════════════╗");
-        print("║       🎵 FINAL SCORE 🎵           ║");
-        print("╠════════════════════════════════════╣");
-        print(`║ Total Score: ${this.scoreStats.totalScore} pts (${scorePercentage.toFixed(1)}%)  `);
-        print(`║ Accuracy: ${accuracy.toFixed(1)}%                  `);
-        print(`║ Max Combo: 🔥 ${this.scoreStats.maxCombo}x              `);
-        print("╠════════════════════════════════════╣");
-        print(`║ Perfect!  ⭐ : ${this.scoreStats.perfect} (×100pts)     `);
-        print(`║ Great!    ✨ : ${this.scoreStats.great} (×70pts)      `);
-        print(`║ Good      👍 : ${this.scoreStats.good} (×40pts)      `);
-        print(`║ Miss      ❌ : ${this.scoreStats.miss} (×0pts)       `);
-        print("╠════════════════════════════════════╣");
-        print(`║ Total Notes: ${totalNotes}                  `);
-        print(`║ Max Score: ${maxPossibleScore}                  `);
-        print("╚════════════════════════════════════╝");
+    // Public method to get score stats for leaderboard
+    public getScoreStats(): { totalScore: number; maxCombo: number } {
+        return {
+            totalScore: this.scoreStats.totalScore,
+            maxCombo: this.scoreStats.maxCombo
+        };
     }
 
     // Public method to reset score - useful for restart
@@ -729,6 +680,5 @@ export class HitZoneManager extends BaseScriptComponent {
         this.scoreStats.currentCombo = 0;
         this.scoreStats.maxCombo = 0;
         this.updateComboDisplay();
-        print("🔄 Score reset!");
     }
 }

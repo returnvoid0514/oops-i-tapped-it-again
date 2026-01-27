@@ -1,6 +1,6 @@
 import { Conductor } from "./Conductor";
-import { SongData } from "./TestSongData";
 import { Note } from "./Note";
+import { AllSongs } from "./SongLibrary";
 
 @component
 export class NoteSpawner extends BaseScriptComponent {
@@ -12,8 +12,6 @@ export class NoteSpawner extends BaseScriptComponent {
     @input
     infiniteMode: boolean = false;
     @input
-    songDataAsset: Asset;
-    @input
     spawnInterval: number = 1.0;
     @input
     hitLineY: number = -10.0; // Y position of hit line (match this to your hit line objects)
@@ -23,25 +21,24 @@ export class NoteSpawner extends BaseScriptComponent {
 
     private notesQueue: any[] = [];
 
-    private nextSpawnBeat: number = 0;
-
     // Counter for unique note IDs
     private noteIdCounter: number = 0;
 
+    private nextSpawnBeat: number = 0;
+
     onAwake() {
         if (!this.notePrefab || !this.conductor) {
-            print("❌ Error: Please check if NotePrefab and Conductor are assigned!");
             return;
         }
 
         this.initPool();
 
         if (this.infiniteMode) {
-            print("🚀 Startup Mode: Infinite Random Generation");
             this.nextSpawnBeat = this.conductor.currentBeat + 2.0;
+            print("🎵 NoteSpawner: Infinite mode enabled");
         } else {
-            print("📂 Startup Mode: Loading Chart Data");
             this.loadStaticData();
+            print("🎵 NoteSpawner: Song library mode - loaded " + this.notesQueue.length + " notes");
         }
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
@@ -49,6 +46,9 @@ export class NoteSpawner extends BaseScriptComponent {
 
     private onUpdate() {
         if (!this.conductor) return;
+
+        // Wait for game to start
+        if (!this.conductor.isGameStarted) return;
 
         const currentBeat = this.conductor.currentBeat;
         const spawnWindow = 8.0;
@@ -63,9 +63,7 @@ export class NoteSpawner extends BaseScriptComponent {
             if (this.notesQueue.length > 0) {
                 if (this.notesQueue[0].beat < currentBeat + spawnWindow) {
                     const noteData = this.notesQueue.shift();
-                    
                     const laneIndex = (noteData.lane !== undefined) ? (noteData.lane - 1) : 0;
-                    
                     this.spawnNote(noteData.beat, laneIndex);
                 }
             }
@@ -78,14 +76,12 @@ export class NoteSpawner extends BaseScriptComponent {
         if (noteObj) {
             const noteScript = noteObj.getComponent("Component.ScriptComponent");
             if (!noteScript) {
-                print("⚠️ WARNING: Note has no script component! Cannot spawn.");
                 return;
             }
 
             // Assign unique note ID
             this.noteIdCounter++;
-            const noteId = this.noteIdCounter;
-            noteScript["noteId"] = noteId;
+            noteScript["noteId"] = this.noteIdCounter;
 
             // Set properties BEFORE enabling to avoid conductor reference warning
             noteScript["targetBeat"] = beat;
@@ -104,10 +100,6 @@ export class NoteSpawner extends BaseScriptComponent {
 
             // Enable note AFTER all properties are set
             noteObj.enabled = true;
-
-            // Log spawn with ID
-            const laneName = lane === -1 ? "Left" : (lane === 0 ? "Center" : "Right");
-            print(`🎵 SPAWN Note #${noteId} → Lane ${laneName} (X=${xPos}), Beat ${beat.toFixed(2)}`);
         }
     }
 
@@ -120,70 +112,42 @@ export class NoteSpawner extends BaseScriptComponent {
         }
     }
 
-
     private loadStaticData() {
-        let songData: any = null;
+        // TODO: Implement SongManager for random song selection from multiple songs
+        // For now, load first song from SongLibrary directly
 
-        // Try to load from JSON asset first (if assigned in Inspector)
-        if (this.songDataAsset) {
-            songData = this.loadFromJsonAsset();
-        }
+        if (AllSongs.length > 0) {
+            const song = AllSongs[0];
+            this.notesQueue = [...song.notes];
 
-        // Fall back to hardcoded TypeScript data
-        if (!songData) {
-            print("📂 Using fallback TypeScript data");
-            songData = SongData;
-        }
-
-        // Load notes into queue
-        if (songData && songData.notes) {
-            this.notesQueue = [...songData.notes];
-
+            // Set BPM/offset on conductor
             if (this.conductor) {
-                this.conductor.bpm = songData.bpm || 120;
-                this.conductor.offset = songData.offset || 0;
+                this.conductor.bpm = song.bpm;
+                this.conductor.offset = song.offset;
             }
-
-            print("✅ Chart loaded successfully! Note count: " + this.notesQueue.length);
-            print(`   BPM: ${songData.bpm}, Offset: ${songData.offset}`);
         } else {
-            print("❌ Error: No valid song data found!");
+            this.notesQueue = [];
         }
     }
 
-    private loadFromJsonAsset(): any {
-        if (!this.songDataAsset) {
-            return null;
+    // TODO: Add setChartData() method when implementing SongManager for dynamic song loading
+
+    // Reset spawner state (for replay)
+    public resetSpawner(): void {
+        // Disable all pooled notes
+        for (let noteObj of this.pool) {
+            noteObj.enabled = false;
         }
 
-        const asset = this.songDataAsset as any;
+        // Reset note ID counter
+        this.noteIdCounter = 0;
 
-        // Try different ways to access JSON data from the asset
-        try {
-            // Method 1: Direct JSON property (for JsonAsset types)
-            if (asset.json !== undefined) {
-                print("📂 Loaded song data from JSON asset (.json property)");
-                return asset.json;
-            }
+        // Reload chart data from SongLibrary
+        this.loadStaticData();
 
-            // Method 2: Text property that needs parsing (for TextAsset types)
-            if (asset.text !== undefined) {
-                const parsed = JSON.parse(asset.text);
-                print("📂 Loaded song data from JSON asset (.text property)");
-                return parsed;
-            }
-
-            // Method 3: Some assets expose data directly
-            if (asset.notes !== undefined) {
-                print("📂 Loaded song data from JSON asset (direct properties)");
-                return asset;
-            }
-
-            print("⚠️ songDataAsset assigned but couldn't read data from it");
-            return null;
-        } catch (e) {
-            print("❌ Error parsing JSON asset: " + e);
-            return null;
+        // Reset spawn beat for infinite mode
+        if (this.conductor) {
+            this.nextSpawnBeat = this.conductor.currentBeat + 2.0;
         }
     }
 }
