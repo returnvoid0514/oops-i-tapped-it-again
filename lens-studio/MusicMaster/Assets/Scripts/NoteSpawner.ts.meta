@@ -27,6 +27,7 @@
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
     conductor: false
+    hitLineY: false
     infiniteMode: false
     notePrefab: false
     spawnInterval: false
@@ -43,6 +44,7 @@
       notePrefab: !<reference.Asset> 00000000-0000-0000-0000-000000000000
       infiniteMode: false
       spawnInterval: !<float> 1.000000
+      hitLineY: !<float> -10.000000
   ScriptTypes:
     -
       {}
@@ -51,3 +53,4 @@
     - // @input Asset.Asset notePrefab
     - // @input bool infiniteMode
     - // @input float spawnInterval = 1
+    - // @input float hitLineY = -10

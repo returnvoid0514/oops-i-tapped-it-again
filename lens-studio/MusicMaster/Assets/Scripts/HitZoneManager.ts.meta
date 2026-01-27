@@ -32,6 +32,7 @@
     hitLineCenter: false
     hitLineLeft: false
     hitLineRight: false
+    hitLineY: false
     hitStatusText: false
     hitWindow: false
     leaderboard: false
@@ -53,6 +54,7 @@
       hitLineRight: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       hitWindow: 0.250000
       camera: !<reference.Camera> 00000000-0000-0000-0000-000000000000
+      hitLineY: !<float> -10.000000
       comboText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       hitStatusText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       scoreText: !<reference.Text> 00000000-0000-0000-0000-000000000000
@@ -68,6 +70,7 @@
     - // @input SceneObject hitLineRight
     - // @input float hitWindow = 0.25
     - // @input Component.Camera camera
+    - // @input float hitLineY = -10
     - // @input Component.Text comboText
     - // @input Component.Text hitStatusText
     - // @input Component.Text scoreText

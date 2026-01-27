@@ -382,6 +382,7 @@
   ScriptInputsDefault:
     normalColor: true
     hitColor: true
+    emptyTapColor: true
     flashDuration: true
   ScriptTypesDefault:
     {}
@@ -389,6 +390,7 @@
     "":
       normalColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 0.500000}
       hitColor: !<Vec4> {x: 0.000000, y: 1.000000, z: 0.000000, w: 1.000000}
+      emptyTapColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.700000}
       flashDuration: 0.100000
   ScriptTypes:
     "":
@@ -1880,6 +1882,7 @@
   ScriptInputsDefault:
     normalColor: true
     hitColor: true
+    emptyTapColor: true
     flashDuration: true
   ScriptTypesDefault:
     {}
@@ -1887,6 +1890,7 @@
     "":
       normalColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 0.500000}
       hitColor: !<Vec4> {x: 0.000000, y: 1.000000, z: 0.000000, w: 1.000000}
+      emptyTapColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.700000}
       flashDuration: 0.100000
   ScriptTypes:
     "":
@@ -2293,6 +2297,7 @@
   ScriptInputsDefault:
     normalColor: true
     hitColor: true
+    emptyTapColor: true
     flashDuration: true
   ScriptTypesDefault:
     {}
@@ -2300,6 +2305,7 @@
     "":
       normalColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 0.500000}
       hitColor: !<Vec4> {x: 0.000000, y: 1.000000, z: 0.000000, w: 1.000000}
+      emptyTapColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.700000}
       flashDuration: 0.100000
   ScriptTypes:
     "":
@@ -2594,6 +2600,7 @@
   ScriptAsset: !<reference> 269ba04d-334a-4585-b48f-172864909a8e
   ScriptInputsDefault:
     infiniteMode: true
+    hitLineY: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -2602,6 +2609,7 @@
       notePrefab: !<reference.Asset> 7da1e5e0-d3bc-4749-b302-d667ce6d7b01
       infiniteMode: false
       spawnInterval: !<float> 2.000000
+      hitLineY: !<float> -10.000000
   ScriptTypes:
     "":
       {}
@@ -3368,7 +3376,7 @@
   Enabled: true
   ScriptAsset: !<reference> 7baa34dd-a736-4e44-9595-eaf0dfddf6a2
   ScriptInputsDefault:
-    {}
+    hitLineY: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -3380,6 +3388,7 @@
       hitLineRight: !<reference.SceneObject> ef9a5282-3817-4017-9a91-0e67ad7d690b
       hitWindow: !<float> 1.000000
       camera: !<reference.Camera> 00000000-0000-0065-0000-000000000065
+      hitLineY: !<float> -10.000000
       comboText: !<reference.Text> 71f52f5e-1e38-4e49-87c4-07dedd997695
       hitStatusText: !<reference.Text> f4b5297d-ecde-4431-b01f-5a291cbe0f78
       scoreText: !<reference.Text> 026b317c-741d-4cbe-b142-a2669cb99090

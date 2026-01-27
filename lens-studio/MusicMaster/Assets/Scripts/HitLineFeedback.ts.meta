@@ -26,6 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    emptyTapColor: false
     flashDuration: false
     hitColor: false
     normalColor: false
@@ -40,6 +41,7 @@
   DefaultScriptInputs:
     - normalColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 0.500000}
       hitColor: !<Vec4> {x: 0.000000, y: 1.000000, z: 0.000000, w: 1.000000}
+      emptyTapColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.700000}
       flashDuration: 0.100000
   ScriptTypes:
     -
@@ -47,4 +49,5 @@
   InputLines:
     - "// @input vec4 normalColor = {1,1,1,0.5}"
     - "// @input vec4 hitColor = {0,1,0,1}"
+    - "// @input vec4 emptyTapColor = {0.5,0.5,0.5,0.7}"
     - // @input float flashDuration = 0.1
