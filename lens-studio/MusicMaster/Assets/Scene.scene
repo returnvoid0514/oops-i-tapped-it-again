@@ -486,9 +486,9 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -5.260000, y: 5.000000, z: -100.000000}
+    Position: {x: -5.010000, y: -10.000000, z: -100.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 470.000000, y: 384.000000, z: 32.000000}
+    Scale: {x: 250.000000, y: 250.000000, z: 32.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -1502,12 +1502,12 @@
       - 59
     vertices:
       []
-  InnerBorderRadius: 0.130000
-  OuterBorderRadius: 0.000000
+  InnerBorderRadius: 0.000000
+  OuterBorderRadius: 0.610000
   SubDivisionCount: 99
-  Pivot: {x: 0.500000, y: 0.000000}
-  UVScale: {x: 1.260000, y: 0.930000}
-  UVOffset: {x: -0.020000, y: -0.010000}
+  Pivot: {x: 0.370000, y: -0.280000}
+  UVScale: {x: 1.320000, y: 1.230000}
+  UVOffset: {x: -0.010000, y: 0.010000}
   FlipX: false
   FlipY: false
 - !<ScriptComponent/76eedadf-0e11-44a6-8075-047e0219e331>
