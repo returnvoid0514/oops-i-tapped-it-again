@@ -4,6 +4,7 @@
     - !<own> e6d35f69-2cf1-4d7d-8b5b-6532dd55ac21
     - !<own> 061e96c9-e7b5-40ac-b102-6d6d2100bd8f
     - !<own> 00000000-0000-0065-0000-000000000064
+    - !<own> 148d8863-f254-4a4e-a9df-2f2aca5d55ed
     - !<own> 0005641c-028d-459a-0000-000000014b4d
     - !<own> edf31a0b-7b61-41dd-a801-f10a5f18b090
     - !<own> ff1393e8-8476-4a76-8450-8a355e6ce70a
@@ -186,7 +187,7 @@
   PrefabRemaps:
     []
   Name: "First Face - Face [EDIT_ME] 0"
-  Enabled: false
+  Enabled: true
   Layers: 1048576
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: -41.000000}
@@ -478,6 +479,21 @@
   Components:
     - !<own> ad8baabe-9887-4f21-a5fc-2dc7a82071ec
     - !<own> 1163486b-c266-41b8-be6f-0d9aec711aeb
+- !<SceneObject/148d8863-f254-4a4e-a9df-2f2aca5d55ed>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: -5.260000, y: 5.000000, z: -100.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 470.000000, y: 384.000000, z: 32.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 26dac317-0e42-4463-a74e-a45952e25c4c
 - !<SceneObject/16e3d42d-d776-4c66-918c-afb86c93904d>
   PrefabRemaps:
     []
@@ -636,6 +652,25 @@
     - !<own> 4103114b-762d-4cdb-91aa-300199033e4e
   Components:
     - !<own> bbc0c80d-a4b8-47b9-92e0-8dcd496de91e
+- !<Image/26dac317-0e42-4463-a74e-a45952e25c4c>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 76c487d0-1f7a-4829-9d56-5b65e0f92c17
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<SceneObject/2afc2ef5-ee06-4fe0-88cc-7e585a75e52f>
   PrefabRemaps:
     []
@@ -909,7 +944,7 @@
     - ee51206a-df88-4fc2-bdcc-c77d4686dd46: 101f9088-8231-4255-7973-c6e487e1a5c5
     - f9b7843f-7e3d-4d27-887f-c51e2f955c64: 0148dc5e-8b03-4b4b-40cd-788892cafeb5
   Name: Face Reprojection - Character
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 50.000000}
@@ -1014,6 +1049,7 @@
   Components:
     - !<own> 7cbd4bde-69ff-4147-8b4c-cb8325e738f0
     - !<own> 8aa69461-a132-4fb4-9ce7-c706fa550f13
+    - !<own> 76521569-0123-4b9e-a2ff-39aaa7ec2dfd
 - !<Head/4b5523ca-340f-463c-b5b1-b73cfa66975b>
   PrefabRemaps:
     []
@@ -1427,6 +1463,53 @@
     CapitalizationOverride: None
   DepthTest: false
   TwoSided: false
+- !<FaceInsetVisual/76521569-0123-4b9e-a2ff-39aaa7ec2dfd>
+  PrefabRemaps:
+    []
+  Name: Face Inset
+  Enabled: true
+  RenderOrder: 2
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 0abbd5cd-0c05-4c39-a0ca-7112ae836c68
+  FaceIndex: 0
+  TrackingScope: !<reference> f46dd015-d0c5-4bec-8b6a-2214707719c0
+  FaceRegion: Face
+  CustomFaceRegion:
+    indices:
+      - 66
+      - 80
+      - 89
+      - 86
+      - 8
+      - 85
+      - 88
+      - 79
+      - 33
+      - 26
+      - 25
+      - 92
+      - 77
+      - 3
+      - 78
+      - 93
+      - 58
+      - 59
+    vertices:
+      []
+  InnerBorderRadius: 0.130000
+  OuterBorderRadius: 0.000000
+  SubDivisionCount: 99
+  Pivot: {x: 0.500000, y: 0.000000}
+  UVScale: {x: 1.260000, y: 0.930000}
+  UVOffset: {x: -0.020000, y: -0.010000}
+  FlipX: false
+  FlipY: false
 - !<ScriptComponent/76eedadf-0e11-44a6-8075-047e0219e331>
   PrefabRemaps:
     []
@@ -1797,7 +1880,7 @@
   PrefabRemaps:
     []
   Name: face display
-  Enabled: true
+  Enabled: false
   Layers: 1048576
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
