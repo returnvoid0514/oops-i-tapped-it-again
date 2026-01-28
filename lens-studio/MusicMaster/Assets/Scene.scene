@@ -693,6 +693,21 @@
   Enabled: true
   ScreenRegionType: FullFrame
   ResizeWithKeyboard: false
+- !<SceneObject/2b9c59a5-1a9a-43e8-a186-9f9159e62ab8>
+  PrefabRemaps:
+    []
+  Name: sticker
+  Enabled: true
+  Layers: 1048576
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 70.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 200.000000, y: 170.000000, z: 32.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 83fce40e-f066-4506-bf66-4f21a913474c
 - !<SceneObject/2c950f04-ea62-43af-bdf0-4c172ca972ec>
   PrefabRemaps:
     []
@@ -897,6 +912,25 @@
     bottom: 0.000000
     right: 0.000000
     top: 0.000000
+- !<Image/3eddb044-6312-44ca-a801-49f451cd6889>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: false
+  RenderOrder: 2
+  StretchMode: Stretch
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    []
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<SceneObject/4103114b-762d-4cdb-91aa-300199033e4e>
   PrefabRemaps:
     []
@@ -1050,6 +1084,7 @@
     - !<own> 7cbd4bde-69ff-4147-8b4c-cb8325e738f0
     - !<own> 8aa69461-a132-4fb4-9ce7-c706fa550f13
     - !<own> 76521569-0123-4b9e-a2ff-39aaa7ec2dfd
+    - !<own> 3eddb044-6312-44ca-a801-49f451cd6889
 - !<Head/4b5523ca-340f-463c-b5b1-b73cfa66975b>
   PrefabRemaps:
     []
@@ -1280,12 +1315,12 @@
       - 59
     vertices:
       []
-  InnerBorderRadius: 0.000000
-  OuterBorderRadius: 1.000000
+  InnerBorderRadius: 0.240000
+  OuterBorderRadius: 0.000000
   SubDivisionCount: 68
-  Pivot: {x: -0.010000, y: -0.020000}
-  UVScale: {x: 1.670000, y: 1.150000}
-  UVOffset: {x: 0.010000, y: -0.050000}
+  Pivot: {x: 0.370000, y: -0.280000}
+  UVScale: {x: 1.350000, y: 1.230000}
+  UVOffset: {x: -0.010000, y: 0.010000}
   FlipX: false
   FlipY: false
 - !<Image/608fa51d-2294-4f30-b55a-bf1376ab281c>
@@ -1467,7 +1502,7 @@
   PrefabRemaps:
     []
   Name: Face Inset
-  Enabled: true
+  Enabled: false
   RenderOrder: 2
   StretchMode: Fit
   VerticalAlignment: Center
@@ -1502,8 +1537,8 @@
       - 59
     vertices:
       []
-  InnerBorderRadius: 0.000000
-  OuterBorderRadius: 0.610000
+  InnerBorderRadius: 0.290000
+  OuterBorderRadius: 0.500000
   SubDivisionCount: 99
   Pivot: {x: 0.370000, y: -0.280000}
   UVScale: {x: 1.320000, y: 1.230000}
@@ -1720,6 +1755,25 @@
     ExternalFaceMesh: 1.000000
     l_eye_close: 0.000000
     r_eye_close: 0.000000
+- !<Image/83fce40e-f066-4506-bf66-4f21a913474c>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> ba5872ea-8477-453e-a9ed-462b71e62a6e
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<SceneObject/8403587b-b150-40e5-993b-c072ffb3e153>
   PrefabRemaps:
     []
@@ -1880,7 +1934,7 @@
   PrefabRemaps:
     []
   Name: face display
-  Enabled: false
+  Enabled: true
   Layers: 1048576
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -1888,7 +1942,7 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    []
+    - !<own> 2b9c59a5-1a9a-43e8-a186-9f9159e62ab8
   Components:
     - !<own> 1717c50d-0a95-4416-aff2-d5a5075f149e
     - !<own> 1cd7d7c0-c60c-4575-99c8-ac7a22b5f0c8
@@ -1897,7 +1951,7 @@
   PrefabRemaps:
     []
   Name: Image
-  Enabled: true
+  Enabled: false
   RenderOrder: 2
   StretchMode: Fit
   VerticalAlignment: Center
