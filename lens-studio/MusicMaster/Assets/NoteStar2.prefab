@@ -1,0 +1,67 @@
+- !<ObjectPrefab/a7eb0ef8-d709-4dec-a472-d90571886c6d>
+  PackagePath: ""
+  objects:
+    - !<own> df31c256-6d04-4303-8108-8fc7d359bb8d
+  LazyLoading: false
+  RetainAssets: true
+- !<Image/4012aadf-0f76-4832-9190-99a198f43927>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 92afac56-7eb8-46b0-b871-89eedfa5cb17
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ScriptComponent/6d07bc2a-9bd1-4542-94e2-e1ba90ead7e2>
+  PrefabRemaps:
+    []
+  Name: Note
+  Enabled: true
+  ScriptAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
+  ScriptInputsDefault:
+    speed: true
+    normalColor: true
+    tooEarlyColor: true
+    expiredColor: true
+    hitLineY: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      speed: !<float> 2.000000
+      normalColor: !<Vec4> {x: 0.300000, y: 0.500000, z: 1.000000, w: 1.000000}
+      tooEarlyColor: !<Vec4> {x: 1.000000, y: 0.800000, z: 0.200000, w: 0.600000}
+      expiredColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.400000}
+      hitLineY: !<float> -10.000000
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/df31c256-6d04-4303-8108-8fc7d359bb8d>
+  PrefabRemaps:
+    - 4012aadf-0f76-4832-9190-99a198f43927: 4012aadf-0f76-4832-6e6f-665e670bc6d8
+    - 6d07bc2a-9bd1-4542-94e2-e1ba90ead7e2: 6d07bc2a-9bd1-4542-6b1d-1e456f15281d
+    - df31c256-6d04-4303-8108-8fc7d359bb8d: df31c256-6d04-4303-7ef7-70382ca64472
+  Name: NoteStar2
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 6d07bc2a-9bd1-4542-94e2-e1ba90ead7e2
+    - !<own> 4012aadf-0f76-4832-9190-99a198f43927
