@@ -1,20 +1,20 @@
-- !<AssetImportMetadata/1d09f9a1-37f9-426b-9c29-07b618bb4d6b>
+- !<AssetImportMetadata/f4ae500f-53ed-4fca-b0d8-a294a6f2c5d0>
   ImportedAssetIds:
-    ObjectPrefab: !<reference> 2b74ff91-02b6-474e-b30c-75819b4991e8
+    ObjectPrefab: !<reference> a7eb0ef8-d709-4dec-a472-d90571886c6d
   ImporterName: ObjectPrefabImporter
-  PrimaryAsset: !<reference> 2b74ff91-02b6-474e-b30c-75819b4991e8
+  PrimaryAsset: !<reference> a7eb0ef8-d709-4dec-a472-d90571886c6d
   PackageType: NotAPackage
   LegacyPackagePolicy: ~
   ExtraData:
     {}
   AssetDataMap:
-    ObjectPrefab: !<own> 6c89cb6c-a45c-4751-b395-3bc282177aa8
+    ObjectPrefab: !<own> a473c3ce-802f-4ca7-8623-da658f6ca7d9
   DependentFiles:
     []
   ImporterSettings: !<AssetImporterSettings>
     {}
   CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
-- !<Image/1738e9e7-77a4-43f9-6138-8ce01ea7c717>
+- !<Image/4012aadf-0f76-4832-6e6f-665e670bc6d8>
   PrefabRemaps:
     []
   Name: Image
@@ -33,23 +33,7 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
-- !<SceneObject/430d9eed-4e93-4d22-7292-26d34edf654c>
-  PrefabRemaps:
-    []
-  Name: NoteStar
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 670526c1-9ce3-4acf-7a35-fb102c4f6738
-    - !<own> 1738e9e7-77a4-43f9-6138-8ce01ea7c717
-- !<ScriptComponent/670526c1-9ce3-4acf-7a35-fb102c4f6738>
+- !<ScriptComponent/6d07bc2a-9bd1-4542-6b1d-1e456f15281d>
   PrefabRemaps:
     []
   Name: Note
@@ -73,8 +57,24 @@
   ScriptTypes:
     "":
       {}
-- !<ObjectPrefabAssetData/6c89cb6c-a45c-4751-b395-3bc282177aa8>
-  Prototype: !<ObjectOwner/10fe9870-d778-4639-8c7f-470cc8c0b419>
+- !<ObjectPrefabAssetData/a473c3ce-802f-4ca7-8623-da658f6ca7d9>
+  Prototype: !<ObjectOwner/a7346d65-9412-4f59-8448-5130021606eb>
     PackagePath: ""
     objects:
-      - !<own> 430d9eed-4e93-4d22-7292-26d34edf654c
+      - !<own> df31c256-6d04-4303-7ef7-70382ca64472
+- !<SceneObject/df31c256-6d04-4303-7ef7-70382ca64472>
+  PrefabRemaps:
+    []
+  Name: NoteStar2
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 6d07bc2a-9bd1-4542-6b1d-1e456f15281d
+    - !<own> 4012aadf-0f76-4832-6e6f-665e670bc6d8

@@ -2743,7 +2743,7 @@
   ScriptInputs:
     "":
       conductor: !<MappingBased.AssignableType> 2149e1e4-db76-4bdc-bd0f-b6ae3d139968
-      notePrefab: !<reference.Asset> 2b74ff91-02b6-474e-b30c-75819b4991e8
+      notePrefab: !<reference.Asset> a7eb0ef8-d709-4dec-a472-d90571886c6d
       infiniteMode: false
       spawnInterval: !<float> 2.000000
       hitLineY: !<float> -10.000000

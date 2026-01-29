@@ -1,10 +1,10 @@
-- !<ObjectPrefab/2b74ff91-02b6-474e-b30c-75819b4991e8>
+- !<ObjectPrefab/a7eb0ef8-d709-4dec-a472-d90571886c6d>
   PackagePath: ""
   objects:
-    - !<own> 430d9eed-4e93-4d22-8d6d-d92cb1209ab3
+    - !<own> df31c256-6d04-4303-8108-8fc7d359bb8d
   LazyLoading: false
   RetainAssets: true
-- !<Image/1738e9e7-77a4-43f9-9ec7-731fe15838e8>
+- !<Image/4012aadf-0f76-4832-9190-99a198f43927>
   PrefabRemaps:
     []
   Name: Image
@@ -23,25 +23,7 @@
   RotationAngle: 0
   Pivot: {x: 0.000000, y: 0.000000}
   ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
-- !<SceneObject/430d9eed-4e93-4d22-8d6d-d92cb1209ab3>
-  PrefabRemaps:
-    - 1738e9e7-77a4-43f9-9ec7-731fe15838e8: 1738e9e7-77a4-43f9-6138-8ce01ea7c717
-    - 430d9eed-4e93-4d22-8d6d-d92cb1209ab3: 430d9eed-4e93-4d22-7292-26d34edf654c
-    - 670526c1-9ce3-4acf-85ca-04efd3b098c7: 670526c1-9ce3-4acf-7a35-fb102c4f6738
-  Name: NoteStar
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 670526c1-9ce3-4acf-85ca-04efd3b098c7
-    - !<own> 1738e9e7-77a4-43f9-9ec7-731fe15838e8
-- !<ScriptComponent/670526c1-9ce3-4acf-85ca-04efd3b098c7>
+- !<ScriptComponent/6d07bc2a-9bd1-4542-94e2-e1ba90ead7e2>
   PrefabRemaps:
     []
   Name: Note
@@ -65,3 +47,21 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/df31c256-6d04-4303-8108-8fc7d359bb8d>
+  PrefabRemaps:
+    - 4012aadf-0f76-4832-9190-99a198f43927: 4012aadf-0f76-4832-6e6f-665e670bc6d8
+    - 6d07bc2a-9bd1-4542-94e2-e1ba90ead7e2: 6d07bc2a-9bd1-4542-6b1d-1e456f15281d
+    - df31c256-6d04-4303-8108-8fc7d359bb8d: df31c256-6d04-4303-7ef7-70382ca64472
+  Name: NoteStar2
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 6d07bc2a-9bd1-4542-94e2-e1ba90ead7e2
+    - !<own> 4012aadf-0f76-4832-9190-99a198f43927
