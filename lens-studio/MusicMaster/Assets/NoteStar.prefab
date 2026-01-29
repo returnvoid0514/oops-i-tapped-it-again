@@ -1,0 +1,67 @@
+- !<ObjectPrefab/2b74ff91-02b6-474e-b30c-75819b4991e8>
+  PackagePath: ""
+  objects:
+    - !<own> 430d9eed-4e93-4d22-8d6d-d92cb1209ab3
+  LazyLoading: false
+  RetainAssets: true
+- !<Image/1738e9e7-77a4-43f9-9ec7-731fe15838e8>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 92afac56-7eb8-46b0-b871-89eedfa5cb17
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<SceneObject/430d9eed-4e93-4d22-8d6d-d92cb1209ab3>
+  PrefabRemaps:
+    - 1738e9e7-77a4-43f9-9ec7-731fe15838e8: 1738e9e7-77a4-43f9-6138-8ce01ea7c717
+    - 430d9eed-4e93-4d22-8d6d-d92cb1209ab3: 430d9eed-4e93-4d22-7292-26d34edf654c
+    - 670526c1-9ce3-4acf-85ca-04efd3b098c7: 670526c1-9ce3-4acf-7a35-fb102c4f6738
+  Name: NoteStar
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 670526c1-9ce3-4acf-85ca-04efd3b098c7
+    - !<own> 1738e9e7-77a4-43f9-9ec7-731fe15838e8
+- !<ScriptComponent/670526c1-9ce3-4acf-85ca-04efd3b098c7>
+  PrefabRemaps:
+    []
+  Name: Note
+  Enabled: true
+  ScriptAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
+  ScriptInputsDefault:
+    speed: true
+    normalColor: true
+    tooEarlyColor: true
+    expiredColor: true
+    hitLineY: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      speed: !<float> 2.000000
+      normalColor: !<Vec4> {x: 0.300000, y: 0.500000, z: 1.000000, w: 1.000000}
+      tooEarlyColor: !<Vec4> {x: 1.000000, y: 0.800000, z: 0.200000, w: 0.600000}
+      expiredColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.400000}
+      hitLineY: !<float> -10.000000
+  ScriptTypes:
+    "":
+      {}
