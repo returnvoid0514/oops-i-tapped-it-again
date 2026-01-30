@@ -557,7 +557,7 @@ export class HitZoneManager extends BaseScriptComponent {
         let pointsEarned = 0;
 
         // Perfect: Very close to hitline
-        if (yDistance < 0.6) {
+        if (yDistance < 0.9) {
             quality = "Perfect!";
             shouldDisableNote = true;
             this.scoreStats.perfect++;
@@ -565,7 +565,7 @@ export class HitZoneManager extends BaseScriptComponent {
             this.incrementCombo();
         }
         // Great: Close to hitline
-        else if (yDistance < 1.0) {
+        else if (yDistance < 1.5) {
             quality = "Great!";
             shouldDisableNote = true;
             this.scoreStats.great++;
@@ -573,7 +573,7 @@ export class HitZoneManager extends BaseScriptComponent {
             this.incrementCombo();
         }
         // Good: Moderately close
-        else if (yDistance < 1.5) {
+        else if (yDistance < 2.25) {
             quality = "Good";
             shouldDisableNote = true;
             this.scoreStats.good++;
