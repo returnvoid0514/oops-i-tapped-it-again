@@ -623,8 +623,10 @@ export class HitZoneManager extends BaseScriptComponent {
 
             if (targetHitLine) {
                 const feedbackScript = targetHitLine.getComponent("Component.ScriptComponent") as any;
-                if (feedbackScript && feedbackScript.flash) {
-                    feedbackScript.flash();
+                if (feedbackScript && feedbackScript.flashWithQuality) {
+                    feedbackScript.flashWithQuality(quality);
+                } else if (feedbackScript && feedbackScript.flash) {
+                    feedbackScript.flash(); // Fallback
                 }
             }
         }
