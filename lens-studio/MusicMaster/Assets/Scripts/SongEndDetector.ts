@@ -25,6 +25,9 @@ export class SongEndDetector extends BaseScriptComponent {
     private gameStartTime: number = 0;
     private wasGameStarted: boolean = false;
 
+    // Minimum time (seconds) before checking if song ended - prevents false trigger on startup
+    private readonly MIN_PLAY_TIME: number = 3.0;
+
     onAwake() {
         if (!this.hitZoneManager) {
             return;
@@ -51,19 +54,17 @@ export class SongEndDetector extends BaseScriptComponent {
             this.gameStartTime = getTime();
         }
 
-        // Check if audio has stopped playing (only after game started)
-        if (this.audioComponent && !this.audioComponent.isPlaying()) {
+        // Check if audio has stopped playing (only after minimum play time to avoid race condition)
+        const elapsed = getTime() - this.gameStartTime;
+        if (elapsed >= this.MIN_PLAY_TIME && this.audioComponent && !this.audioComponent.isPlaying()) {
             this.endSong();
             return;
         }
 
         // Or check if duration has been reached (if specified)
-        if (this.songDuration > 0) {
-            const elapsed = getTime() - this.gameStartTime;
-            if (elapsed >= this.songDuration) {
-                this.endSong();
-                return;
-            }
+        if (this.songDuration > 0 && elapsed >= this.songDuration) {
+            this.endSong();
+            return;
         }
     }
 

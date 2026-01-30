@@ -13,7 +13,7 @@ metaInfo:
     []
   tags:
     []
-  lensName: TestGameMaster
+  lensName: Test-GameMaster
   lensDescriptors:
     []
   lensApplicability:
@@ -21,7 +21,6 @@ metaInfo:
     - Back
   lensClientCompatibilities:
     - Mobile
-    - Web
   platformBundlesEnabled: false
   iconHash: ""
   videoPreviewHash: ""
