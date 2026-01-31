@@ -5,9 +5,11 @@ Analyzes an MP3 file and generates a beat map in the game's JSON format.
 
 Usage:
     python generate_beatmap.py <input.mp3> [output.json] [--difficulty LEVEL]
+    python generate_beatmap.py <input.mp3> --typescript  # Output directly to SongLibrary.ts
 
 Example:
     python generate_beatmap.py song.mp3 beatmap.json --difficulty medium
+    python generate_beatmap.py song.mp3 --typescript --difficulty hard
 """
 
 import argparse
@@ -236,6 +238,59 @@ def time_to_beat_number(time_seconds: float, tempo: float, offset: float = 0) ->
     beats_per_second = tempo / 60.0
     beat = (time_seconds - offset) * beats_per_second
     return round(beat, 2)
+
+
+def to_camel_case(name: str) -> str:
+    """Convert song name to CamelCase for variable name."""
+    words = ''.join(c if c.isalnum() or c == ' ' else ' ' for c in name).split()
+    return ''.join(word.capitalize() for word in words)
+
+
+def generate_typescript(beatmap: dict) -> str:
+    """Generate SongLibrary.ts content from beatmap data."""
+    song_name = beatmap.get("songName", "Unknown")
+    bpm = beatmap.get("bpm", 120)
+    offset = beatmap.get("offset", 0.0)
+    notes = beatmap.get("notes", [])
+
+    var_name = f"Song_{to_camel_case(song_name)}"
+
+    # Generate notes array
+    notes_lines = []
+    for note in notes:
+        beat = note.get("beat", 0)
+        lane = note.get("lane", 1)
+        notes_lines.append(f"        {{ beat: {beat}, lane: {lane} }}")
+
+    notes_str = ",\n".join(notes_lines)
+
+    return f'''// Song chart data definitions
+// Generated with: python tools/generate_beatmap.py
+
+export interface SongChartData {{
+    songName: string;
+    bpm: number;
+    offset: number;
+    // Lane values: 0 = Left, 1 = Center, 2 = Right
+    notes: Array<{{ beat: number; lane: number }}>;
+}}
+
+// Current Song: {song_name}
+// BPM: {bpm}, Notes: {len(notes)}
+export const {var_name}: SongChartData = {{
+    songName: "{song_name}",
+    bpm: {bpm},
+    offset: {offset},
+    notes: [
+{notes_str}
+    ]
+}};
+
+// Master list of all available songs
+export const AllSongs: SongChartData[] = [
+    {var_name}
+];
+'''
 
 
 def filter_notes_by_spacing(notes: list, min_gap: float = 1.0) -> list:
@@ -473,6 +528,11 @@ def main():
         default=None,
         help="Minimum spacing between notes in beats (overrides difficulty). Example: 1.5 means at least 1.5 beats between notes"
     )
+    parser.add_argument(
+        "--typescript", "-ts",
+        action="store_true",
+        help="Output directly to SongLibrary.ts instead of JSON"
+    )
 
     args = parser.parse_args()
 
@@ -494,7 +554,17 @@ def main():
     )
 
     # Output
-    if args.output:
+    if args.typescript:
+        # Output to SongLibrary.ts
+        tools_dir = Path(__file__).parent
+        repo_root = tools_dir.parent
+        ts_path = repo_root / "lens-studio" / "MusicMaster" / "Assets" / "Scripts" / "SongLibrary.ts"
+
+        ts_content = generate_typescript(beatmap)
+        with open(ts_path, "w") as f:
+            f.write(ts_content)
+        print(f"\nSaved to: {ts_path}")
+    elif args.output:
         output_path = Path(args.output)
         with open(output_path, "w") as f:
             json.dump(beatmap, f, indent=2)

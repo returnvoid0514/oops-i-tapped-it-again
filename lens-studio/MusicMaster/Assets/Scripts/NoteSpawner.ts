@@ -113,9 +113,6 @@ export class NoteSpawner extends BaseScriptComponent {
     }
 
     private loadStaticData() {
-        // TODO: Implement SongManager for random song selection from multiple songs
-        // For now, load first song from SongLibrary directly
-
         if (AllSongs.length > 0) {
             const song = AllSongs[0];
             this.notesQueue = [...song.notes];
@@ -129,8 +126,6 @@ export class NoteSpawner extends BaseScriptComponent {
             this.notesQueue = [];
         }
     }
-
-    // TODO: Add setChartData() method when implementing SongManager for dynamic song loading
 
     // Reset spawner state (for replay)
     public resetSpawner(): void {
