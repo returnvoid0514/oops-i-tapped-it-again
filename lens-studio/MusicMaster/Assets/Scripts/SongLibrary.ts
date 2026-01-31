@@ -1,10 +1,5 @@
 // Song chart data definitions
-// Each song has: name, bpm, offset, and notes array
-//
-// TODO: Implement random song selection feature
-// - Set up SongManager.ts to randomly pick from AllSongs array
-// - Configure audio tracks in Lens Studio Inspector to match song order
-// - See SongManager.ts for implementation details
+// Generated with: python tools/generate_beatmap.py
 
 export interface SongChartData {
     songName: string;
@@ -14,52 +9,116 @@ export interface SongChartData {
     notes: Array<{ beat: number; lane: number }>;
 }
 
-// Song 1: Test and Rehearsal
-// Lane values: 0 = Left, 1 = Center, 2 = Right
-export const Song_TestAndRehearsal: SongChartData = {
-    songName: "Test and Rehearsal",
-    bpm: 120,
+// Current Song: Sample Song
+// BPM: 129.2, Notes: 99
+export const Song_SampleSong: SongChartData = {
+    songName: "Sample Song",
+    bpm: 129.2,
     offset: 0.0,
     notes: [
-        { beat: 4.0, lane: 1 },
+        { beat: 0.65, lane: 2 },
+        { beat: 2.3, lane: 1 },
+        { beat: 4.35, lane: 1 },
         { beat: 6.0, lane: 0 },
-        { beat: 8.0, lane: 2 },
-        { beat: 10.0, lane: 1 },
-        { beat: 12.0, lane: 0 },
-        { beat: 14.0, lane: 2 },
-        { beat: 16.0, lane: 1 },
-        { beat: 18.0, lane: 0 },
-        { beat: 20.0, lane: 1 },
-        { beat: 22.0, lane: 2 },
-        { beat: 24.0, lane: 0 },
-        { beat: 26.0, lane: 1 },
-        { beat: 28.0, lane: 0 },
-        { beat: 30.0, lane: 2 },
-        { beat: 32.0, lane: 1 },
-        { beat: 34.0, lane: 0 },
-        { beat: 36.0, lane: 2 },
-        { beat: 38.0, lane: 1 },
-        { beat: 40.0, lane: 0 },
-        { beat: 42.0, lane: 1 },
-        { beat: 44.0, lane: 2 },
-        { beat: 46.0, lane: 0 },
-        { beat: 48.0, lane: 1 },
-        { beat: 50.0, lane: 2 },
-        { beat: 52.0, lane: 1 },
-        { beat: 54.0, lane: 0 },
-        { beat: 56.0, lane: 2 },
-        { beat: 58.0, lane: 1 },
-        { beat: 60.0, lane: 0 },
-        { beat: 62.0, lane: 1 },
-        { beat: 64.0, lane: 2 }
+        { beat: 8.0, lane: 1 },
+        { beat: 9.7, lane: 0 },
+        { beat: 11.35, lane: 1 },
+        { beat: 13.35, lane: 1 },
+        { beat: 15.0, lane: 0 },
+        { beat: 16.5, lane: 1 },
+        { beat: 18.7, lane: 2 },
+        { beat: 20.35, lane: 0 },
+        { beat: 22.0, lane: 1 },
+        { beat: 24.0, lane: 1 },
+        { beat: 25.7, lane: 0 },
+        { beat: 27.2, lane: 1 },
+        { beat: 29.0, lane: 1 },
+        { beat: 30.65, lane: 2 },
+        { beat: 32.45, lane: 1 },
+        { beat: 34.4, lane: 1 },
+        { beat: 36.4, lane: 1 },
+        { beat: 38.05, lane: 0 },
+        { beat: 39.75, lane: 1 },
+        { beat: 41.35, lane: 2 },
+        { beat: 43.4, lane: 0 },
+        { beat: 45.05, lane: 1 },
+        { beat: 46.75, lane: 2 },
+        { beat: 48.55, lane: 2 },
+        { beat: 50.05, lane: 1 },
+        { beat: 51.85, lane: 1 },
+        { beat: 53.7, lane: 0 },
+        { beat: 55.35, lane: 1 },
+        { beat: 57.1, lane: 1 },
+        { beat: 58.75, lane: 1 },
+        { beat: 60.35, lane: 1 },
+        { beat: 61.85, lane: 2 },
+        { beat: 63.4, lane: 1 },
+        { beat: 65.0, lane: 0 },
+        { beat: 66.75, lane: 1 },
+        { beat: 68.5, lane: 1 },
+        { beat: 70.1, lane: 2 },
+        { beat: 71.8, lane: 1 },
+        { beat: 73.8, lane: 1 },
+        { beat: 75.5, lane: 2 },
+        { beat: 77.15, lane: 1 },
+        { beat: 79.1, lane: 2 },
+        { beat: 80.8, lane: 2 },
+        { beat: 82.5, lane: 1 },
+        { beat: 84.5, lane: 1 },
+        { beat: 86.15, lane: 2 },
+        { beat: 87.8, lane: 1 },
+        { beat: 89.85, lane: 1 },
+        { beat: 91.5, lane: 0 },
+        { beat: 93.5, lane: 1 },
+        { beat: 95.15, lane: 0 },
+        { beat: 96.65, lane: 1 },
+        { beat: 98.2, lane: 2 },
+        { beat: 99.85, lane: 0 },
+        { beat: 101.45, lane: 0 },
+        { beat: 103.15, lane: 1 },
+        { beat: 104.65, lane: 2 },
+        { beat: 106.15, lane: 1 },
+        { beat: 108.0, lane: 0 },
+        { beat: 109.5, lane: 1 },
+        { beat: 111.2, lane: 0 },
+        { beat: 112.85, lane: 1 },
+        { beat: 114.85, lane: 1 },
+        { beat: 116.4, lane: 0 },
+        { beat: 118.2, lane: 2 },
+        { beat: 120.0, lane: 1 },
+        { beat: 121.5, lane: 1 },
+        { beat: 123.1, lane: 0 },
+        { beat: 124.8, lane: 0 },
+        { beat: 126.5, lane: 0 },
+        { beat: 128.15, lane: 0 },
+        { beat: 129.9, lane: 1 },
+        { beat: 131.55, lane: 2 },
+        { beat: 133.55, lane: 2 },
+        { beat: 135.25, lane: 1 },
+        { beat: 136.9, lane: 2 },
+        { beat: 138.75, lane: 0 },
+        { beat: 140.5, lane: 1 },
+        { beat: 142.3, lane: 2 },
+        { beat: 144.15, lane: 0 },
+        { beat: 145.9, lane: 1 },
+        { beat: 147.6, lane: 1 },
+        { beat: 149.5, lane: 0 },
+        { beat: 151.25, lane: 2 },
+        { beat: 152.95, lane: 2 },
+        { beat: 154.95, lane: 2 },
+        { beat: 156.6, lane: 2 },
+        { beat: 158.3, lane: 1 },
+        { beat: 160.3, lane: 1 },
+        { beat: 161.95, lane: 2 },
+        { beat: 163.55, lane: 1 },
+        { beat: 165.3, lane: 2 },
+        { beat: 166.9, lane: 1 },
+        { beat: 169.0, lane: 1 },
+        { beat: 170.55, lane: 1 }
     ]
 };
 
-// Add more songs here following the same pattern:
-// export const Song_YourSongName: SongChartData = { ... };
-
-// Master list of all available songs (for random selection)
+// Master list of all available songs
 export const AllSongs: SongChartData[] = [
-    Song_TestAndRehearsal
-    // Add more songs to this array
+    Song_SampleSong
 ];

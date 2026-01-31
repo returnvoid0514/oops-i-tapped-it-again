@@ -5,9 +5,11 @@ Analyzes an MP3 file and generates a beat map in the game's JSON format.
 
 Usage:
     python generate_beatmap.py <input.mp3> [output.json] [--difficulty LEVEL]
+    python generate_beatmap.py <input.mp3> --typescript  # Output directly to SongLibrary.ts
 
 Example:
     python generate_beatmap.py song.mp3 beatmap.json --difficulty medium
+    python generate_beatmap.py song.mp3 --typescript --difficulty hard
 """
 
 import argparse
@@ -238,6 +240,59 @@ def time_to_beat_number(time_seconds: float, tempo: float, offset: float = 0) ->
     return round(beat, 2)
 
 
+def to_camel_case(name: str) -> str:
+    """Convert song name to CamelCase for variable name."""
+    words = ''.join(c if c.isalnum() or c == ' ' else ' ' for c in name).split()
+    return ''.join(word.capitalize() for word in words)
+
+
+def generate_typescript(beatmap: dict) -> str:
+    """Generate SongLibrary.ts content from beatmap data."""
+    song_name = beatmap.get("songName", "Unknown")
+    bpm = beatmap.get("bpm", 120)
+    offset = beatmap.get("offset", 0.0)
+    notes = beatmap.get("notes", [])
+
+    var_name = f"Song_{to_camel_case(song_name)}"
+
+    # Generate notes array
+    notes_lines = []
+    for note in notes:
+        beat = note.get("beat", 0)
+        lane = note.get("lane", 1)
+        notes_lines.append(f"        {{ beat: {beat}, lane: {lane} }}")
+
+    notes_str = ",\n".join(notes_lines)
+
+    return f'''// Song chart data definitions
+// Generated with: python tools/generate_beatmap.py
+
+export interface SongChartData {{
+    songName: string;
+    bpm: number;
+    offset: number;
+    // Lane values: 0 = Left, 1 = Center, 2 = Right
+    notes: Array<{{ beat: number; lane: number }}>;
+}}
+
+// Current Song: {song_name}
+// BPM: {bpm}, Notes: {len(notes)}
+export const {var_name}: SongChartData = {{
+    songName: "{song_name}",
+    bpm: {bpm},
+    offset: {offset},
+    notes: [
+{notes_str}
+    ]
+}};
+
+// Master list of all available songs
+export const AllSongs: SongChartData[] = [
+    {var_name}
+];
+'''
+
+
 def filter_notes_by_spacing(notes: list, min_gap: float = 1.0) -> list:
     """
     Filter notes to ensure minimum spacing between consecutive notes.
@@ -317,6 +372,7 @@ def generate_beatmap(
     include_long_notes: bool = True,
     offset: float = 0.0,
     min_spacing: float = None,  # Minimum beats between notes (overrides difficulty)
+    end_buffer_beats: float = 3.0,  # Buffer beats before song end (notes need time to scroll off)
 ) -> dict:
     """
     Generate a complete beat map from an audio file.
@@ -400,6 +456,11 @@ def generate_beatmap(
         # Default: 1.5 beat spacing
         notes = filter_notes_by_spacing(notes, 1.5)
 
+    # Filter out notes too close to song end (they won't have time to scroll off screen)
+    max_beat = (analysis["duration"] * tempo) / 60.0
+    cutoff_beat = max_beat - end_buffer_beats
+    notes = [n for n in notes if n["beat"] <= cutoff_beat]
+
     # Build final beat map
     beatmap = {
         "songName": song_name,
@@ -473,6 +534,17 @@ def main():
         default=None,
         help="Minimum spacing between notes in beats (overrides difficulty). Example: 1.5 means at least 1.5 beats between notes"
     )
+    parser.add_argument(
+        "--typescript", "-ts",
+        action="store_true",
+        help="Output directly to SongLibrary.ts instead of JSON"
+    )
+    parser.add_argument(
+        "--end-buffer",
+        type=float,
+        default=3.0,
+        help="Buffer beats before song end - notes within this range are excluded (default: 3.0)"
+    )
 
     args = parser.parse_args()
 
@@ -491,17 +563,26 @@ def main():
         include_long_notes=not args.no_long_notes,
         offset=args.offset,
         min_spacing=args.spacing,
+        end_buffer_beats=args.end_buffer,
     )
 
     # Output
-    if args.output:
-        output_path = Path(args.output)
-        with open(output_path, "w") as f:
-            json.dump(beatmap, f, indent=2)
-        print(f"\nSaved to: {output_path}")
-    else:
-        print("\n" + "=" * 50)
-        print(json.dumps(beatmap, indent=2))
+    tools_dir = Path(__file__).parent
+    repo_root = tools_dir.parent
+
+    # Always save JSON to output.json (or specified path)
+    json_path = Path(args.output) if args.output else tools_dir / "output.json"
+    with open(json_path, "w") as f:
+        json.dump(beatmap, f, indent=2)
+    print(f"\nSaved JSON to: {json_path}")
+
+    # If --typescript, also output to SongLibrary.ts
+    if args.typescript:
+        ts_path = repo_root / "lens-studio" / "MusicMaster" / "Assets" / "Scripts" / "SongLibrary.ts"
+        ts_content = generate_typescript(beatmap)
+        with open(ts_path, "w") as f:
+            f.write(ts_content)
+        print(f"Saved TypeScript to: {ts_path}")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import { HitZoneManager } from "./HitZoneManager";
 import { Conductor } from "./Conductor";
+import { NoteSpawner } from "./NoteSpawner";
 
 // This script detects when the song ends and displays the final score
 // Attach this to a scene object and assign the HitZoneManager and AudioComponent in Inspector
@@ -21,7 +22,12 @@ export class SongEndDetector extends BaseScriptComponent {
     @input
     leaderboard: ScriptComponent; // Reference to Leaderboard Component
 
+    @input
+    @allowUndefined
+    noteSpawner: NoteSpawner; // Reference to NoteSpawner to check if all notes are done
+
     private hasEnded: boolean = false;
+    private songFinished: boolean = false; // Audio has stopped
     private gameStartTime: number = 0;
     private wasGameStarted: boolean = false;
 
@@ -54,17 +60,29 @@ export class SongEndDetector extends BaseScriptComponent {
             this.gameStartTime = getTime();
         }
 
-        // Check if audio has stopped playing (only after minimum play time to avoid race condition)
         const elapsed = getTime() - this.gameStartTime;
+
+        // Check if audio has stopped playing (only after minimum play time to avoid race condition)
         if (elapsed >= this.MIN_PLAY_TIME && this.audioComponent && !this.audioComponent.isPlaying()) {
-            this.endSong();
-            return;
+            this.songFinished = true;
         }
 
         // Or check if duration has been reached (if specified)
         if (this.songDuration > 0 && elapsed >= this.songDuration) {
-            this.endSong();
-            return;
+            this.songFinished = true;
+        }
+
+        // Only end song when audio is done AND all notes have been processed
+        if (this.songFinished) {
+            // If we have a NoteSpawner reference, wait for all notes to be done
+            if (this.noteSpawner) {
+                if (this.noteSpawner.areAllNotesDone()) {
+                    this.endSong();
+                }
+            } else {
+                // No NoteSpawner reference, just end immediately
+                this.endSong();
+            }
         }
     }
 
