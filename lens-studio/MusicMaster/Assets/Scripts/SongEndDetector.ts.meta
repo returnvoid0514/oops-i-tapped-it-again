@@ -30,7 +30,6 @@
     conductor: false
     hitZoneManager: false
     leaderboard: false
-    noteSpawner: false
     songDuration: false
   ScriptTypesHidden:
     {}
@@ -46,7 +45,6 @@
       conductor: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
       songDuration: !<float> 60.000000
       leaderboard: !<reference.ScriptComponent> 00000000-0000-0000-0000-000000000000
-      noteSpawner: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
@@ -56,4 +54,3 @@
     - // @input AssignableType_1 conductor
     - // @input float songDuration = 60
     - // @input Component.ScriptComponent leaderboard
-    - // @input AssignableType_2 noteSpawner
