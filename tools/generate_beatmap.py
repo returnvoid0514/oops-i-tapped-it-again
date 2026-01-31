@@ -554,24 +554,22 @@ def main():
     )
 
     # Output
-    if args.typescript:
-        # Output to SongLibrary.ts
-        tools_dir = Path(__file__).parent
-        repo_root = tools_dir.parent
-        ts_path = repo_root / "lens-studio" / "MusicMaster" / "Assets" / "Scripts" / "SongLibrary.ts"
+    tools_dir = Path(__file__).parent
+    repo_root = tools_dir.parent
 
+    # Always save JSON to output.json (or specified path)
+    json_path = Path(args.output) if args.output else tools_dir / "output.json"
+    with open(json_path, "w") as f:
+        json.dump(beatmap, f, indent=2)
+    print(f"\nSaved JSON to: {json_path}")
+
+    # If --typescript, also output to SongLibrary.ts
+    if args.typescript:
+        ts_path = repo_root / "lens-studio" / "MusicMaster" / "Assets" / "Scripts" / "SongLibrary.ts"
         ts_content = generate_typescript(beatmap)
         with open(ts_path, "w") as f:
             f.write(ts_content)
-        print(f"\nSaved to: {ts_path}")
-    elif args.output:
-        output_path = Path(args.output)
-        with open(output_path, "w") as f:
-            json.dump(beatmap, f, indent=2)
-        print(f"\nSaved to: {output_path}")
-    else:
-        print("\n" + "=" * 50)
-        print(json.dumps(beatmap, indent=2))
+        print(f"Saved TypeScript to: {ts_path}")
 
 
 if __name__ == "__main__":
