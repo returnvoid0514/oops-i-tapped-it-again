@@ -859,7 +859,7 @@
   Enabled: true
   ScriptAsset: !<reference> 0a03b55f-efa9-4a93-b744-20c6ef7edb6f
   ScriptInputsDefault:
-    {}
+    noteSpawner: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -869,6 +869,7 @@
       conductor: !<MappingBased.AssignableType_1> 84405190-188e-4080-9d35-3a254f3d697e
       songDuration: !<float> 0.000000
       leaderboard: !<reference.ScriptComponent> fee2c8c0-5ded-46be-a108-fabecb13fd15
+      noteSpawner: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}

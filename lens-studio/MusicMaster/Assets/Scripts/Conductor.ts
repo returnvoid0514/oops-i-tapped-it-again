@@ -20,6 +20,11 @@ export class Conductor extends BaseScriptComponent {
     // Game starts when user taps
     public isGameStarted: boolean = false;
 
+    // Track when audio ends to continue beat counting
+    private audioEnded: boolean = false;
+    private audioEndTime: number = 0;
+    private lastAudioPosition: number = 0;
+
     onAwake() {
         if (!this.audioTrack) {
             print("Error: Please assign AudioComponent in Inspector");
@@ -60,12 +65,25 @@ export class Conductor extends BaseScriptComponent {
     }
 
     onUpdate() {
-        if (!this.audioTrack.isPlaying()) return;
+        if (!this.isGameStarted) return;
 
-        this.currentSongPosition = this.audioTrack.position - this.offset;
+        if (this.audioTrack.isPlaying()) {
+            // Audio is playing - use audio position
+            this.currentSongPosition = this.audioTrack.position - this.offset;
+            this.lastAudioPosition = this.currentSongPosition;
+        } else if (!this.audioEnded && this.lastAudioPosition > 0) {
+            // Audio just ended - mark the time
+            this.audioEnded = true;
+            this.audioEndTime = getTime();
+        } else if (this.audioEnded) {
+            // Audio ended - continue counting based on elapsed time
+            const elapsedSinceEnd = getTime() - this.audioEndTime;
+            this.currentSongPosition = this.lastAudioPosition + elapsedSinceEnd;
+        } else {
+            return; // Game started but audio hasn't played yet
+        }
 
         this.currentBeat = (this.currentSongPosition * this.bpm) / 60;
-
     }
 
     public getBeatError(targetBeat: number): number {

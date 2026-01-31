@@ -10,7 +10,7 @@ export interface SongChartData {
 }
 
 // Current Song: Sample Song
-// BPM: 129.2, Notes: 102
+// BPM: 129.2, Notes: 99
 export const Song_SampleSong: SongChartData = {
     songName: "Sample Song",
     bpm: 129.2,
@@ -114,10 +114,7 @@ export const Song_SampleSong: SongChartData = {
         { beat: 165.3, lane: 2 },
         { beat: 166.9, lane: 1 },
         { beat: 169.0, lane: 1 },
-        { beat: 170.55, lane: 1 },
-        { beat: 172.25, lane: 1 },
-        { beat: 174.3, lane: 1 },
-        { beat: 176.05, lane: 2 }
+        { beat: 170.55, lane: 1 }
     ]
 };
 

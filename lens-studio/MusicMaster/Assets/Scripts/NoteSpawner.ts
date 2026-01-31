@@ -127,6 +127,23 @@ export class NoteSpawner extends BaseScriptComponent {
         }
     }
 
+    // Check if all notes have been processed (queue empty and no active notes)
+    public areAllNotesDone(): boolean {
+        // Check if there are still notes waiting to spawn
+        if (this.notesQueue.length > 0) {
+            return false;
+        }
+
+        // Check if any notes are still active (enabled) in the pool
+        for (let noteObj of this.pool) {
+            if (noteObj.enabled) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // Reset spawner state (for replay)
     public resetSpawner(): void {
         // Disable all pooled notes

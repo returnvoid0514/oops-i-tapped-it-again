@@ -372,6 +372,7 @@ def generate_beatmap(
     include_long_notes: bool = True,
     offset: float = 0.0,
     min_spacing: float = None,  # Minimum beats between notes (overrides difficulty)
+    end_buffer_beats: float = 3.0,  # Buffer beats before song end (notes need time to scroll off)
 ) -> dict:
     """
     Generate a complete beat map from an audio file.
@@ -455,6 +456,11 @@ def generate_beatmap(
         # Default: 1.5 beat spacing
         notes = filter_notes_by_spacing(notes, 1.5)
 
+    # Filter out notes too close to song end (they won't have time to scroll off screen)
+    max_beat = (analysis["duration"] * tempo) / 60.0
+    cutoff_beat = max_beat - end_buffer_beats
+    notes = [n for n in notes if n["beat"] <= cutoff_beat]
+
     # Build final beat map
     beatmap = {
         "songName": song_name,
@@ -533,6 +539,12 @@ def main():
         action="store_true",
         help="Output directly to SongLibrary.ts instead of JSON"
     )
+    parser.add_argument(
+        "--end-buffer",
+        type=float,
+        default=3.0,
+        help="Buffer beats before song end - notes within this range are excluded (default: 3.0)"
+    )
 
     args = parser.parse_args()
 
@@ -551,6 +563,7 @@ def main():
         include_long_notes=not args.no_long_notes,
         offset=args.offset,
         min_spacing=args.spacing,
+        end_buffer_beats=args.end_buffer,
     )
 
     # Output
