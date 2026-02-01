@@ -3519,7 +3519,6 @@
       camera: !<reference.Camera> 00000000-0000-0065-0000-000000000065
       hitLineY: !<float> -10.000000
       comboText: !<reference.Text> 71f52f5e-1e38-4e49-87c4-07dedd997695
-      hitStatusText: !<reference.Text> f4b5297d-ecde-4431-b01f-5a291cbe0f78
       scoreText: !<reference.Text> 026b317c-741d-4cbe-b142-a2669cb99090
       leaderboard: !<reference.ScriptComponent> fee2c8c0-5ded-46be-a108-fabecb13fd15
   ScriptTypes:

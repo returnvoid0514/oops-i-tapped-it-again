@@ -52,9 +52,6 @@ export class HitZoneManager extends BaseScriptComponent {
     comboText: Text; // Reference to UI Text component to display combo
 
     @input
-    hitStatusText: Text; // Reference to UI Text component to display hit status (Perfect/Great/Good/Miss)
-
-    @input
     scoreText: Text; // Reference to UI Text component to display live score (top-right)
 
     @input
@@ -62,10 +59,6 @@ export class HitZoneManager extends BaseScriptComponent {
 
     // Track which notes have been judged to avoid duplicate miss judgments
     private judgedNotes = new Set<SceneObject>();
-
-    // Timer for auto-hiding hit status text
-    private hitStatusTimer: number = 0;
-    private readonly HIT_STATUS_DISPLAY_DURATION = 0.55; // How long to show hit status (seconds)
 
     // Cache the NoteSpawner script reference to avoid repeated lookups
     private spawnerScript: any = null;
@@ -85,11 +78,6 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Cache the NoteSpawner script reference once
         this.cacheSpawnerScript();
-
-        // Initialize hit status text
-        if (this.hitStatusText) {
-            this.hitStatusText.text = "";
-        }
 
         // Initialize score display
         if (this.scoreText) {
@@ -115,14 +103,6 @@ export class HitZoneManager extends BaseScriptComponent {
     private onUpdate() {
         // Check for notes that have passed the hit zone without being hit
         this.checkMissedNotes();
-
-        // Update hit status timer - hide text after duration expires
-        if (this.hitStatusTimer > 0) {
-            this.hitStatusTimer -= getDeltaTime();
-            if (this.hitStatusTimer <= 0 && this.hitStatusText) {
-                this.hitStatusText.text = "";
-            }
-        }
 
         // Diagnostic disabled for performance - uncomment if debugging needed
         // this.debugTimer += getDeltaTime();
@@ -213,38 +193,6 @@ export class HitZoneManager extends BaseScriptComponent {
     private resetCombo(): void {
         this.scoreStats.currentCombo = 0;
         this.updateComboDisplay();
-    }
-
-    private showHitStatus(quality: string): void {
-        if (!this.hitStatusText) {
-            return;
-        }
-
-        // Set text and color based on quality
-        switch (quality) {
-            case "Perfect!":
-                this.hitStatusText.text = "PERFECT!";
-                this.hitStatusText.textFill.color = new vec4(1.0, 0.84, 0.0, 1.0); // Gold
-                break;
-            case "Great!":
-                this.hitStatusText.text = "GREAT!";
-                this.hitStatusText.textFill.color = new vec4(0.0, 1.0, 0.5, 1.0); // Green
-                break;
-            case "Good":
-                this.hitStatusText.text = "GOOD";
-                this.hitStatusText.textFill.color = new vec4(0.3, 0.7, 1.0, 1.0); // Light Blue
-                break;
-            case "Miss":
-                this.hitStatusText.text = "MISS";
-                this.hitStatusText.textFill.color = new vec4(1.0, 0.2, 0.2, 1.0); // Red
-                break;
-            default:
-                this.hitStatusText.text = quality;
-                this.hitStatusText.textFill.color = new vec4(1.0, 1.0, 1.0, 1.0); // White
-        }
-
-        // Reset timer to keep text visible
-        this.hitStatusTimer = this.HIT_STATUS_DISPLAY_DURATION;
     }
 
     private onTouch(eventData: TouchStartEvent) {
@@ -529,9 +477,6 @@ export class HitZoneManager extends BaseScriptComponent {
                     this.scoreStats.miss++;
                     this.resetCombo();
 
-                    // Show miss status on screen
-                    this.showHitStatus("Miss");
-
                     // Move note off-screen before disabling
                     transform.setLocalPosition(new vec3(0, 1000, 0));
 
@@ -593,9 +538,6 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Update live score display
         this.updateScoreDisplay();
-
-        // Show hit status on screen
-        this.showHitStatus(quality);
 
         // Disable the note and make it visually disappear
         if (shouldDisableNote) {
