@@ -153,22 +153,7 @@ export class HitZoneManager extends BaseScriptComponent {
             return;
         }
 
-        const combo = this.scoreStats.currentCombo;
-
-        let newText = "";
-        if (combo < 5) {
-            newText = "";
-        } else if (combo < 10) {
-            newText = `${combo} COMBO`;
-        } else if (combo < 50) {
-            newText = `${combo} COMBO!`;
-        } else if (combo < 100) {
-            newText = `🔥 ${combo} COMBO! 🔥`;
-        } else {
-            newText = `⭐ ${combo} COMBO!! ⭐`;
-        }
-
-        this.comboText.text = newText;
+        this.comboText.text = `${this.scoreStats.currentCombo}`;
     }
 
     private updateScoreDisplay(): void {
