@@ -166,12 +166,6 @@ export class Note extends BaseScriptComponent {
         if (yPos < scoreableBottom) {
             // Below scoreable zone - expired (gray)
             newState = "expired";
-        } else if (yPos <= scoreableTop) {
-            // Inside scoreable zone - ready (blue)
-            newState = "ready";
-        } else {
-            // Above scoreable zone - too early (yellow)
-            newState = "tooEarly";
         }
 
         // Only update if state changed
