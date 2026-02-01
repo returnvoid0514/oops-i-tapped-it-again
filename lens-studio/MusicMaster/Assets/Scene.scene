@@ -182,22 +182,6 @@
   DecayType: None
   DecayLimit: false
   DecayRange: 40.000000
-- !<SceneObject/01b16668-dd72-4fef-9f13-d9f9fb22fbda>
-  PrefabRemaps:
-    []
-  Name: "First Face - Face [EDIT_ME] 0"
-  Enabled: true
-  Layers: 1048576
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: -41.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 0.900000, y: 0.900000, z: 0.350000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 0f455ebf-4d96-43a9-b693-89b3aef36db5
-    - !<own> 46f6c2e2-9f1a-4a2b-a2db-e91978d99cf6
 - !<Text/026b317c-741d-4cbe-b142-a2669cb99090>
   PrefabRemaps:
     []
@@ -308,7 +292,7 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> bbdbab3a-c320-4b33-91bf-a38cd0b8d439
+    []
   Components:
     - !<own> ed78b283-9c0b-484c-8280-608e78317fe7
 - !<RenderMeshVisual/0873b565-44fa-4075-b1fa-71a91a8f5a69>
@@ -413,36 +397,6 @@
     []
   Components:
     - !<own> e6d68d3b-051d-48ba-acb7-adc7b9c4cbc7
-- !<FaceInsetVisual/0f455ebf-4d96-43a9-b693-89b3aef36db5>
-  PrefabRemaps:
-    []
-  Name: Face Inset 2
-  Enabled: true
-  RenderOrder: 1
-  StretchMode: Fit
-  VerticalAlignment: Center
-  HorizontalAlignment: Center
-  MeshShadowMode: None
-  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-  ShadowDensity: 1.000000
-  Materials:
-    - !<reference> 58b275e4-bdf3-41ab-b197-fe759fbf739e
-  FaceIndex: 0
-  TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
-  FaceRegion: Face
-  CustomFaceRegion:
-    indices:
-      []
-    vertices:
-      []
-  InnerBorderRadius: 0.000000
-  OuterBorderRadius: 0.900000
-  SubDivisionCount: 64
-  Pivot: {x: 0.000000, y: 0.000000}
-  UVScale: {x: 1.000000, y: 1.000000}
-  UVOffset: {x: 0.000000, y: 0.000000}
-  FlipX: false
-  FlipY: false
 - !<SceneObject/10325037-4cd4-4007-b6a1-1f8b95d031a8>
   PrefabRemaps:
     []
@@ -512,7 +466,6 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> 01b16668-dd72-4fef-9f13-d9f9fb22fbda
     - !<own> 4894f309-26f5-4207-a168-f8162d345413
     - !<own> 870c95b1-ed87-436b-9404-ce6a80fe65a6
   Components:
@@ -997,25 +950,6 @@
     - !<own> 2c950f04-ea62-43af-bdf0-4c172ca972ec
   Components:
     []
-- !<Image/42e3908b-2563-4ed2-8ac9-dc251f7b123a>
-  PrefabRemaps:
-    []
-  Name: Image
-  Enabled: true
-  RenderOrder: 0
-  StretchMode: Fit
-  VerticalAlignment: Center
-  HorizontalAlignment: Center
-  MeshShadowMode: None
-  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-  ShadowDensity: 1.000000
-  Materials:
-    - !<reference> 0c1f8650-2bc9-4299-81c7-ee328eacf000
-  FlipX: false
-  FlipY: false
-  RotationAngle: 0
-  Pivot: {x: 0.000000, y: 0.000000}
-  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<SceneObject/432e176c-10cd-4099-a95d-ee7ac9a28fa6>
   PrefabRemaps:
     []
@@ -1042,22 +976,6 @@
   WorldUpVector: ObjectY
   Target: !<reference> 00000000-0000-0065-0000-000000000064
   OffsetRotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-- !<ScriptComponent/46f6c2e2-9f1a-4a2b-a2db-e91978d99cf6>
-  PrefabRemaps:
-    []
-  Name: Untitled JavaScript 2
-  Enabled: true
-  ScriptAsset: !<reference> 29ea5b8c-4723-4b64-85a8-defbb9e29b69
-  ScriptInputsDefault:
-    {}
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      {}
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/48098d54-3c85-4912-aff1-925a8834d68a>
   PrefabRemaps:
     []
@@ -2405,21 +2323,6 @@
       - 0.000000
       - 0.000000
   TrackingScope: !<reference> 00000000-0000-0000-0000-000000000000
-- !<SceneObject/bbdbab3a-c320-4b33-91bf-a38cd0b8d439>
-  PrefabRemaps:
-    []
-  Name: circle to face mesh
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    []
-  Components:
-    - !<own> 42e3908b-2563-4ed2-8ac9-dc251f7b123a
 - !<FaceInsetVisual/bea8bae1-9a11-452d-b915-57e748764e40>
   PrefabRemaps:
     []
