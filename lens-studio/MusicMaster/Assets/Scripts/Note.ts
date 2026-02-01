@@ -5,7 +5,7 @@ export class Note extends BaseScriptComponent {
     public noteId: number = 0; // Unique ID for debugging
 
     @input
-    speed: number = 15.0;
+    speed: number = 30.0;
 
     @input
     normalColor: vec4 = new vec4(0.3, 0.5, 1.0, 1.0); // Blue - ready to hit

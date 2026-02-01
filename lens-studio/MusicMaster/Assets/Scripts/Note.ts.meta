@@ -49,7 +49,7 @@
     -
       {}
   InputLines:
-    - // @input float speed = 15
+    - // @input float speed = 30
     - "// @input vec4 normalColor = {0.3,0.5,1,1}"
     - "// @input vec4 tooEarlyColor = {1,0.8,0.2,0.6}"
     - "// @input vec4 expiredColor = {0.5,0.5,0.5,0.4}"
