@@ -16,6 +16,7 @@
     - !<own> 777e3c01-ebeb-4ba9-a98d-2baece350eb9
     - !<own> 426cac6c-6a9c-4ccb-925e-4738c802fecc
     - !<own> 24dfb6ed-9eb1-4935-8758-612c875ecbfe
+    - !<own> 0ef1745d-0a1c-4ba7-9762-e928f4938075
   layers: !<Layers/267ee9a7-aff2-4f9d-9a49-f71214747d03>
     userLayers:
       []
@@ -398,6 +399,21 @@
   OffsetRotation: {x: -20.000000, y: 120.000000, z: 30.000000}
   UseVertexNormal: false
   Orientation: PositionAndDirection
+- !<SceneObject/0ef1745d-0a1c-4ba7-9762-e928f4938075>
+  PrefabRemaps:
+    []
+  Name: startButton
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 32.000000, y: 32.000000, z: 32.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> e6d68d3b-051d-48ba-acb7-adc7b9c4cbc7
 - !<FaceInsetVisual/0f455ebf-4d96-43a9-b693-89b3aef36db5>
   PrefabRemaps:
     []
@@ -609,7 +625,7 @@
       audioTrack: !<reference.AudioComponent> babb89d8-bddc-49fa-a180-6bd75c7764c7
       bpm: !<float> 120.000000
       offset: !<float> 0.000000
-      startText: !<reference.Text> 989d607a-dad8-44b4-819d-2292e63a16a1
+      startButton: !<reference.Image> e6d68d3b-051d-48ba-acb7-adc7b9c4cbc7
   ScriptTypes:
     "":
       {}
@@ -1782,7 +1798,7 @@
       audioTrack: !<reference.AudioComponent> babb89d8-bddc-49fa-a180-6bd75c7764c7
       bpm: !<float> 120.000000
       offset: !<float> 0.000000
-      startText: !<reference.Text> 989d607a-dad8-44b4-819d-2292e63a16a1
+      startButton: !<reference.Image> e6d68d3b-051d-48ba-acb7-adc7b9c4cbc7
   ScriptTypes:
     "":
       {}
@@ -2492,7 +2508,7 @@
   PrefabRemaps:
     []
   Name: StartButton
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -3379,6 +3395,25 @@
     - !<own> 3d6ab84c-1d94-490a-8f72-10cc3dd31574
   Components:
     []
+- !<Image/e6d68d3b-051d-48ba-acb7-adc7b9c4cbc7>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 7cd18f0d-4993-435a-8b7b-62dea1afc029
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
 - !<ScriptComponent/e8041a9a-8450-42ca-8ebb-4d133f2950b7>
   PrefabRemaps:
     []
