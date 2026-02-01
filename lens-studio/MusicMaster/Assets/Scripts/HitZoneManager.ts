@@ -81,7 +81,7 @@ export class HitZoneManager extends BaseScriptComponent {
 
         // Initialize score display
         if (this.scoreText) {
-            this.scoreText.text = "Score: 0";
+            this.scoreText.text = "0";
         }
     }
 
@@ -153,29 +153,14 @@ export class HitZoneManager extends BaseScriptComponent {
             return;
         }
 
-        const combo = this.scoreStats.currentCombo;
-
-        let newText = "";
-        if (combo < 5) {
-            newText = "";
-        } else if (combo < 10) {
-            newText = `${combo} COMBO`;
-        } else if (combo < 50) {
-            newText = `${combo} COMBO!`;
-        } else if (combo < 100) {
-            newText = `🔥 ${combo} COMBO! 🔥`;
-        } else {
-            newText = `⭐ ${combo} COMBO!! ⭐`;
-        }
-
-        this.comboText.text = newText;
+        this.comboText.text = `${this.scoreStats.currentCombo}`;
     }
 
     private updateScoreDisplay(): void {
         if (!this.scoreText) {
             return;
         }
-        this.scoreText.text = "Score: " + `${this.scoreStats.totalScore}`;
+        this.scoreText.text = `${this.scoreStats.totalScore}`;
     }
 
     private incrementCombo(): void {

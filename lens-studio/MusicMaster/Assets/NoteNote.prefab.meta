@@ -1,0 +1,79 @@
+- !<AssetImportMetadata/7196412b-7475-4b28-a566-2fc862bcea2e>
+  ImportedAssetIds:
+    ObjectPrefab: !<reference> c5d878d8-68b2-4d1e-aeb8-7fbebe60e5ff
+  ImporterName: ObjectPrefabImporter
+  PrimaryAsset: !<reference> c5d878d8-68b2-4d1e-aeb8-7fbebe60e5ff
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    ObjectPrefab: !<own> 9859ac91-06b3-42a7-a5fe-fa8a410111b0
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<ScriptComponent/0a611610-020d-4713-6a37-5776c202cb31>
+  PrefabRemaps:
+    []
+  Name: Note
+  Enabled: true
+  ScriptAsset: !<reference> 3379bc72-77c7-4aa8-bc24-bfe2cb51ba32
+  ScriptInputsDefault:
+    normalColor: true
+    tooEarlyColor: true
+    expiredColor: true
+    hitLineY: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      speed: !<float> 4.000000
+      normalColor: !<Vec4> {x: 0.300000, y: 0.500000, z: 1.000000, w: 1.000000}
+      tooEarlyColor: !<Vec4> {x: 1.000000, y: 0.800000, z: 0.200000, w: 0.600000}
+      expiredColor: !<Vec4> {x: 0.500000, y: 0.500000, z: 0.500000, w: 0.400000}
+      hitLineY: !<float> -10.000000
+  ScriptTypes:
+    "":
+      {}
+- !<SceneObject/18395ba8-664b-4ed4-7d13-f355eca39a86>
+  PrefabRemaps:
+    []
+  Name: NoteNote
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 12.000000, y: 12.000000, z: 12.000000}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 0a611610-020d-4713-6a37-5776c202cb31
+    - !<own> 76a57c71-1006-48e7-4e3f-72748a45959b
+- !<Image/76a57c71-1006-48e7-4e3f-72748a45959b>
+  PrefabRemaps:
+    []
+  Name: Image
+  Enabled: true
+  RenderOrder: 0
+  StretchMode: Fit
+  VerticalAlignment: Center
+  HorizontalAlignment: Center
+  MeshShadowMode: None
+  ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+  ShadowDensity: 1.000000
+  Materials:
+    - !<reference> 92afac56-7eb8-46b0-b871-89eedfa5cb17
+  FlipX: false
+  FlipY: false
+  RotationAngle: 0
+  Pivot: {x: 0.000000, y: 0.000000}
+  ExtentsTarget: !<reference> 00000000-0000-0000-0000-000000000000
+- !<ObjectPrefabAssetData/9859ac91-06b3-42a7-a5fe-fa8a410111b0>
+  Prototype: !<ObjectOwner/3ba8b969-7979-4ad3-adb1-7d47ae4c6ef4>
+    PackagePath: ""
+    objects:
+      - !<own> 18395ba8-664b-4ed4-7d13-f355eca39a86
