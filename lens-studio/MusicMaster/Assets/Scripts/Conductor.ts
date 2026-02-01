@@ -9,9 +9,9 @@ export class Conductor extends BaseScriptComponent {
     @input
     offset: number = 0;
 
-    // Optional: Text to show "TAP TO START" - assign in Inspector
+    // Optional: Image to show start button - assign in Inspector
     @input
-    startText: Text;
+    startButton: Image;
 
     public currentSongPosition: number = 0;
     public currentBeat: number = 0;
@@ -33,9 +33,9 @@ export class Conductor extends BaseScriptComponent {
 
         this.createEvent("UpdateEvent").bind(this.onUpdate.bind(this));
 
-        // Show start text if assigned
-        if (this.startText) {
-            this.startText.text = "TAP TO START";
+        // Show start button if assigned
+        if (this.startButton) {
+            this.startButton.getSceneObject().enabled = true;
         }
 
         // Listen for tap to start game
@@ -51,12 +51,9 @@ export class Conductor extends BaseScriptComponent {
     private startGame() {
         this.isGameStarted = true;
 
-        // Hide start text
-        if (this.startText) {
-            const textObj = this.startText.getSceneObject();
-            if (textObj) {
-                textObj.enabled = false;
-            }
+        // Hide start button
+        if (this.startButton) {
+            this.startButton.getSceneObject().enabled = false;
         }
 
         // Start the music
