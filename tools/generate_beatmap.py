@@ -578,7 +578,7 @@ def main():
 
     # If --typescript, also output to SongLibrary.ts
     if args.typescript:
-        ts_path = repo_root / "lens-studio" / "MusicMaster" / "Assets" / "Scripts" / "SongLibrary.ts"
+        ts_path = repo_root / "lens-studio" / "OopsITappedItAgain" / "Assets" / "Scripts" / "SongLibrary.ts"
         ts_content = generate_typescript(beatmap)
         with open(ts_path, "w") as f:
             f.write(ts_content)

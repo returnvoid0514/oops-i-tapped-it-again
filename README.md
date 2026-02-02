@@ -1,4 +1,4 @@
-# MusicMaster
+# Oops I Tapped It Again
 
 A rhythm beat game built for the **[Play Everywhere: Build with Snap Games Lensathon](https://snapgames.devpost.com/)**.
 
@@ -22,7 +22,7 @@ A rhythm beat game built for the **[Play Everywhere: Build with Snap Games Lensa
 
 ## Game Overview
 
-**MusicMaster** is a rhythm-based mobile game where players tap falling notes in sync with the music. Test your timing, build combos, and compete with friends on the global leaderboard!
+**Oops I Tapped It Again** is a rhythm-based mobile game where players tap falling notes in sync with the music. Test your timing, build combos, and compete with friends on the global leaderboard!
 
 ### Features
 
@@ -111,9 +111,9 @@ The generator:
 ## Project Structure
 
 ```
-MusicMaster/
+oops-i-tapped-it-again/
 ├── lens-studio/                 # Lens Studio project
-│   └── MusicMaster/
+│   └── OopsITappedItAgain/
 │       └── Assets/
 │           ├── Scripts/
 │           │   ├── Conductor.ts         # Beat timing
@@ -167,7 +167,7 @@ MusicMaster/
 
 2. **Open in Lens Studio**
    - Launch Lens Studio
-   - Open `lens-studio/MusicMaster/MusicMaster.lsproj`
+   - Open `lens-studio/OopsITappedItAgain/OopsITappedItAgain.lsproj`
 
 3. **Test the Lens**
    - Click "Preview" in Lens Studio
@@ -178,7 +178,7 @@ MusicMaster/
 ```bash
 cd tools
 pip install -r requirements.txt
-python generate_beatmap.py "../lens-studio/MusicMaster/Assets/Sample Song.mp3" \
+python generate_beatmap.py "../lens-studio/OopsITappedItAgain/Assets/Sample Song.mp3" \
     --typescript --difficulty medium --spacing 1.0
 ```
 
