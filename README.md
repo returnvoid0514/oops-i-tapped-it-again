@@ -1,4 +1,4 @@
-# MusicMaster
+# Oops I Tapped It Again
 
 A rhythm beat game built for the **[Play Everywhere: Build with Snap Games Lensathon](https://snapgames.devpost.com/)**.
 
@@ -22,7 +22,7 @@ A rhythm beat game built for the **[Play Everywhere: Build with Snap Games Lensa
 
 ## Game Overview
 
-**MusicMaster** is a rhythm-based mobile game where players tap falling notes in sync with the music. Test your timing, build combos, and compete with friends on the global leaderboard!
+**Oops I Tapped It Again** is a rhythm-based mobile game where players tap falling notes in sync with the music. Test your timing, build combos, and compete with friends on the global leaderboard!
 
 ### Features
 
@@ -111,7 +111,7 @@ The generator:
 ## Project Structure
 
 ```
-MusicMaster/
+oops-i-tapped-it-again/
 ├── lens-studio/                 # Lens Studio project
 │   └── MusicMaster/
 │       └── Assets/
