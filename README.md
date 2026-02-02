@@ -15,8 +15,8 @@ A rhythm beat game built for the **[Play Everywhere: Build with Snap Games Lensa
 |-------|-------|
 | **Category** | 2D Games (Leaderboard, Quick Play) |
 | **Deadline** | February 2, 2026 @ 11:45pm PST |
-| **Lens Link** | *[To be added after publishing]* |
-| **Demo Video** | *[Included in Lens Studio publish]* |
+| **Lens Link** | *[Lens Link](https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=62da77c503734ffb99646e94a9c66b0a&metadata=01)* |
+| **Demo Video** | *[Youtube Link](https://youtu.be/d6JsYZhr1yY)* |
 
 ---
 
