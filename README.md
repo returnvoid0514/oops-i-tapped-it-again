@@ -113,7 +113,7 @@ The generator:
 ```
 oops-i-tapped-it-again/
 ├── lens-studio/                 # Lens Studio project
-│   └── OopsITappedItAgain/
+│   └── MusicMaster/
 │       └── Assets/
 │           ├── Scripts/
 │           │   ├── Conductor.ts         # Beat timing
@@ -167,7 +167,7 @@ oops-i-tapped-it-again/
 
 2. **Open in Lens Studio**
    - Launch Lens Studio
-   - Open `lens-studio/OopsITappedItAgain/OopsITappedItAgain.lsproj`
+   - Open `lens-studio/MusicMaster/MusicMaster.lsproj`
 
 3. **Test the Lens**
    - Click "Preview" in Lens Studio
@@ -178,7 +178,7 @@ oops-i-tapped-it-again/
 ```bash
 cd tools
 pip install -r requirements.txt
-python generate_beatmap.py "../lens-studio/OopsITappedItAgain/Assets/Sample Song.mp3" \
+python generate_beatmap.py "../lens-studio/MusicMaster/Assets/Sample Song.mp3" \
     --typescript --difficulty medium --spacing 1.0
 ```
 
